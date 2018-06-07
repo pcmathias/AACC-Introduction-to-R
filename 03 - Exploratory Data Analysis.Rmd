@@ -1,0 +1,52 @@
+---
+title: "Exploratory data analysis"
+author: "Patrick Mathias"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+library(janitor)
+```
+
+# Exploratory Data Analysis
+
+In this section of the course we will walk through a common workflow: exploring a new data set.
+
+```{r load_data}
+orders <- read_excel("data/orders_data_set.xlsx")
+str(orders)
+```
+
+```{r load_data_clean_headers}
+orders <- read_excel("data/orders_data_set.xlsx") %>%
+  clean_names()
+str(orders)
+```
+
+```{r glimpse}
+glimpse(orders)
+```
+
+```{r summary}
+summary(orders)
+```
+
+```{r convert_factor}
+summary(orders$order_status_c_descr)
+summary(as.factor(orders$order_status_c_descr))
+```
+```{r}
+orders <- orders %>%
+  mutate(department_fctr = as.factor(department))
+summary(orders$department_fctr)
+```
+
+```{r convert_all_factors}
+orders <- orders %>%
+  mutate_if(is.character, as.factor)
+summary(orders)
+```
+
