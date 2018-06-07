@@ -14,17 +14,22 @@ library(janitor)
 
 # Overview
 
-In this section we will walk through how to use R analyze experiments that are part of standard new method validations. We will use real data acquired as part of a method transition for immunoassays (unconjugated estriol, alpha fetoprotein, and inhibin-A) used for prenatal assessment of Trisomy 21, Trisomy 18, and open neural tube defect risk assessment.
+In this section we will walk through exampls of how to use R to analyze standard method validation experiments. We will use real data acquired as part of a method transition for immunoassays (unconjugated estriol, alpha fetoprotein, and inhibin-A) used for prenatal assessment of Trisomy 21, Trisomy 18, and open neural tube defect risk assessment.
 
 
 # Load data
 
-Relatively "clean" data has been organized in separate tabs in an excel document. Let's first load one of these data sets.
+Relatively "clean" data has already been organized in separate tabs in an excel document. Let's first load one of these data sets. To do this we will use the `read_excel` function. Let's first take a look at this function. Click the green arrow to execute this code chunk:
+
+```{r explore_function}
+?read_excel
+```
+
+We see that there are three different functions grouped together, a `read_excel` function that is a wrapper for two more specific functions `read_xls` and `read_xlsx`. Since our Excel document is in .xlsx format, we can either use the general `read_excel` or `read_xlsx` function.
 
 ```{r load_data_1}
 dat <- read_excel(path="data/Maternal Serum AFP HCG uE3 DxI raw data.deaccessioned.xlsx", 
-                sheet="MS AFP", 
-                col_names=TRUE)
+                sheet="MS AFP")
 ```
 
 
