@@ -9,6 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(readxl)
 library(janitor)
+library(lubridate)
 ```
 
 # Exploratory Data Analysis
@@ -48,5 +49,30 @@ summary(orders$department_fctr)
 orders <- orders %>%
   mutate_if(is.character, as.factor)
 summary(orders)
+```
+
+```{r skim}
+library(skimr)
+skim(orders)
+```
+
+```{r}
+orders <- orders %>%
+  mutate(order_week = floor_date(order_time, unit = "week"))
+ggplot(orders, aes(x = order_week)) + 
+  geom_histogram(binwidth = 7*24*60*60)
+```
+
+```{r cbc_analysis}
+cbd_orders <- orders %>%
+  filter(proc_code == "CBD")
+table(cbd_orders$department, cbd_orders$order_status_c_descr)
+```
+
+```{r tabyl}
+cbd_orders %>% 
+  tabyl(department, order_status_c_descr) %>%
+  adorn_percentages("row") %>%
+  adorn_pct_formatting()
 ```
 
