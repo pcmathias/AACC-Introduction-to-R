@@ -1,0 +1,36 @@
+---
+title: "Method Validation in R"
+author: "Daniel Herman"
+date: "06/07/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+library(janitor)
+```
+
+# Overview
+
+In this section we will walk through how to use R analyze experiments that are part of standard new method validations. We will use real data acquired as part of a method transition for immunoassays (unconjugated estriol, alpha fetoprotein, and inhibin-A) used for prenatal assessment of Trisomy 21, Trisomy 18, and open neural tube defect risk assessment.
+
+
+# Load data
+
+Relatively "clean" data has been organized in separate tabs in an excel document. Let's first load one of these data sets.
+
+```{r load_data_1}
+dat <- read_excel(path="data/Maternal Serum AFP HCG uE3 DxI raw data.deaccessioned.xlsx", 
+                sheet="MS AFP", 
+                col_names=TRUE)
+```
+
+
+Let's next take a look at the data
+
+```{r}
+dat
+```
+
