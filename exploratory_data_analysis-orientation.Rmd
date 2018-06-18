@@ -23,17 +23,21 @@ orders <- read_excel("data/orders_data_set.xlsx")
 str(orders)
 ```
 
-*Exercise 1*
+> *Exercise 1*
+>
+> 1. Which fields of the data frame are characters?
+> 
+> 2. Which are numbers?
+>
+> 3. Of those fields above, which would be best represented as factors?
+>
+> 4. Let's start by running a summary (`summary`) of one of those character fields that we think should be a factor. What information can we determine from that summary?
+>
+> 5. Let's convert one of those fields to a factor using the `as.factor` command and then run a summary. What additional information do you see by converting to a factor?
 
-Which fields of the data frame are characters?
+Tip: White space generally has meaning in programming. When a variable name has a space in it, you can use the `r paste("`")` character (look to the top left on your keyboard) around the variable name to make sure R understands what variable you are referring to. As an example, `summary(orders$Proc Code)` will not work but `summary(orders$`Proc Code`)` will.
 
-Which are numbers?
-
-Of those fields above, which would be best represented as factors?
-
-Let's start by running a summary (`summary`) of one of those character fields that we think should be a factor. What information can we determine from that summary?
-
-Let's convert one of those fields to a factor using the `as.factor` command and then run a summary. What additional information do you see by converting to a factor?
+White spaces in names can be annoying to deal with. To get around this, we can rename variable names to remove white spaces, and, in addition, we can convert everyting to a single case (lowercase by default). The janitor package has some handy data science tools, including the ability to clean up variable names in one line using the `clean_names` function:
 
 ```{r load_data_clean_headers}
 orders <- read_excel("data/orders_data_set.xlsx") %>%
@@ -41,6 +45,7 @@ orders <- read_excel("data/orders_data_set.xlsx") %>%
 str(orders)
 ```
 
+As you may have seen already, there is more than one way to do the same thing when you're programming. We used `str()` to look at the structure of a data frame or other object. Another way to do this is to use the `glimpse()` function, which produces very similar output but is organized a little more neatly (with 1 line per variable).
 ```{r glimpse}
 glimpse(orders)
 ```
