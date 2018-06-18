@@ -1,5 +1,5 @@
 ---
-title: "Exploratory data analysis"
+title: "Exploratory data analysis: Orienting yourself with your data set"
 author: "Patrick Mathias"
 output: html_document
 ---
@@ -12,7 +12,7 @@ library(janitor)
 library(lubridate)
 ```
 
-# Exploratory Data Analysis
+# Diving into a new data set
 
 In this section of the course we will walk through a common workflow: exploring a new data set.
 
@@ -35,7 +35,7 @@ str(orders)
 >
 > 5. Let's convert one of those fields to a factor using the `as.factor` command and then run a summary. What additional information do you see by converting to a factor?
 
-Tip: White space generally has meaning in programming. When a variable name has a space in it, you can use the `` ` `` character (look to the top left on your keyboard) around the variable name to make sure R understands what variable you are referring to. As an example, `summary(orders$Proc Code)` will not work but `summary(orders$```Proc Code```)` will.
+Tip: White space generally has meaning in programming. When a variable name has a space in it, you can use the `` ` `` character (look to the top left on your keyboard) around the variable name to make sure R understands what variable you are referring to. As an example, `summary(orders$Proc Code)` will not work but `summary(orders$`Proc Code`)` will.
 
 White spaces in names can be annoying to deal with. To get around this, we can rename variable names to remove white spaces, and, in addition, we can convert everyting to a single case (lowercase by default). The janitor package has some handy data science tools, including the ability to clean up variable names in one line using the `clean_names` function:
 
@@ -46,23 +46,47 @@ str(orders)
 ```
 
 As you may have seen already, there is more than one way to do the same thing when you're programming. We used `str()` to look at the structure of a data frame or other object. Another way to do this is to use the `glimpse()` function, which produces very similar output but is organized a little more neatly (with 1 line per variable).
+
 ```{r glimpse}
 glimpse(orders)
 ```
+
+The `str` and `glimpse` functions are helpful to get a quick snapshot of the data, but sometimes you want a little more detail about the data in your data frame.
 
 ```{r summary}
 summary(orders)
 ```
 
+The `summary` function is most useful when you want to quickly glance at distributions of numerical data and times. You can quickly see the minimum and maximum times and some data on the distribution. It is less helpful when you have characters though.
+
+> Exericse 2
+>
+> Pull a summary of the description variable (only), after converting to a factor using the `as.factor` function. Which test is most frequently ordered in this data set?
+
 ```{r convert_factor}
-summary(orders$order_status_c_descr)
-summary(as.factor(orders$order_status_c_descr))
+summary(as.factor(orders$description))
 ```
-```{r}
+
+So it looks like converting to a factor might be pretty handy when taking a quick glance at the data! What if we wanted to permanently convert one of our variables to a factor within the data frame? We could do this many different ways, but let's start by creating a new variable (column) using the `mutate` function. `mutate` allows you to perform a function on one or more variables to create (or overwrite) a variable within the same observation (row).
+
+Here we take our orders data frame, pipe it into the `mutate` function and create a new variable called department_fctr that applies the `as.factor` function on our original department variable. We can run the `summary` function to see the results.
+
+```{r single_factor}
 orders <- orders %>%
   mutate(department_fctr = as.factor(department))
 summary(orders$department_fctr)
 ```
+
+> Exercise 3
+>
+> Let's go ahead and convert the description variable to a factor using the `mutate` and `as.factor` functions. This time, rather than creating a new variable, overwrite the original variable by giving it its original name.
+
+```{r single_factor_exercise}
+orders <- orders %>%
+  mutate(description = as.factor(description))
+summary(orders$description)
+```
+
 
 ```{r convert_all_factors}
 orders <- orders %>%
