@@ -35,7 +35,7 @@ str(orders)
 >
 > 5. Let's convert one of those fields to a factor using the `as.factor` command and then run a summary. What additional information do you see by converting to a factor?
 
-Tip: White space generally has meaning in programming. When a variable name has a space in it, you can use the `r paste("`")` character (look to the top left on your keyboard) around the variable name to make sure R understands what variable you are referring to. As an example, `summary(orders$Proc Code)` will not work but `summary(orders$`Proc Code`)` will.
+Tip: White space generally has meaning in programming. When a variable name has a space in it, you can use the `` ` `` character (look to the top left on your keyboard) around the variable name to make sure R understands what variable you are referring to. As an example, `summary(orders$Proc Code)` will not work but `summary(orders$```Proc Code```)` will.
 
 White spaces in names can be annoying to deal with. To get around this, we can rename variable names to remove white spaces, and, in addition, we can convert everyting to a single case (lowercase by default). The janitor package has some handy data science tools, including the ability to clean up variable names in one line using the `clean_names` function:
 
