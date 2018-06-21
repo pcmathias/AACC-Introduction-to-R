@@ -106,6 +106,39 @@ max(sequence_one_to_twenty)
 
 Learning to write code (including the functions available to you and the appropriate syntax to make your code work) can be frustrating!  Learning a new language takes time so be patient with yourself.  We all go through this process and your intution improves with your experience.
 
+# Sequencing functions
+
+When you are working with a data set, you often need to manipulate it multiple times in a defined sequence of events. Let's start with a non-sensical example that can help illustrate the issue (adapted from the [tidyverse style guide](http://style.tidyverse.org/pipes.html)).
+
+Let's say we want to apply the functions hop, scoop, and bop to the foo_foo data frame, in that order. One way to approach that is to start with the data, apply the function, and write the output back into the original data frame.
+
+```{r, eval = FALSE}
+# one way to represent a hop, scoop, and a bop, without pipes
+foo_foo <- hop(foo_foo, through = forest)
+foo_foo <- scoop(foo_foo, up = field_mice)
+foo_foo <- bop(foo_foo, on = head)
+```
+
+R allows you to nest functions within one another, but this can get horribly confusing because following a specific sequence of operations requires you to start from the inside of the expression and expand outwards.
+
+```{r, eval = FALSE}
+# another way to represent the same sequence with less code but in a less readable way
+foo_foo <- bop(scoop(hop(foo_foo, through = forest), up = field_mice), on = head)
+```
+
+You want to try and avoid doing things this way because the sequence of operations is so non-intuitive.
+
+Explicitly showing the functions sequentially by line is helpful for readability but it does require some unnecessary typing to keep repeating the name of the data set. R allows you to "pipe" a data frame from one function to another using this funny looking operator: `%>%`. This can cut down on unnecessary code but also preserves the nice formatting that makes it obvious what functions are applied in what order.
+
+```{r, eval = FALSE}
+# a hop, scoop, and a bop with the almight pipes
+foo_foo %>%
+  hop(through = forest) %>%
+  scoop(up = field_mouse) %>%
+  bop(on = head)
+```
+
+Pipes are not compatible with all functions but should work with all of the tidyverse package functions (the magrittr package that defines the pipe is included in the tidyverse). In general, functions expect data as the primary argument and you can think of the pipe as feeding the data to the function. From the perspective of coding style, the most useful suggestion for using pipes is arguably to write the code so that each function is on its own line. The tidyverse style guide [section on pipes](http://style.tidyverse.org/pipes.html) is pretty helpful.
 
 # Creating reproducible data analyis
 
