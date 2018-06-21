@@ -1,0 +1,64 @@
+---
+title: "Method Validation in R"
+author: "Daniel Herman"
+date: "06/07/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+library(janitor)
+```
+
+# Overview
+
+In this section we will walk through examples of how to use R to analyze standard method validation experiments. We will use real data acquired as part of a method transition for immunoassays (unconjugated estriol, alpha fetoprotein, and inhibin-A) used for prenatal assessment of Trisomy 21, Trisomy 18, and open neural tube defect risk assessment.
+
+# Load data
+
+Relatively "clean" data has already been organized in separate tabs in an excel document. Let's first load one of these data sets. To do this we will use the `read_excel` function. Let's first take a look at this function. Click the green arrow to execute this code chunk:
+
+```{r explore_function}
+?read_excel
+```
+
+We see that there are three different functions grouped together, a `read_excel` function that is a wrapper for two more specific functions `read_xls` and `read_xlsx`. Since our Excel document is in .xlsx format, we can either use the general `read_excel` or `read_xlsx` function.
+
+```{r load_data_1}
+dat <- read_excel(path="data/Method_Validation.data.xlsx", 
+                sheet="MS AFP")
+```
+
+There are lots of different options for loading in files in R. For tab-delimited text, try `read_tsv`. For comma-delimited text (.csv), try `read_csv`. See more detailed discussion in [MSACL intermediate course](https://github.com/pcmathias/MSACL-intermediate-R-course/tree/master/lesson3).
+
+# Describe data
+
+## Discuss the tbl data structure
+Mention other structures
+
+Let's next take a look at the data
+
+```{r}
+dat
+```
+
+# Examine data distribution
+
+Let's focus on maternal serum AFP. 
+
+## Is it normally distributed?
+
+-- May want to add Gender, Gestational week here...
+
+## How to verify proposed reference range?
+## How to establish reference range?
+### Parametric, Normal
+### Nonparametric
+
+# ? Multivariate analyses
+## ? Pairwise plots
+## ? Co-linearity
+
+

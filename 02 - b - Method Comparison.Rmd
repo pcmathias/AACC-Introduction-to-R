@@ -1,0 +1,39 @@
+---
+title: "Method Validation in R"
+author: "Daniel Herman"
+date: "06/07/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+library(janitor)
+```
+
+# Overview
+
+In this section we will continue exploring how to use R in method validation by comparing results from two different methods.
+
+# Load data
+
+Let's load in hCG data, just as we did in the previous session.
+
+# Describe data and explore its distribution
+
+Let's briefly describe data, as we did previously.
+
+# Method comparison 
+## Quantitative
+### Simple linear regression
+### Deming regression
+### Passing-Bablock
+
+## Compare methods by concordance relative to decision thresholds
+
+# Confusion matrix
+
+Let's assume that the previous method was our gold standard.
+
+## Sensitivity, Specificity, PPV, NPV

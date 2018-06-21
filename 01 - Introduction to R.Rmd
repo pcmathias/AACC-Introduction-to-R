@@ -39,7 +39,7 @@ In this course we will be using the tidyverse package.  The tidyverse includes f
 
 Installing the tidyverse package is as easy as entering the following line of code in the RStudio console (the box on the left hand side of RStudio) and pressing the return (enter) key.
 
-```{r}
+```{r, eval=FALSE}
 install.packages("tidyverse")
 ```
 

@@ -1,0 +1,26 @@
+---
+title: "Method Validation in R"
+author: "Daniel Herman"
+date: "06/07/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+library(janitor)
+```
+
+# Overview
+
+If time allows, let's join multiple tabs together. Discuss joining. Make pretty plots. And ask one analytical question (covariation)
+
+# ? Multivariate analyses
+## ? Pairwise plots
+## ? Pairwise correlation
+## ? Co-linearity
+## Predict one variable from the other 2
+
+
+

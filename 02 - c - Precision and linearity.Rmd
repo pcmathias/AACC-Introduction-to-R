@@ -1,0 +1,42 @@
+---
+title: "Method Validation in R"
+author: "Daniel Herman"
+date: "06/07/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+library(janitor)
+```
+
+# Overview
+
+In this section we will continue exploring how to use R in method validation by studying precision, linearity, and calibration verification.
+
+# Precision
+
+## Load data
+
+-- TODO: need to swap out data in excel document. Have placeholder data in tab "Precision"
+
+## Describe data and explore its distribution
+
+Let's briefly describe data, as we did previously.
+
+## LOB
+
+## LOQ
+
+# Linearity and Calibration verification
+
+## Load data
+
+-- TODO: need to add data to excel document
+# ? Multivariate analyses
+## ? Pairwise plots
+## ? Co-linearity
+
+
