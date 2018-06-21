@@ -16,6 +16,8 @@ library(lubridate)
 
 In this section of the course we will walk through a common workflow: exploring a new data set.
 
+## Loading data and reviewing data types and distributions
+
 First let's refresh your memory on loading in a data set. We have an Excel file that contains our main data set in the data folder called "orders_data_set.xlsx". After loading the file into a variable (in this case a data frame) called "orders", look at the structure of the data using the `str` command
 
 ```{r load_data}
@@ -87,24 +89,44 @@ orders <- orders %>%
 summary(orders$description)
 ```
 
+Factors can be very handy when you want to look at quick summaries of the data. In some cases you may want all of your variables that are characters to actually be factors. We're jumping into a little more advanced concepts, but let's briefly cover one way to convert multiple variables into factors at once.
+
+If we decide to make description, proc_code, order_class_c_descr, lab_status_c_descr, order_status_c_descr, and reason_for_canc_c_descr all into factors, we could use `mutate` and call out every variable (on separate lines for readability):
+
+```{r convert_all_factors_long}
+orders_factors <- orders %>%
+  mutate(description = as.factor(description),
+         proc_code = as.factor(proc_code),
+         order_class_c_descr = as.factor(order_class_c_descr),
+         lab_status_c_descr = as.factor(lab_status_c_descr),
+         order_status_c_descr = as.factor(order_status_c_descr),
+         reason_for_canc_c_descr = as.factor(reason_for_canc_c_descr))
+summary(orders_factors)
+```
+
+An extension of the `mutate` function is `mutate_at`, which serves the same purpose but allows you to choose multiple columns at once. If you're applying the same function to multiple columns, this is a handy way to do that with less code.
 
 ```{r convert_all_factors}
 orders <- orders %>%
-  mutate_if(is.character, as.factor)
+  mutate_at(c("description", "proc_code", "order_class_c_descr", "lab_status_c_descr", "order_status_c_descr", "reason_for_canc_c_descr"), as.factor)
 summary(orders)
 ```
 
+Yet another way to do this is to use `mutate_if(is.character, as.factor)` but beware! 
+
+Older functions to import files in R automatically convert character variables into factors. This can be helpful for variables like order status where there are only a handful of different possible values for the variable (called "levels" of a factor). But factors behave differently than characters, and your code can produce unexpected output instead of failing.
+
+(Need to insert example)
+
+Finally, the skimr package is worth knowing about. This does some work for you in breaking down distributions of different variables and showing the amount of missing data.
+
 ```{r skim}
+install.packages("skimr")
 library(skimr)
 skim(orders)
 ```
 
-```{r}
-orders <- orders %>%
-  mutate(order_week = floor_date(order_time, unit = "week"))
-ggplot(orders, aes(x = order_week)) + 
-  geom_histogram(binwidth = 7*24*60*60)
-```
+# Tabulating & visualizing the data
 
 ```{r cbc_analysis}
 cbd_orders <- orders %>%
@@ -121,3 +143,10 @@ cbd_orders %>%
   adorn_ns()
 ```
 
+
+```{r}
+orders <- orders %>%
+  mutate(order_week = floor_date(order_time, unit = "week"))
+ggplot(orders, aes(x = order_week)) + 
+  geom_histogram(binwidth = 7*24*60*60)
+```
