@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, comment=NA)
 library(tidyverse)
 library(readxl)
 library(janitor)
@@ -33,26 +33,94 @@ dat <- read_excel(path="data/Method_Validation.data.xlsx",
 
 There are lots of different options for loading in files in R. For tab-delimited text, try `read_tsv`. For comma-delimited text (.csv), try `read_csv`. See more detailed discussion in [MSACL intermediate course](https://github.com/pcmathias/MSACL-intermediate-R-course/tree/master/lesson3).
 
-# Describe data
-
-## Discuss the tbl data structure
+## (Advanced) Discuss the tbl data structure
 Mention other structures
 
-Let's next take a look at the data
+# Viewing data tables
+Once you have loaded some data into an R variable (in this case, `dat`), you should always briefly visually and manually inspect it. Things to check for include:
+
+ - Did the column headers import properly?
+ - Did columns get split appropriately, and does every line have the right number of columns?
+ - Did any lines get skipped? Did the entire file get loaded?
+ 
+Let's next take a look at the data. We can do this in a few different ways.
 
 ```{r}
 dat
 ```
 
+In R-Studio, variables can also be _inspected_ using the "Environment" tab (usually in the top right pane). 
+
+## Summarizing a data table
+The `summary` command can provide a helpful overview of the data set as well:
+
+```{r}
+summary(dat)
+```
+
+## Renaming a column (and other things you can try with tables)
+
+Hmm. "X" and "Y" are not very descriptive column names, let's change that:
+```{r}
+dat <- rename(dat, "Method A"="X", "Method B"="Y") 
+```
+
+A quick way to look at only the top `n` rows is using `head`:
+```{r}
+# top 3 rows
+head(dat, n=3)
+```
+
+> _Comments: Any line that starts with a "#" is considered a "comment" in R, and **is not part of the code**. You can use comments to help explain to others (or future-you) what a particular section of code is doing, or to quickly "comment out" a portion of the code that you do not want to run. Comments can also go at the end of a line._
+
 # Examine data distribution
 
-Let's focus on maternal serum AFP. 
+Let's focus on the maternal serum AFP values from Method A first.
+
+```{r basic_stats}
+# First let's isolate just the Method A values into a variable.
+method_a <- dat$`Method A`
+
+mean(method_a)  # Mean
+median(method_a) # Median
+sd(method_a) # Standard deviation
+sd(method_a) / mean(method_a) * 100  # Coefficient of variation
+```
 
 ## Is it normally distributed?
+There are many approaches to determining "normality" of a distribution. Calculation of mean, median, mode and SDs can help. Visual inspection of the data will also quickly reveal if the data is normal, skewed, multimodal, etc. 
+
+> A famous example of how summary statistics can mask true differences is demonstrated by Anscombe's quartet. FJ Anscombe, an English statistician, famously said in 1973 that "Computers should make both calculations and graphs. Both sorts of output should be studied; each will contribute to understanding." An entertaining (involving T-rex) and informative visualization of this problem can be found here: https://www.autodeskresearch.com/publications/samestats
+
+We will use the `ggplot` library to visualize data. 
+
+``` {r}
+g <-  ggplot(dat, aes(x=`Method A`))
+g <- g + geom_histogram(bins=50)
+g
+```
+
+Does this look normal? How can we quantify this?
+
+The **skew** and **kurtosis** are so-called **moments** of a distribution and can be used as measure of normality (or non-normality).
+
+```{r}
+library(moments)            # load the moments R library, which provides the functions
+skewness(method_a)
+kurtosis(method_a)
+```
+
+Another option is to use the **Shapiro-Wilk test of normality**:
+
+```{r}
+shapiro.test(method_a)
+```
 
 -- May want to add Gender, Gestational week here...
 
 ## How to verify proposed reference range?
+
+
 ## How to establish reference range?
 ### Parametric, Normal
 ### Nonparametric
