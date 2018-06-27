@@ -75,17 +75,20 @@ In its most basic form R is a calculator
 2 + 3 + 2
 ```
 
-R supports a number of functions (e.g. the absolute value function) that can extend our calculator
+R supports a number of functions (e.g. the absolute value function) that can extend our calculator. We pass arguments to the function (e.g. data or other parameters) and the function will give us back a result.
+
+For example:
 
 ```{r}
 abs(-77)
 ```
+There are functions to support nearly all of the data analysis you may want to do.  And remember you can always add more functions by installing packages that other users have developed and published.  You can even write your own functions, though this won't be necessary for any of the analysis we perform in this introductory course.
 
-We can create variables (objects) and use them in our calculations.
+We can also create variables (objects) and use them in our calculations.
 
 To do this we use the following syntax (grammar):  
 
-variable_name <- variable
+variable_name <- contents of our variable
 
 For example:
 
@@ -103,6 +106,7 @@ median(sequence_one_to_twenty)
 max(sequence_one_to_twenty)
 
 ```
+Remember to give your variables descriptive names so you can easily remember the data they contain.  It is also a good practice to separate words in your variable names with underscores instead of spaces.
 
 # Learning to Learn to Code
 
@@ -130,6 +134,10 @@ Just ask your question (making sure to include "R" in there somewhere) and you w
 "how to mutate column in r"
 
 Chances are one of your first hits will be [Stack Overflow](https://stackoverflow.com/).  Stack Overflow is a great resource for developers to ask and answer questions.  If you have a question, it has likely been answered at least once on Stack Overflow.
+
+## Cheat Sheets
+
+The folks who make RStudio offer a number of really great [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) on their website that you can download/print and keep next to your desk as quick references.
 
 ## A Good Book
 
