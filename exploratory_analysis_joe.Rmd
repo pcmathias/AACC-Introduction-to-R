@@ -40,7 +40,7 @@ ggplot(orders, aes(x = order_hour)) +
 
 ```
 
-Exercise:  What time of day are tests resulted?
+**Exercise:**  What time of day are tests resulted?
 
 ```{r}
 
@@ -77,7 +77,7 @@ ggplot(otr_delta, aes(x = order_time_to_result_time)) +
 ```
 
 
-Exercise:  What if we wanted to look at result time to review time?
+**Exercise:**  What if we wanted to look at result time to review time?
 
 ```{r}
 
@@ -105,7 +105,7 @@ ggplot(orders_count, aes(x = n)) +
 ```
 
 
-Exercise:  What if we wanted to know only number of CBCs per patient
+**Exercise:**  What if we wanted to know only number of CBCs per patient
 
 ```{r}
 
@@ -128,8 +128,6 @@ ggplot(cbc_count, aes(x = n)) +
 Time Between CBCs
 
 ```{r}
-
-
 cbc_orders <- filter(completed_orders, proc_code == "CBC")
 
 cbc1 = select(cbc_orders, patient_id, result_time)
@@ -145,8 +143,6 @@ cbc_join <- filter(cbc_join, cbc_time_diff > 0)
 
 ggplot(cbc_join, aes(x = cbc_time_diff)) + 
   geom_histogram(binwidth = 60*60*24*7)
-
-
 
 ```
 
@@ -200,13 +196,4 @@ proc_summary <- orders %>%
 summary(sort(proc_summary$proc_code_fctr))
 
 ```
-
-
-
-
-
-
-
-
-
 
