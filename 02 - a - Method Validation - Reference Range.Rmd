@@ -131,7 +131,9 @@ Reference ranges can be established in several different ways. Two of the most c
 |CLSI Recommended Approach|No|Yes|
 
 ### Parametric Reference Ranges
-(insert graphic here)
+
+![](assets/rrange.png){width=350px}
+
 \[
 range = \mu ±1.96* \sigma
 \]
