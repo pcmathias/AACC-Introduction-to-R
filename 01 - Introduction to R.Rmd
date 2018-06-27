@@ -5,33 +5,37 @@ date: "5/22/2018"
 output: html_document
 ---
 
-# What is R?
+# Overview
+
+In this lesson we will cover some R basics including installing/configuring R, a quick introduction to coding, and the fundamentals of making our data analysis reporducible.  This content can be a little dry but provides the necessary building blocks for the more interesting content to come.  Hang in there and we will get to importing, manipulating, and visualizing real laboratory data ASAP!  
+
+# 1. What is R?
 
 R is a statistical programming language.  Using R you can load, analyze, and visualize data.  R has the same functionality you are used to in other spreadsheet applications (e.g. Microsoft Excel) but offers greater functionality and flexibility.  R also provides an environment in which we can conduct reproducible data analysis.  R affords us the capabilities to document our data analysis and save it in a way that we can revisit our analysis at a later date, update our approach when inspiration strikes, and share our analysis with friends. 
 
-# Installing R (and some other stuff to make R work)
+# 2. Installing R (and some other stuff to make R work)
 
-## 1.  R
+## R
 
 R is the programming language that we will be using to conduct our data analysis today.
 
 To install R, go to the [Comprehensive R Archive Network (CRAN)](https://cloud.r-project.org]).  Select the version of R for your operating system (Windows, Mac OS, Linux)
 
-## 2.  RStudio
+## RStudio
 
 R studio is the development environment in which we will do our R programming.
 
 Download and install [RStudio](https://www.rstudio.com/products/rstudio/download/#download).  Select the installer for your Operating System.
 
-When you launch RStudio you will be presented with with a series of windows.
+When you launch RStudio you will be presented with with a series of panes.  Let's start by getting oriented to the RStudio application.
 
-On the left you will see the *console*.  The console is where we will enter and execute our R code.  
+On the left you will see the **console**.  The console is where we will enter and execute our R code.  
 
-The lower right window contains the *output*.  This is where the results of our code (e.g. our plots) will display.  
+The lower right pane contains the **output**.  This is where the results of our code (e.g. our plots) will display.  
 
-The window in the upper right corner of the screen contains our *history*.  Here we can see the historical record of the code we have executed in the console. 
+The pane in the upper right corner of the screen contains our **history**.  Here we can see the historical record of the code we have executed in the console. 
 
-## 3.  The Tidyverse
+## The Tidyverse
 
 To enhance the functionality of R, we need to install additional packages.  A package is a collection of functions that extend the capabilities of the base R programming language.
 
@@ -43,7 +47,7 @@ Installing the tidyverse package is as easy as entering the following line of co
 install.packages("tidyverse", dependencies = TRUE)
 ```
 
-# Configuring the RStudio Environment
+# 3. Configuring the RStudio Environment
 
 ## Setting the Working Directory
 
@@ -67,7 +71,7 @@ Let's load the tidyverse with the following code.
 library(tidyverse)
 ```
 
-# Basics of coding
+# 4. Basics of coding
 
 In its most basic form R is a calculator
 
@@ -108,48 +112,6 @@ max(sequence_one_to_twenty)
 ```
 Remember to give your variables descriptive names so you can easily remember the data they contain.  It is also a good practice to separate words in your variable names with underscores instead of spaces.
 
-# Learning to Learn to Code
-
-Learning to write code (including the functions available to you and the appropriate syntax to make your code work) can be frustrating!  Learning a new language takes time so be patient with yourself.  We all go through this process and your intution improves with your experience.
-
-Inevitably, you will at times get stuck (especially when you are first starting).  However, there are some great resources to get you un-stuck and part of learning to code is learning how to leverage the wealth of knowledge of others.
-
-## Help Command
-
-If you know (or have an idea of a function) you would like to use, you can use the help command to find out more. Just type the "?" before the function of interest.
-
-
-```{r}
-
-?abs()
-
-```
-
-## The Internet
-
-Chances are, if you are facing a data anlysis dilemma, many others have faced the exact same (or at least very similar) challenge.  Head to your favorite search engine.
-
-Just ask your question (making sure to include "R" in there somewhere) and you will likely find what you are looking for in the first few results
-
-"how to mutate column in r"
-
-Chances are one of your first hits will be [Stack Overflow](https://stackoverflow.com/).  Stack Overflow is a great resource for developers to ask and answer questions.  If you have a question, it has likely been answered at least once on Stack Overflow.
-
-## Cheat Sheets
-
-The folks who make RStudio offer a number of really great [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) on their website that you can download/print and keep next to your desk as quick references.
-
-## A Good Book
-
-Even in the 21st century, it never hurts to have a good book by your side.
-
-The content in this course is oriented around the tidyverse.  If you would like to continue your studies leveraging the tidyverse, a great companion is R for Data Science.  This book is available freely in a digital format [here](http://r4ds.had.co.nz/) and print versions are available as well.
-
-## Taking a Break
-
-Sometimes you won't be able to brute force your way through a problem and your other resources (help functions, the internet, and your reference books) will seemingly let you down.  This can be very frustrating!  Don't despair, walk away for a bit.  Oftentimes it just takes a fresh set of eyes to reframe your question or rethink you approach, and what seemed impossible, suddenly becomes obvious.
-
-
 # Sequencing functions
 
 When you are working with a data set, you often need to manipulate it multiple times in a defined sequence of events. Let's start with a non-sensical example that can help illustrate the issue (adapted from the [tidyverse style guide](http://style.tidyverse.org/pipes.html)).
@@ -184,7 +146,46 @@ foo_foo %>%
 
 Pipes are not compatible with all functions but should work with all of the tidyverse package functions (the magrittr package that defines the pipe is included in the tidyverse). In general, functions expect data as the primary argument and you can think of the pipe as feeding the data to the function. From the perspective of coding style, the most useful suggestion for using pipes is arguably to write the code so that each function is on its own line. The tidyverse style guide [section on pipes](http://style.tidyverse.org/pipes.html) is pretty helpful.
 
-# Creating reproducible data analyis
+# 5. Learning to Learn to Code
+
+Learning to write code (including the functions available to you and the appropriate syntax to make your code work) can be frustrating!  Learning a new language takes time so be patient with yourself.  We all go through this process and your intution improves with your experience.
+
+Inevitably, you will at times get stuck (especially when you are first starting).  However, there are some great resources to get you un-stuck and part of learning to code is learning how to leverage the wealth of knowledge of others.
+
+## Help Command
+
+If you know (or have an idea of a function) you would like to use, you can use the help command to find out more. Just type the "?" before the function of interest.
+
+
+```{r}
+?abs()
+```
+
+## The Internet
+
+Chances are, if you are facing a data anlysis dilemma, many others have faced the exact same (or at least very similar) challenge.  Head to your favorite search engine.
+
+Just ask your question (making sure to include "R" in there somewhere) and you will likely find what you are looking for in the first few results
+
+"how to mutate column in r"
+
+Chances are one of your first hits will be [Stack Overflow](https://stackoverflow.com/).  Stack Overflow is a great resource for developers to ask and answer questions.  If you have a question, it has likely been answered at least once on Stack Overflow.
+
+## Cheat Sheets
+
+The folks who make RStudio offer a number of really great [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) on their website that you can download/print and keep next to your desk as quick references.
+
+## A Good Book
+
+Even in the 21st century, it never hurts to have a good book by your side.
+
+The content in this course is oriented around the tidyverse.  If you would like to continue your studies leveraging the tidyverse, a great companion is R for Data Science.  This book is available freely in a digital format [here](http://r4ds.had.co.nz/) and print versions are available as well.
+
+## Taking a Break
+
+Sometimes you won't be able to brute force your way through a problem and your other resources (help functions, the internet, and your reference books) will seemingly let you down.  This can be very frustrating!  Don't despair, walk away for a bit.  Oftentimes it just takes a fresh set of eyes to reframe your question or rethink you approach, and what seemed impossible, suddenly becomes obvious.
+
+# 6. Creating reproducible data analyis
 
 Entering code in the console is a great way to develop and iterate your analysis.  However, it is easy to lose track of the pieces of code we have executed in the console. To truly make our code reproducible, we need to place it in a container that we can edit, save, and execute sequentially.  R Markdown files (extension .RMD) provide an authoring environment for us to do just that!
 
@@ -236,9 +237,4 @@ R Markdown is a wonderful way to document our analyis and ensure its reproducibi
 ## Sharing our code
 
 Documents can be knitted as html, PDF, or word files.  These documents can be shared with your collaborators so others can see your results.  Additionally you can share the R Markdown file itself (along with any data files used for your analysis) so that others can run (and tweak) your analysis. 
-
-
-
-
-
 
