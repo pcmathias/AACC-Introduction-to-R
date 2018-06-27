@@ -104,7 +104,7 @@ sequence_one_to_twenty <- seq(1, 20)
 sequence_one_to_twenty
 
 # Calculate the median of the sequence
-median(sequence_one_to_twenty)
+mean(sequence_one_to_twenty)
 
 # Calculate the max of the sequence
 max(sequence_one_to_twenty)
