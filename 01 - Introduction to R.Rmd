@@ -230,7 +230,26 @@ Now let's save our R Markdown file to our working directory (File -> Save As) as
 
 To run our code we can use the Knit button at the top of the R Markdown window or copy/paste selections of our code into the console window and run it there.
 
-What if we wanted to look at mpg >= 10 and re-run the analysis?  Let's change this parameter in our code and knit the file again.
+**Exercise:** What if we wanted to look at mpg >= 10 and re-run the analysis?  Let's change this parameter in our code and knit the file again.
+
+```{r}
+
+#First let's load the tidyverse
+
+library(tidyverse)
+
+#Load a data set of cars into a dataframe
+cars_data <- as_tibble(mtcars)
+
+#Display table
+cars_data
+
+#Fiter the list to cars with fuel economy >= 15 mpg and horsepower >=100
+mpg_hp <-filter(mtcars, mpg >= 10, hp >=100)
+
+#Create a scatter plot of mpg vs horsepower 
+ggplot(data = mpg_hp) + geom_point(mapping = aes(x = mpg, y = hp))
+```
 
 R Markdown is a wonderful way to document our analyis and ensure its reproducibility.  We will plan to use R Markdown throughout the course and recommend that you incorporate R Markdown documentation as your preffered authoring tool.
 
