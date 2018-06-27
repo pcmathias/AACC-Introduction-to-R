@@ -56,7 +56,7 @@ Write code so that it will knit successfully from front to back.
 
 Leave Echo on so that attendees can see what R is doing?
 
-Bold terms so they stand out.
+Bold terms so they stand out **
 
 
 
