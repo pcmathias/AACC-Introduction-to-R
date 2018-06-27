@@ -27,7 +27,7 @@ glimpse(orders)
 ```
 
 
-#1 Plotting Time Points for Data Exploration
+# 1 Plotting Time Points for Data Exploration
 
 What time of day are tests ordered?
 
@@ -51,7 +51,7 @@ ggplot(orders, aes(x = result_hour)) +
 
 ```
 
-#2 Exploring Time Intervals and Plotting the Data
+# 2 Exploring Time Intervals and Plotting the Data
 
 
 Look only at orders that were completed (exclude cancelled orders)
@@ -90,7 +90,7 @@ ggplot(rtr_delta, aes(x = result_time_to_review_time)) +
 
 ```
 
-#3 Counting Tests Per Patient
+# 3 Counting Tests Per Patient
 
 Counting Total Numbers of Completed Tests Per Patient
 
@@ -123,7 +123,7 @@ ggplot(cbc_count, aes(x = n)) +
 
 ```
 
-#4 Date Differential by Patient/Test
+# 4 Date Differential by Patient/Test
 
 Time Between CBCs
 
@@ -151,7 +151,7 @@ ggplot(cbc_join, aes(x = cbc_time_diff)) +
 ```
 
 
-#More joining:
+# More joining:
 
 What routes do orders come from
 
@@ -187,7 +187,7 @@ F5DNA_joined_count <- F5DNA_joined %>%
 
 
 
-#Experimentation below here.
+# Experimentation below here.
 
 
 What are the most frequently ordered tests during the time period (follow up Exericse to Patrick's Department Summary, include in his section)
