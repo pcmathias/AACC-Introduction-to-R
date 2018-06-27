@@ -104,7 +104,43 @@ max(sequence_one_to_twenty)
 
 ```
 
+# Learning to Learn to Code
+
 Learning to write code (including the functions available to you and the appropriate syntax to make your code work) can be frustrating!  Learning a new language takes time so be patient with yourself.  We all go through this process and your intution improves with your experience.
+
+Inevitably, you will at times get stuck (especially when you are first starting).  However, there are some great resources to get you un-stuck and part of learning to code is learning how to leverage the wealth of knowledge of others.
+
+## Help Command
+
+If you know (or have an idea of a function) you would like to use, you can use the help command to find out more. Just type the "?" before the function of interest.
+
+
+```{r}
+
+?abs()
+
+```
+
+## The Internet
+
+Chances are, if you are facing a data anlysis dilemma, many others have faced the exact same (or at least very similar) challenge.  Head to your favorite search engine.
+
+Just ask your question (making sure to include "R" in there somewhere) and you will likely find what you are looking for in the first few results
+
+"how to mutate column in r"
+
+Chances are one of your first hits will be [Stack Overflow](https://stackoverflow.com/).  Stack Overflow is a great resource for developers to ask and answer questions.  If you have a question, it has likely been answered at least once on Stack Overflow.
+
+## A Good Book
+
+Even in the 21st century, it never hurts to have a good book by your side.
+
+The content in this course is oriented around the tidyverse.  If you would like to continue your studies leveraging the tidyverse, a great companion is R for Data Science.  This book is available freely in a digital format [here](http://r4ds.had.co.nz/) and print versions are available as well.
+
+## Taking a Break
+
+Sometimes you won't be able to brute force your way through a problem and your other resources (help functions, the internet, and your reference books) will seemingly let you down.  This can be very frustrating!  Don't despair, walk away for a bit.  Oftentimes it just takes a fresh set of eyes to reframe your question or rethink you approach, and what seemed impossible, suddenly becomes obvious.
+
 
 # Sequencing functions
 
@@ -166,11 +202,11 @@ Copy and paste the following code into your R Markdown file.
 
 library(tidyverse)
 
-#Display table
-cars
-
 #Load a data set of cars into a dataframe
-cars <- as_tibble(mtcars)
+cars_data <- as_tibble(mtcars)
+
+#Display table
+cars_data
 
 #Fiter the list to cars with fuel economy >= 15 mpg and horsepower >=100
 mpg_hp <-filter(mtcars, mpg >= 15, hp >=100)
