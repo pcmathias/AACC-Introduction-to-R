@@ -1,0 +1,63 @@
+---
+title: "Style Sheet Draft"
+author: "Joe Rudolf"
+date: "6/27/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Overview
+A quick sentence describing what we will learn in this section
+
+# 1 Heading
+
+Description of learning and code to follow
+
+```{r}
+
+# Comment individual lines of code that may need additional explanation (help unpack how the functions function)
+
+
+```
+
+**Exercise:** Description of exercise for student to complete followed by blank r chunk (in version we distribute before class, completed for distrubtion afterwards)
+
+```{r}
+#Write your code here:
+
+
+```
+
+
+
+## Subheading
+
+
+
+# 2 Heading
+
+
+# 3 Heading
+
+
+# Summary (Words of Wisdom, Recommendation for Further Study, Functions to check out)
+
+
+---
+
+Other thoughts:
+
+Provide enough explanation that the document can stand on its own and attendees can revisit it later.
+
+Write code so that it will knit successfully from front to back.
+
+Leave Echo on so that attendees can see what R is doing?
+
+Bold terms so they stand out.
+
+
+
+
