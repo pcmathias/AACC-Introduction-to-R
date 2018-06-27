@@ -118,15 +118,94 @@ shapiro.test(method_a)
 
 -- May want to add Gender, Gestational week here...
 
-## How to verify proposed reference range?
-
-
 ## How to establish reference range?
-### Parametric, Normal
-### Nonparametric
+Reference ranges can be established in several different ways. Two of the most common approaches are termed **parametric** and **non-parametric**. 
 
-# ? Multivariate analyses
-## ? Pairwise plots
-## ? Co-linearity
+| |Parametric|Non-parametric|
+|:-------------|:-------------------------:|:-------------------------:|
+|Good for|Normal distributions|Skewed, log-normal, or other non-normal distributions|
+|Assumptions|Assumes normality|No assumptions about underlying distribution|
+|Center of distribution|Mean|Median|
+|Advantages|More power|Less affected by outliers, Simple to calculate|
+|Disadvantages|Affected by outliers + skew|Less power requires more samples|
+|CLSI Recommended Approach|No|Yes|
+
+### Parametric Reference Ranges
+(insert graphic here)
+\[
+range = \mu ±1.96* \sigma
+\]
+Where $\mu$ is the mean (average) of the distribution and $\sigma$ is the standard deviation.
+
+We can calculate these for our results in `method_a` using R:
+
+```{r}
+mu <- mean(method_a)
+sigma <- sd(method_a)
+
+lower_bound <- mu - 1.96 * sigma
+upper_bound <- mu + 1.96 * sigma
+
+sprintf("The reference range is (%f, %f)", lower_bound, upper_bound)
+```
+
+### Non-parametric Reference Ranges
+Non-parametric reference ranges are simply the middle 95% of the distribution. Using R, this is done with the straightforward command `quantile`:
+
+```{r}
+non_parametric_bounds <- quantile(x=method_a, probs = c(0.025, 0.975))
+print(non_parametric_bounds)
+```
+
+Can we verify that the `non_parametric_bounds` includes 95% of the data? Sure thing! We will do this with some new operations and a feature in R called masking:
+```{r}
+mask <- (method_a > non_parametric_bounds["2.5%"]) & (method_a < non_parametric_bounds["97.5%"])
+sum(mask)
+length(mask)
+proportion_in_range = sum(mask) / length(mask)
+print(proportion_in_range)
+```
 
 
+### Extra credit: Plot reference intervals on histogram
+```{r}
+g <-  ggplot(dat, aes(x=`Method A`))
+g <- g + geom_histogram(bins=50)
+g <- g + geom_vline(xintercept = non_parametric_bounds["2.5%"], color="red")
+g <- g + geom_vline(xintercept = non_parametric_bounds["97.5%"], color="red")
+g
+```
+
+
+## How to verify a proposed reference range?
+
+The lab had previously used a reference range of 20-100 for this particular test. Is this range still valid?
+
+```{r}
+
+n_samples <- length(method_a)
+
+old_range <- c(20, 100)
+n_inrange <- sum(method_a >= old_range[1] & method_a <= old_range[2])
+
+chisq.test(c(n_inrange, n_samples - n_inrange), p=c(0.95, 0.05))
+binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
+
+```
+
+# Using a Q-Q plot to examine a distribution
+
+```{r}
+ggplot(dat) + geom_qq(aes(sample=`Method A`))
+```
+
+
+Are there outliers? How can you remove them?
+
+```{r}
+upper_outlier_bound <- mean(dat$`Method A`) + 3*IQR(dat$`Method A`)
+
+removed_outliers_dat <- filter(dat, `Method A` < upper_outlier_bound)
+ggplot(removed_outliers_dat) + geom_qq(aes(sample=`Method A`)) 
+
+```
