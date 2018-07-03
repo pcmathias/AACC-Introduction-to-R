@@ -128,6 +128,25 @@ skim(orders)
 
 # Tabulating & visualizing the data
 
+A very common task when analyzing data is tabluating counts based on one or more variables. R has multiple functions that can help you quickly create tables. To demonstrate some tabulations, let's first focus on a single test. One of the most useful functions in the dplyr package is `filter`, which allows you to select specific rows from a data frame. The arguments to the function include the data frame (which can be skipped if you use a pipe) and then one or more conditions to select the rows you want.
+
+Let's filter out the rows associated with complete blood count orders. The procedure code for those rows is "CBC", so the condition we apply to the filter function is `proc_code == CBC`. Note that we use two equal signs instead of one to indicate an equality condition - you will get an errof if you use a single equal sign.
+
+```{r cbc_analysis}
+cbc_orders <- orders %>%
+  filter(proc_code == "CBC")
+```
+
+Next we want to tabulate the counts of CBC orders based on a single variable, department, ie. we wnat ot determine the number of CBCs ordered by each department. To start out, we use the `table` function in base R (no additional package is required to call the function).
+
+```{r cbc_simple_tabulation}
+table(cbc_orders$department)
+```
+
+```{r cbc_complex_tabulation}
+table(cbc_orders$department, cbc_orders$order_status_c_descr)
+```
+
 ```{r cbc_analysis}
 cbd_orders <- orders %>%
   filter(proc_code == "CBD")
