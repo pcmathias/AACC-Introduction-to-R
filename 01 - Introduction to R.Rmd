@@ -1,7 +1,5 @@
 ---
 title: "Introduction to R"
-author: "Joe Rudolf"
-date: "5/22/2018"
 output: html_document
 ---
 
@@ -70,6 +68,17 @@ Let's load the tidyverse with the following code.
 ```{r}
 library(tidyverse)
 ```
+
+> Exercise
+>
+> There are a large number of packages that you can load to help accomplish a task or solve a problem. There is a repository called CRAN that hosts many useful packages: [CRAN](https://cran.r-project.org/web/packages/available_packages_by_name.html). Clicking on a package name will show you some basic information about the package, and many packages have supporting documentation and vignettes that walk you through how to use the package's functions.
+>
+> Let's go ahead and practice loading another package we'll encounter later in the course: janitor.
+> 1. Install the janitor package. There are a couple options to be familiar with:
+>    a. Use the `install.packages("")` function. Be sure to include the name of the package in quotes.
+>    b. Navigate to the Tools menu and select "Install Packages...". You will see a prompt that allows you to specify the names of one or more packages to install.
+> 2. Load the janitor package to use during this session, similarly to how you loaded tidyverse before this exercise. Step 1 gets the package on your computer for future use; step 2 allows you to use the functions in the packages you load during that specific R session. If you exit R without saving you will have to reload the package to use its functions the next time you open up R.
+> 3. Read about the janitor package by searching through all documentation using the command `??janitor`. You can find help materials for function or package that is already loaded into your current session of R using a single question mark. If you want to find information for a package or function that is not currently loaded in the environment, you can search all of the help documentation using two question marks.
 
 # 4. Basics of coding
 
