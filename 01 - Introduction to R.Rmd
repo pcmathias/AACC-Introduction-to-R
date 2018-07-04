@@ -5,45 +5,49 @@ date: "5/22/2018"
 output: html_document
 ---
 
-# What is R?
+# Overview
+
+In this lesson we will cover some R basics including installing/configuring R, a quick introduction to coding, and the fundamentals of making our data analysis reporducible.  This content can be a little dry but provides the necessary building blocks for the more interesting content to come.  Hang in there and we will get to importing, manipulating, and visualizing real laboratory data ASAP!  
+
+# 1. What is R?
 
 R is a statistical programming language.  Using R you can load, analyze, and visualize data.  R has the same functionality you are used to in other spreadsheet applications (e.g. Microsoft Excel) but offers greater functionality and flexibility.  R also provides an environment in which we can conduct reproducible data analysis.  R affords us the capabilities to document our data analysis and save it in a way that we can revisit our analysis at a later date, update our approach when inspiration strikes, and share our analysis with friends. 
 
-# Installing R (and some other stuff to make R work)
+# 2. Installing R (and some other stuff to make R work)
 
-## 1.  R
+## R
 
 R is the programming language that we will be using to conduct our data analysis today.
 
 To install R, go to the [Comprehensive R Archive Network (CRAN)](https://cloud.r-project.org]).  Select the version of R for your operating system (Windows, Mac OS, Linux)
 
-## 2.  RStudio
+## RStudio
 
 R studio is the development environment in which we will do our R programming.
 
 Download and install [RStudio](https://www.rstudio.com/products/rstudio/download/#download).  Select the installer for your Operating System.
 
-When you launch RStudio you will be presented with with a series of windows.
+When you launch RStudio you will be presented with with a series of panes.  Let's start by getting oriented to the RStudio application.
 
-On the left you will see the *console*.  The console is where we will enter and execute our R code.  
+On the left you will see the **console**.  The console is where we will enter and execute our R code.  
 
-The lower right window contains the *output*.  This is where the results of our code (e.g. our plots) will display.  
+The lower right pane contains the **output**.  This is where the results of our code (e.g. our plots) will display.  
 
-The window in the upper right corner of the screen contains our *history*.  Here we can see the historical record of the code we have executed in the console. 
+The pane in the upper right corner of the screen contains our **history**.  Here we can see the historical record of the code we have executed in the console. 
 
-## 3.  The Tidyverse
+## The Tidyverse
 
 To enhance the functionality of R, we need to install additional packages.  A package is a collection of functions that extend the capabilities of the base R programming language.
 
-In this course we will be using the tidyverse package.  The tidyverse includes functions for reading data into the R environment, cleaning and manipulating data, and plotting our results.
+In this course we will be primarily using the tidyverse package.  The tidyverse includes functions for reading data into the R environment, cleaning and manipulating data, and plotting our results.
 
 Installing the tidyverse package is as easy as entering the following line of code in the RStudio console (the box on the left hand side of RStudio) and pressing the return (enter) key.
 
-```{r, eval=FALSE}
-install.packages("tidyverse")
+```{r}
+install.packages("tidyverse", dependencies = TRUE)
 ```
 
-# Configuring the RStudio Environment
+# 3. Configuring the RStudio Environment
 
 ## Setting the Working Directory
 
@@ -67,7 +71,7 @@ Let's load the tidyverse with the following code.
 library(tidyverse)
 ```
 
-# Basics of coding
+# 4. Basics of coding
 
 In its most basic form R is a calculator
 
@@ -75,17 +79,20 @@ In its most basic form R is a calculator
 2 + 3 + 2
 ```
 
-R supports a number of functions (e.g. the absolute value function) that can extend our calculator
+R supports a number of functions (e.g. the absolute value function) that can extend our calculator. We pass arguments to the function (e.g. data or other parameters) and the function will give us back a result.
+
+For example:
 
 ```{r}
 abs(-77)
 ```
+There are functions to support nearly all of the data analysis you may want to do.  And remember you can always add more functions by installing packages that other users have developed and published.  You can even write your own functions, though this won't be necessary for any of the analysis we perform in this introductory course.
 
-We can creat variables (objects) and use them in our calculations.
+We can also create variables (objects) and use them in our calculations.
 
 To do this we use the following syntax (grammar):  
 
-variable_name <- variable
+variable_name <- contents of our variable
 
 For example:
 
@@ -97,31 +104,84 @@ sequence_one_to_twenty <- seq(1, 20)
 sequence_one_to_twenty
 
 # Calculate the median of the sequence
-median(sequence_one_to_twenty)
+mean(sequence_one_to_twenty)
 
 # Calculate the max of the sequence
 max(sequence_one_to_twenty)
 
 ```
+Remember to give your variables descriptive names so you can easily remember the data they contain.  It is also a good practice to separate words in your variable names with underscores instead of spaces.
+
+# 5. Learning to Learn to Code
 
 Learning to write code (including the functions available to you and the appropriate syntax to make your code work) can be frustrating!  Learning a new language takes time so be patient with yourself.  We all go through this process and your intution improves with your experience.
 
+Inevitably, you will at times get stuck (especially when you are first starting).  However, there are some great resources to get you un-stuck and part of learning to code is learning how to leverage the wealth of knowledge of others.
 
-# Creating reproducible data analyis
+## Help Command
 
-Entering code in the console is a great way to iterate your analysis.  However, to truly make your code reproducible, we need to place it in an R script.  Scripts are files that we can edit, save, and execute.
+If you know (or have an idea of a function) you would like to use, you can use the help command to find out more. Just type the "?" before the function of interest.
 
-## Creating an R Script
-
-Let's create a simple script together.
-
-Go to the menu bar at the top of the screen (File -> New File -> R Script).  
-
-Copy and paste the following code into your script.
 
 ```{r}
+?abs()
+```
+
+## The Internet
+
+Chances are, if you are facing a data anlysis dilemma, many others have faced the exact same (or at least very similar) challenge.  Head to your favorite search engine.
+
+Just ask your question (making sure to include "R" in there somewhere) and you will likely find what you are looking for in the first few results
+
+"how to mutate column in r"
+
+Chances are one of your first hits will be [Stack Overflow](https://stackoverflow.com/).  Stack Overflow is a great resource for developers to ask and answer questions.  If you have a question, it has likely been answered at least once on Stack Overflow.
+
+## Cheat Sheets
+
+The folks who make RStudio offer a number of really great [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) on their website that you can download/print and keep next to your desk as quick references.
+
+## A Good Book
+
+Even in the 21st century, it never hurts to have a good book by your side.
+
+The content in this course is oriented around the tidyverse.  If you would like to continue your studies leveraging the tidyverse, a great companion is R for Data Science.  This book is available freely in a digital format [here](http://r4ds.had.co.nz/) and print versions are available as well.
+
+## Taking a Break
+
+Sometimes you won't be able to brute force your way through a problem and your other resources (help functions, the internet, and your reference books) will seemingly let you down.  This can be very frustrating!  Don't despair, walk away for a bit.  Oftentimes it just takes a fresh set of eyes to reframe your question or rethink you approach, and what seemed impossible, suddenly becomes obvious.
+
+# 6. Creating reproducible data analyis
+
+Entering code in the console is a great way to develop and iterate your analysis.  However, it is easy to lose track of the pieces of code we have executed in the console. To truly make our code reproducible, we need to place it in a container that we can edit, save, and execute sequentially.  R Markdown files (extension .RMD) provide an authoring environment for us to do just that!
+
+## Creating an R Markdown File
+
+Let's create a simple R Markdown file together.
+
+Go to the menu bar at the top of the screen (File -> New File -> R Markdown).
+
+Let's get oriented to the R Markdown environment.
+
+1. Header information (author, title, date, output format) is a the top of the document surrounded by "---".
+
+2. R code is surrounded by "```" and will execute when the document is compiled using the knit button.
+
+3. Commentary can be added to the document and formatted with simple formatting options (# for a title heading)
+
+Copy and paste the following code into your R Markdown file.
+
+```{r}
+
+#First let's load the tidyverse
+
+library(tidyverse)
+
 #Load a data set of cars into a dataframe
-cars <- as_tibble(mtcars)
+cars_data <- as_tibble(mtcars)
+
+#Display table
+cars_data
 
 #Fiter the list to cars with fuel economy >= 15 mpg and horsepower >=100
 mpg_hp <-filter(mtcars, mpg >= 15, hp >=100)
@@ -130,11 +190,36 @@ mpg_hp <-filter(mtcars, mpg >= 15, hp >=100)
 ggplot(data = mpg_hp) + geom_point(mapping = aes(x = mpg, y = hp))
 ```
 
-Now let's save our script (File -> Save As) as "Simple_Script.R"
+Now let's save our R Markdown file to our working directory (File -> Save As) as "Our First R Markdown File.RMD"
 
 ## Running our code
 
-We can run the code using the "Run" button in the script window or by pasting it into the console window.
+To run our code we can use the Knit button at the top of the R Markdown window or copy/paste selections of our code into the console window and run it there.
 
-What if we wanted to look at mpg >= 10 and re-run the analysis?
+**Exercise:** What if we wanted to look at mpg >= 10 and re-run the analysis?  Let's change this parameter in our code and knit the file again.
+
+```{r}
+
+#First let's load the tidyverse
+
+library(tidyverse)
+
+#Load a data set of cars into a dataframe
+cars_data <- as_tibble(mtcars)
+
+#Display table
+cars_data
+
+#Fiter the list to cars with fuel economy >= 15 mpg and horsepower >=100
+mpg_hp <-filter(mtcars, mpg >= 10, hp >=100)
+
+#Create a scatter plot of mpg vs horsepower 
+ggplot(data = mpg_hp) + geom_point(mapping = aes(x = mpg, y = hp))
+```
+
+R Markdown is a wonderful way to document our analyis and ensure its reproducibility.  We will plan to use R Markdown throughout the course and recommend that you incorporate R Markdown documentation as your preffered authoring tool.
+
+## Sharing our code
+
+Documents can be knitted as html, PDF, or word files.  These documents can be shared with your collaborators so others can see your results.  Additionally you can share the R Markdown file itself (along with any data files used for your analysis) so that others can run (and tweak) your analysis. 
 
