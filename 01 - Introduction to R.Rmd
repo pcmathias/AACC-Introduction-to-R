@@ -102,29 +102,64 @@ abs(-77)
 ```
 There are functions to support nearly all of the data analysis you may want to do.  And remember you can always add more functions by installing packages that other users have developed and published.  You can even write your own functions, though this won't be necessary for any of the analysis we perform in this introductory course.
 
-We can also create variables (objects) and use them in our calculations.
+We can also create objects and use them in our calculations.
 
 To do this we use the following syntax (grammar):  
 
-variable_name <- contents of our variable
+object_name <- contents of our object
 
-For example:
+The `<-` performs an action called "assignment" and can be referred to as "object_name gets contents of our object". If you're not a fan of typing those two characters, RStudio has a keyboard shortcut: Alt - (hold down the Alt key and press the minus sign).
+
+As an easy example, let's assign a new object "x" a value of 1.
 
 ```{r}
-# Establish the variable
+x <- 1
+```
+
+Take a look at the Environment tab on the upper right. You can now see your object in that window.
+
+Now let's assign that same object another value. Fill in the following with a value of your choice and execute the code.
+
+```{r}
+x <- 
+```
+
+What happened to your object?
+
+Now let's try something a little more sophisticated. Instead of putting a single number into our object, let's put a series of numbers into it using the `c()` function, which combines values into a vector.
+
+```{r}
+x <- c(1, 2, 3, 4, 5)
+```
+
+The `c()` function is helpful for creating a vector on the fly, but for a longer vector one may not want to manually type in a bunch of values. There are other functions that can help with creating a vector such as `seq()`, which creates a series of numbers. Let's create an object by assigning a function and perform multiple functions on our new object.
+
+```{r}
+# Assign the object
 sequence_one_to_twenty <- seq(1, 20)
 
-# Check the contents of the variable
+# Check the contents of the object
 sequence_one_to_twenty
 
-# Calculate the median of the sequence
+# Calculate the mean of the sequence
 mean(sequence_one_to_twenty)
 
 # Calculate the max of the sequence
 max(sequence_one_to_twenty)
 
 ```
-Remember to give your variables descriptive names so you can easily remember the data they contain.  It is also a good practice to separate words in your variable names with underscores instead of spaces.
+Remember to give your objects descriptive names so you can easily remember the data they contain.
+
+To this point we've only created objects that have a single variable (or column). What if we want to create an object that has multiple rows and columns, like an Excel spreadsheet? Traditionally this type of data is called a data frame in R, but we will use a specific flavor of data frame called the tibble. Let's create a simple tibble by creating an object with strings y and combining that with x:
+
+```{r}
+y <- c("a", "b", "c", "d", "e")
+xy <- tibble(x, y)
+```
+
+Review the Environment tab and press the button next to the xy object to see more details. We have created a tibble with two variables (columns) and five observations (rows), with one variable being number and the other a character.
+
+Tip: it is good practice to separate words in your object and variable names with underscores instead of spaces, because, like many other programming languages, whitespace is important in R. If you absolutely want to use whitespace in a variable name, you need to use the `` ` `` character on either side of the name.
 
 # 5. Learning to Learn to Code
 
