@@ -126,14 +126,14 @@ The **skew** and **kurtosis** are so-called **moments** of a distribution and ca
 
 ```{r}
 library(moments)            # load the moments R library, which provides the functions
-skewness(method_a)
-kurtosis(method_a)
+skewness(data$method_a)
+kurtosis(data$method_a)
 ```
 
 Another option is to use the **Shapiro-Wilk test of normality**:
 
 ```{r}
-shapiro.test(method_a)
+shapiro.test(data$method_a)
 ```
 
 -- May want to add Gender, Gestational week here...
@@ -162,8 +162,8 @@ Where $\mu$ is the mean (average) of the distribution and $\sigma$ is the standa
 We can calculate these for our results in `method_a` using R:
 
 ```{r}
-mu <- mean(method_a)
-sigma <- sd(method_a)
+mu <- mean(data$method_a)
+sigma <- sd(data$method_a)
 
 lower_bound <- mu - 1.96 * sigma
 upper_bound <- mu + 1.96 * sigma
@@ -175,13 +175,13 @@ sprintf("The reference range is (%f, %f)", lower_bound, upper_bound)
 Non-parametric reference ranges are simply the middle 95% of the distribution. Using R, this is done with the straightforward command `quantile`:
 
 ```{r}
-non_parametric_bounds <- quantile(x=method_a, probs = c(0.025, 0.975))
+non_parametric_bounds <- quantile(x=data$method_a, probs = c(0.025, 0.975))
 print(non_parametric_bounds)
 ```
 
 Can we verify that the `non_parametric_bounds` includes 95% of the data? Sure thing! We will do this with some new operations and a feature in R called masking:
 ```{r}
-mask <- (method_a > non_parametric_bounds["2.5%"]) & (method_a < non_parametric_bounds["97.5%"])
+mask <- (data$method_a > non_parametric_bounds["2.5%"]) & (data$method_a < non_parametric_bounds["97.5%"])
 sum(mask)
 length(mask)
 proportion_in_range = sum(mask) / length(mask)
@@ -189,9 +189,16 @@ print(proportion_in_range)
 ```
 
 
-### Extra credit: Plot reference intervals on histogram
+### Advanced plotting exercise: Plot reference intervals on histogram
+Say we want to graphically show the bounds of the reference intervals on the histogram we made above.
+A simple way to do this is to use the `geom_vline` function of ggplot. 
+
+*Exercise*
+
+1. Look up the function call for `geom_vline`. What kind of arguments does it take? 
+2. Start with with the code for the histogram above, add additional lines of code to display the bounds of the parametric reference interval. (_Hint: ggplot allows you to "add" new elements to a plot_)
 ```{r}
-g <-  ggplot(dat, aes(x=`Method A`))
+g <-  ggplot(data, aes(x=method_a))
 g <- g + geom_histogram(bins=50)
 g <- g + geom_vline(xintercept = non_parametric_bounds["2.5%"], color="red")
 g <- g + geom_vline(xintercept = non_parametric_bounds["97.5%"], color="red")
@@ -205,10 +212,10 @@ The lab had previously used a reference range of 20-100 for this particular test
 
 ```{r}
 
-n_samples <- length(method_a)
+n_samples <- length(data$method_a)
 
 old_range <- c(20, 100)
-n_inrange <- sum(method_a >= old_range[1] & method_a <= old_range[2])
+n_inrange <- sum(data$method_a >= old_range[1] & data$method_a <= old_range[2])
 
 chisq.test(c(n_inrange, n_samples - n_inrange), p=c(0.95, 0.05))
 binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
@@ -217,16 +224,16 @@ binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
 
 # Using a Q-Q plot to examine a distribution
 ```{r}
-ggplot(dat) + geom_qq(aes(sample=`Method A`))
+ggplot(data) + geom_qq(aes(sample=method_a))
 ```
 
 
 Are there outliers? How can you remove them?
 
 ```{r}
-upper_outlier_bound <- mean(dat$`Method A`) + 3*IQR(dat$`Method A`)
+upper_outlier_bound <- mean(data$method_a) + 3*IQR(data$method_a)
 
-removed_outliers_dat <- filter(dat, `Method A` < upper_outlier_bound)
-ggplot(removed_outliers_dat) + geom_qq(aes(sample=`Method A`)) 
+removed_outliers_data <- filter(data, method_a < upper_outlier_bound)
+ggplot(removed_outliers_data) + geom_qq(aes(sample=method_a)) 
 
 ```
