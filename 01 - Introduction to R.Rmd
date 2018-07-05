@@ -161,9 +161,11 @@ xy <- tibble(x, y)
 
 Review the Environment tab and press the button next to the xy object to see more details. We have created a tibble with two variables (columns) and five observations (rows), with one variable being number and the other a character.
 
-**Tip**: it is good practice to separate words in your object and variable names with underscores instead of spaces, because, like many other programming languages, whitespace is important in R. If you absolutely want to use whitespace in a variable name, you need to use the `` ` `` character (top left on your keyboard) on either side of the name.
+Clinical laboratory data is commonly arranged in a spreadsheet format, where each row represents a single observation or data collection point and each column represents a different measurement or attribute for the data set. The tidyverse set of packages in R is fine-tuned to work with data in this format and can help avoid some of the painful reformatting people often do in Excel to try and get Excel to work better with the data. In this course, most of the objects we will work with will have a tibble data structure, largely because that is the bulk of what we see in the real world. In general, keep in mind that the general structure for these data sets is that each row is some observation, measurement, or single time point and each column is a distinct attribute or measurement for the observation.
 
-For a more detailed discussion of objects and other gory details about how the R language works, refer to the (R language definition)[https://cran.r-project.org/doc/manuals/r-release/R-lang.html].
+**Tip**: It is good practice to separate words in your object and variable names with underscores instead of spaces, because, like many other programming languages, whitespace is important in R. If you absolutely want to use whitespace in a variable name, you need to use the `` ` `` character (top left on your keyboard) on either side of the name.
+
+For more inofrmation on the tibble data structure, refer to the (Tibbles section)[http://r4ds.had.co.nz/tibbles.html] in the R for Data Science book. For a more detailed discussion of objects and other gory details about how the R language works, refer to the (R language definition)[https://cran.r-project.org/doc/manuals/r-release/R-lang.html].
 
 # Creating reproducible data analyis
 
