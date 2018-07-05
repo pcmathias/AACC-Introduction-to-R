@@ -163,46 +163,7 @@ Review the Environment tab and press the button next to the xy object to see mor
 
 **Tip**: it is good practice to separate words in your object and variable names with underscores instead of spaces, because, like many other programming languages, whitespace is important in R. If you absolutely want to use whitespace in a variable name, you need to use the `` ` `` character (top left on your keyboard) on either side of the name.
 
-# 5. Learning to Learn to Code
-
-Learning to write code (including the functions available to you and the appropriate syntax to make your code work) can be frustrating!  Learning a new language takes time so be patient with yourself.  We all go through this process and your intution improves with your experience.
-
-Inevitably, you will at times get stuck (especially when you are first starting).  However, there are some great resources to get you un-stuck and part of learning to code is learning how to leverage the wealth of knowledge of others.
-
-## Help Command
-
-If you know (or have an idea of a function) you would like to use, you can use the help command to find out more. Just type the "?" before the function of interest.
-
-
-```{r}
-?abs()
-```
-
-## The Internet
-
-Chances are, if you are facing a data anlysis dilemma, many others have faced the exact same (or at least very similar) challenge.  Head to your favorite search engine.
-
-Just ask your question (making sure to include "R" in there somewhere) and you will likely find what you are looking for in the first few results
-
-"how to mutate column in r"
-
-Chances are one of your first hits will be [Stack Overflow](https://stackoverflow.com/).  Stack Overflow is a great resource for developers to ask and answer questions.  If you have a question, it has likely been answered at least once on Stack Overflow.
-
-## Cheat Sheets
-
-The folks who make RStudio offer a number of really great [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) on their website that you can download/print and keep next to your desk as quick references.
-
-## A Good Book
-
-Even in the 21st century, it never hurts to have a good book by your side.
-
-The content in this course is oriented around the tidyverse.  If you would like to continue your studies leveraging the tidyverse, a great companion is R for Data Science.  This book is available freely in a digital format [here](http://r4ds.had.co.nz/) and print versions are available as well.
-
-## Taking a Break
-
-Sometimes you won't be able to brute force your way through a problem and your other resources (help functions, the internet, and your reference books) will seemingly let you down.  This can be very frustrating!  Don't despair, walk away for a bit.  Oftentimes it just takes a fresh set of eyes to reframe your question or rethink you approach, and what seemed impossible, suddenly becomes obvious.
-
-# 6. Creating reproducible data analyis
+# 5. Creating reproducible data analyis
 
 Entering code in the console is a great way to develop and iterate your analysis.  However, it is easy to lose track of the pieces of code we have executed in the console. To truly make our code reproducible, we need to place it in a container that we can edit, save, and execute sequentially.  R Markdown files (extension .RMD) provide an authoring environment for us to do just that!
 
@@ -258,9 +219,48 @@ Since all of the code is complete, let's Knit to an html file.
 > What if we wanted to look at mpg >= 10 and re-run the analysis?  Review the code and figure out where the restriction on the mpg variable was made, and then modify the code to select fuel economy greater than or equal to 10, instead of 15. Knit the file again and observe the change in output.
 >
 
-R Markdown is a wonderful way to document our analyis and ensure its reproducibility.  We will plan to use R Markdown throughout the course and recommend that you incorporate R Markdown documentation as your preferred authoring tool. Going forward, the easiest way to interact with the lessons is to open up the R Markdown file for the lesson (within the course folder that you download) within R Studio, follow along by executing code chunks, and then filling in any blanks for exercises.
+R Markdown is a wonderful way to document our analysis and ensure its reproducibility.  We will plan to use R Markdown throughout the course and recommend that you incorporate R Markdown documentation as your preferred authoring tool. Going forward, the easiest way to interact with the lessons is to open up the R Markdown file for the lesson (within the course folder that you download) within R Studio, follow along by executing code chunks, and then filling in any blanks for exercises.
 
 ## Sharing our code
 
 Documents can be knitted as html, PDF, or word files.  These documents can be shared with your collaborators so others can see your results.  Additionally you can share the R Markdown file itself (along with any data files used for your analysis) so that others can run (and tweak) your analysis. 
+
+# 6. Learning to Learn to Code
+
+Learning to write code (including the functions available to you and the appropriate syntax to make your code work) can be frustrating!  Learning a new language takes time so be patient with yourself.  We all go through this process and your intution improves with your experience.
+
+Inevitably, you will at times get stuck (especially when you are first starting).  However, there are some great resources to get you un-stuck and part of learning to code is learning how to leverage the wealth of knowledge of others.
+
+## Help Command
+
+If you know (or have an idea of a function) you would like to use, you can use the help command to find out more. Just type the "?" before the function of interest.
+
+
+```{r}
+?abs()
+```
+
+## The Internet
+
+Chances are, if you are facing a data anlysis dilemma, many others have faced the exact same (or at least very similar) challenge.  Head to your favorite search engine.
+
+Just ask your question (making sure to include "R" in there somewhere) and you will likely find what you are looking for in the first few results
+
+"how to mutate column in r"
+
+Chances are one of your first hits will be [Stack Overflow](https://stackoverflow.com/).  Stack Overflow is a great resource for developers to ask and answer questions.  If you have a question, it has likely been answered at least once on Stack Overflow.
+
+## Cheat Sheets
+
+The folks who make RStudio offer a number of really great [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) on their website that you can download/print and keep next to your desk as quick references.
+
+## A Good Book
+
+Even in the 21st century, it never hurts to have a good book by your side.
+
+The content in this course is oriented around the tidyverse.  If you would like to continue your studies leveraging the tidyverse, a great companion is R for Data Science.  This book is available freely in a digital format [here](http://r4ds.had.co.nz/) and print versions are available as well.
+
+## Taking a Break
+
+Sometimes you won't be able to brute force your way through a problem and your other resources (help functions, the internet, and your reference books) will seemingly let you down.  This can be very frustrating!  Don't despair, walk away for a bit.  Oftentimes it just takes a fresh set of eyes to reframe your question or rethink you approach, and what seemed impossible, suddenly becomes obvious.
 
