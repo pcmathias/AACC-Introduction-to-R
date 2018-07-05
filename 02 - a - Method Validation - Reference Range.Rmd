@@ -251,7 +251,8 @@ sprintf("The reference range assuming log-normal distribution is (%f, %f)", lowe
 
 ```
 
-Now, let's inspect these proposed bounds graphically. To add a vertical line use the function `geom_vline(xintercept=XXX)`
+To visually inspect, let's graphically show the bounds of the reference intervals on the histogram we made above.
+A simple way to do this is to use the `geom_vline` function of ggplot. 
 
 ```{r}
 g <-  ggplot(data, aes(x=method_a))
@@ -260,7 +261,11 @@ g <- g + geom_vline(xintercept=lower_bound_untransformed, color="blue")
 g
 ```
 
-> **Exercise:** Add the additional 3 bounds we have just calculated to this plot. Chance to a dashed line by specifying `linetype=3` in the `geom_vline` function.
+> **Exercise:** Add the additional 3 bounds we have just calculated to this plot. Change to a dashed line by specifying `linetype` in the `geom_vline` function.
+
+> 1. Look up the function call for `geom_vline`. What kind of arguments does it take? 
+
+> 2. Start with with the code for the histogram above, add additional lines of code to display the bounds of the parametric reference interval. (_Hint: ggplot allows you to "add" new elements to a plot_)
 
 ```{r, echo=FALSE}
 g <-  ggplot(data, aes(x=method_a))
@@ -315,6 +320,7 @@ sum(mask) / length(mask)
 ```
 
 
+<<<<<<< HEAD
 > **Exercise:** Plot these proposed reference intervals on histogram
 ```{r echo=FALSE}
 g <-  ggplot(data, aes(x=method_a))
@@ -343,7 +349,7 @@ Is this range appropriate for our observed results?
 n_samples <- length(data$method_a)
 
 old_range <- c(20, 100) #proposed range
-n_inrange <- with(data,
+n_inrange <- with(data,              # Note: `with` allows you to specify columns below without writing `data` over and over again
                   sum(method_a >= old_range[1] & method_a <= old_range[2]))
 
 chisq.test(c(n_inrange, n_samples - n_inrange), p=c(0.95, 0.05))
