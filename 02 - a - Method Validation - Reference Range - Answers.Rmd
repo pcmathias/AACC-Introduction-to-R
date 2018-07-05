@@ -151,7 +151,8 @@ CV(\%) = \mu/\sigma * 100
 \]
 
 ```{r}
-# Write your answer here
+cv <- sd(data$method_a) / mean(data$method_a) * 100  # Coefficient of variation
+print(cv)
 ```
 
 ## Is it normally distributed?
@@ -172,16 +173,15 @@ g
 > *Exercise*
 > Make a second histogram plotting `method_b` values.
 
-``` {r}
-# Write your answer here
-```
-
-Does these look normal? 
+Does this look normal? 
 
 > **Exercise**: Transform the x-axis to log-scale using `scale_x_log10` and visually inspect for normality
 
-```{r}
-# Write your answer here
+```{r echo=FALSE}
+g <-  ggplot(data, aes(x=method_a))
+g <- g + geom_histogram(bins=50)
+g <- g + scale_x_log10()   # Change x-axis scaling
+g
 ```
 
 How can we quantify this?
@@ -197,7 +197,8 @@ kurtosis(data$method_a)
 > **Exercise:** Let's assess the `skewness` of the log-transformed method_a data. Use the `log10` function to transform results.
 
 ```{r, echo=FALSE}
-# Write your answer here
+method_a_logged <- log10(data$method_a)
+skewness(method_a_logged)
 ```
 
 Another option is to use the **Shapiro-Wilk test of normality**:
@@ -239,10 +240,19 @@ upper_bound <- mu + 1.96 * sigma
 sprintf("The reference range assuming normal distribution is (%f, %f)", lower_bound, upper_bound)
 ```
 
-> **Exercise:** Calculate the parametric reference range assuming that the results are log-normal (rather than normally distributed). Hint: First transform the data as above with the `log()` function, and then "untransform" back into real numbers with `exp()`
+> **Exercise:** Calculate the parametric reference range assuming that the results are log-normal (rather than normally distributed)
 
 ```{r echo=FALSE}
-# Write your answer here
+mu <- mean(log(data$method_a))
+sigma <- sd(log(data$method_a))
+
+lower_bound_transformed <- mu - 1.96 * sigma
+upper_bound_transformed <- mu + 1.96 * sigma
+
+lower_bound_untransformed <- exp(lower_bound_transformed)
+upper_bound_untransformed <- exp(upper_bound_transformed)
+
+sprintf("The reference range assuming log-normal distribution is (%f, %f)", lower_bound_untransformed, upper_bound_untransformed)
 
 ```
 
@@ -250,13 +260,6 @@ To visually inspect, let's graphically show the bounds of the reference interval
 A simple way to do this is to use the `geom_vline` function of ggplot. 
 
 ```{r}
-# Code from exercise answer above
-mu <- mean(log(data$method_a))
-sigma <- sd(log(data$method_a))
-lower_bound_transformed <- mu - 1.96 * sigma
-lower_bound_untransformed <- exp(lower_bound_transformed)
-
-# new code to plot
 g <-  ggplot(data, aes(x=method_a))
 g <- g + geom_histogram(bins=50)
 g <- g + geom_vline(xintercept=lower_bound_untransformed, color="blue")
@@ -270,7 +273,13 @@ g
 > 2. Start with with the code for the histogram above, add additional lines of code to display the bounds of the parametric reference interval. (_Hint: ggplot allows you to "add" new elements to a plot_)
 
 ```{r, echo=FALSE}
-# Write your answer here
+g <-  ggplot(data, aes(x=method_a))
+g <- g + geom_histogram(bins=50)
+g <- g + geom_vline(xintercept=lower_bound_untransformed, linetype=3, color="blue")
+g <- g + geom_vline(xintercept=upper_bound_untransformed, linetype=3, color="blue")
+g <- g + geom_vline(xintercept=lower_bound, linetype=3, color="red")
+g <- g + geom_vline(xintercept=upper_bound, linetype=3, color="red")
+g
 ```
 
 
@@ -316,9 +325,12 @@ sum(mask) / length(mask)
 ```
 
 > **Exercise:** Plot these proposed reference intervals on histogram
-
 ```{r echo=FALSE}
-# Write your answer here
+g <-  ggplot(data, aes(x=method_a))
+g <- g + geom_histogram(bins=50)
+g <- g + geom_vline(xintercept = non_parametric_bounds["2.5%"], color="red", linetype=3)
+g <- g + geom_vline(xintercept = non_parametric_bounds["97.5%"], color="red", linetype=3)
+g
 ```
 
 
@@ -358,7 +370,13 @@ n_inrange <- with(data,
                   sum(method_a >= ref_range[1] & method_a <= ref_range[2]))
 binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
 
-# Now write the same code for the log-transformed variables you calculated above
+
+n_samples <- nrow(data)
+ref_range <- c(lower_bound_untransformed, upper_bound_untransformed)
+sprintf("The reference range assuming log-normal distribution is (%f, %f)", ref_range[1], ref_range[2])
+n_inrange <- with(data,
+                  sum(method_a >= ref_range[1] & method_a <= ref_range[2]))
+binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
 ```
 
 
