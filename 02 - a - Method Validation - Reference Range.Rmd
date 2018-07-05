@@ -319,8 +319,6 @@ print(proportion_in_range)
 sum(mask) / length(mask)
 ```
 
-
-<<<<<<< HEAD
 > **Exercise:** Plot these proposed reference intervals on histogram
 ```{r echo=FALSE}
 g <-  ggplot(data, aes(x=method_a))
