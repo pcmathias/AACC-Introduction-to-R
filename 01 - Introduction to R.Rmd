@@ -7,11 +7,11 @@ output: html_document
 
 In this lesson we will cover some R basics including installing/configuring R, a quick introduction to coding, and the fundamentals of making our data analysis reporducible.  This content can be a little dry but provides the necessary building blocks for the more interesting content to come.  Hang in there and we will get to importing, manipulating, and visualizing real laboratory data ASAP!  
 
-# 1. What is R?
+# What is R?
 
 R is a statistical programming language.  Using R you can load, analyze, and visualize data.  R has the same functionality you are used to in other spreadsheet applications (e.g. Microsoft Excel) but offers greater functionality and flexibility.  R also provides an environment in which we can conduct reproducible data analysis.  R affords us the capabilities to document our data analysis and save it in a way that we can revisit our analysis at a later date, update our approach when inspiration strikes, and share our analysis with friends. 
 
-# 2. Installing R (and some other stuff to make R work)
+# Installing R (and some other stuff to make R work)
 
 ## R
 
@@ -50,7 +50,7 @@ Installing the tidyverse package is as easy as entering the following line of co
 install.packages("tidyverse", dependencies = TRUE)
 ```
 
-# 3. Configuring the RStudio Environment
+# Configuring the RStudio Environment
 
 ## Setting the Working Directory
 
@@ -85,7 +85,7 @@ library(tidyverse)
 > 2. Load the janitor package to use during this session, similarly to how you loaded tidyverse before this exercise. Step 1 gets the package on your computer for future use; step 2 allows you to use the functions in the packages you load during that specific R session. If you exit R without saving you will have to reload the package to use its functions the next time you open up R.
 > 3. Read about the janitor package by searching through all documentation using the command `??janitor`. You can find help materials for function or package that is already loaded into your current session of R using a single question mark. If you want to find information for a package or function that is not currently loaded in the environment, you can search all of the help documentation using two question marks.
 
-# 4. Basics of coding
+# Basics of coding
 
 In its most basic form R is a calculator
 
@@ -163,7 +163,9 @@ Review the Environment tab and press the button next to the xy object to see mor
 
 **Tip**: it is good practice to separate words in your object and variable names with underscores instead of spaces, because, like many other programming languages, whitespace is important in R. If you absolutely want to use whitespace in a variable name, you need to use the `` ` `` character (top left on your keyboard) on either side of the name.
 
-# 5. Creating reproducible data analyis
+For a more detailed discussion of objects and other gory details about how the R language works, refer to the (R language definition)[https://cran.r-project.org/doc/manuals/r-release/R-lang.html].
+
+# Creating reproducible data analyis
 
 Entering code in the console is a great way to develop and iterate your analysis.  However, it is easy to lose track of the pieces of code we have executed in the console. To truly make our code reproducible, we need to place it in a container that we can edit, save, and execute sequentially.  R Markdown files (extension .RMD) provide an authoring environment for us to do just that!
 
@@ -225,7 +227,7 @@ R Markdown is a wonderful way to document our analysis and ensure its reproducib
 
 Documents can be knitted as html, PDF, or word files.  These documents can be shared with your collaborators so others can see your results.  Additionally you can share the R Markdown file itself (along with any data files used for your analysis) so that others can run (and tweak) your analysis. 
 
-# 6. Learning to Learn to Code
+# Learning to Learn to Code
 
 Learning to write code (including the functions available to you and the appropriate syntax to make your code work) can be frustrating!  Learning a new language takes time so be patient with yourself.  We all go through this process and your intution improves with your experience.
 
