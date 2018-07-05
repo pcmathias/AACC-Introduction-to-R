@@ -1,6 +1,6 @@
 ---
 title: "Method Validation in R"
-author: "Daniel Herman"
+author: "Nik Krumm, Daniel Herman"
 date: "06/07/2018"
 output: html_document
 ---
@@ -27,14 +27,12 @@ Relatively "clean" data has already been organized in separate tabs in an excel 
 We see that there are three different functions grouped together, a `read_excel` function that is a wrapper for two more specific functions `read_xls` and `read_xlsx`. Since our Excel document is in .xlsx format, we can either use the general `read_excel` or `read_xlsx` function.
 
 ```{r load_data_1}
-data <- read_excel(path="data/Method_Validation.data.xlsx", 
-                sheet="MS AFP")
+data <- read_excel(path="data/Method_Validation.data.xlsx", sheet="MS AFP")
 ```
 
-There are lots of different options for loading in files in R. For tab-delimited text, try `read_tsv`. For comma-delimited text (.csv), try `read_csv`. See more detailed discussion in [MSACL intermediate course](https://github.com/pcmathias/MSACL-intermediate-R-course/tree/master/lesson3).
+> What is a path? Paths describe the location of a file in a filesystem (e.g., your computer, a network drive, etc.). In this case, we are telling the function `read_excel` the location of our file, and the name of the Excel Sheet to open. These are called "arguments" to the function. Functions "take" arguments (or alternatively functions are "passed" arguments).
 
-## (Advanced) Discuss the tbl data structure
-Mention other structures
+There are lots of different options for loading in files in R. For tab-delimited text, try `read_tsv`. For comma-delimited text (.csv), try `read_csv`. See more detailed discussion in [MSACL intermediate course](https://github.com/pcmathias/MSACL-intermediate-R-course/tree/master/lesson3).
 
 # Viewing data tables
 Once you have loaded some data into an R variable (in this case, `dat`), you should always briefly visually and manually inspect it. Things to check for include:
@@ -50,6 +48,8 @@ data
 ```
 
 In R-Studio, variables can also be _inspected_ using the "Environment" tab (usually in the top right pane). 
+
+
 
 ## Summarizing a data table
 The `summary` command can provide a helpful overview of the data set as well:
@@ -103,8 +103,14 @@ Let's focus on the maternal serum AFP values from Method A first.
 mean(data$method_a)  # Mean
 median(data$method_a) # Median
 sd(data$method_a) # Standard deviation
-sd(data$method_a) / mean(data$method_a) * 100  # Coefficient of variation
 ```
+
+*Exercise*
+Using the functions `mean` and `sd`, write code that will calculate the Coefficient of Variation (CV) for the assay. Hint: The CV is defined as $.
+
+\[
+CV(\%) = \mu/\sigma * 100
+\]
 
 ## Is it normally distributed?
 There are many approaches to determining "normality" of a distribution. Calculation of mean, median, mode and SDs can help. Visual inspection of the data will also quickly reveal if the data is normal, skewed, multimodal, etc. 
@@ -118,6 +124,11 @@ We will use the `ggplot` library to visualize data.
 g <-  ggplot(data, aes(x=method_a))
 g <- g + geom_histogram(bins=50)
 g
+```
+
+*Exercise*
+
+Make a second histogram plotting `method_b` values.
 ```
 
 Does this look normal? How can we quantify this?
