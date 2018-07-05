@@ -165,7 +165,7 @@ Clinical laboratory data is commonly arranged in a spreadsheet format, where eac
 
 **Tip**: It is good practice to separate words in your object and variable names with underscores instead of spaces, because, like many other programming languages, whitespace is important in R. If you absolutely want to use whitespace in a variable name, you need to use the `` ` `` character (top left on your keyboard) on either side of the name.
 
-For more inofrmation on the tibble data structure, refer to the (Tibbles section)[http://r4ds.had.co.nz/tibbles.html] in the R for Data Science book. For a more detailed discussion of objects and other gory details about how the R language works, refer to the (R language definition)[https://cran.r-project.org/doc/manuals/r-release/R-lang.html].
+For more inofrmation on the tibble data structure, refer to the [Tibbles section](http://r4ds.had.co.nz/tibbles.html) in the R for Data Science book. For a more detailed discussion of objects and other gory details about how the R language works, refer to the [R language definition](https://cran.r-project.org/doc/manuals/r-release/R-lang.html).
 
 # Creating reproducible data analyis
 
