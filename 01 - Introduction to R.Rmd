@@ -248,7 +248,7 @@ Now let's save our R Markdown file to our working directory (File -> Save As) as
 There are multiple options for running our code. 
 
 - When you are actively developing code within an R Markdown file, the quickest way to run individual lines of code is to put a cursor on a line and use the keyboard shortcut to run a single line: Ctrl+Enter on Windows or Command+Enter on Mac. If there is any output, it will appear below the code chunk.
-- Instead of running a single line, you can run a whole "chunk" of code - everything between when the first "```" starts and when the second "```" ends. The shortcut to run a chunk of code that your cursor is within is Shift+Ctrl+Enter for Windows and Shift+Command+Enter for Mac.
+- Instead of running a single line, you can run a whole "chunk" of code - everything between when the first `` ``` `` starts and when the second `` ``` `` ends. The shortcut to run a chunk of code that your cursor is within is Shift+Ctrl+Enter for Windows and Shift+Command+Enter for Mac.
 - Alternately, if you want to run all of the code within your document (and generate the document), the Knit button at the top of the R Markdown window provides different output options. In this course we will focus on generating an html file. This can be opened by most modern browsers. You can also generate pdf and docx files but those have some external dependencies that are not as consistently across all computers.
 
 Since all of the code is complete, let's Knit to an html file.
