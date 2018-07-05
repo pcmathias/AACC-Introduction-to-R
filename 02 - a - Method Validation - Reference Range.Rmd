@@ -1,6 +1,8 @@
 ---
 title: "Method Validation in R"
-author: "Nik Krumm, Daniel Herman"
+author: 
+ - "Daniel Herman"
+ - "Niklas Krumm"
 date: "06/07/2018"
 output: html_document
 ---
@@ -9,7 +11,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE, comment=NA)
 library(tidyverse)
 library(readxl)
-library(janitor)
+# library(janitor)
 ```
 
 # Overview
@@ -24,32 +26,48 @@ Relatively "clean" data has already been organized in separate tabs in an excel 
 ?read_excel
 ```
 
-We see that there are three different functions grouped together, a `read_excel` function that is a wrapper for two more specific functions `read_xls` and `read_xlsx`. Since our Excel document is in .xlsx format, we can either use the general `read_excel` or `read_xlsx` function.
+We see that there are three different functions grouped together, a `read_excel` function that is a wrapper for two more specific functions `read_xls` and `read_xlsx`. Since our Excel document is in .xlsx format, we can either use the general `read_excel` or `read_xlsx` function. We need to specify the path to our excel file and the worksheet we would like to load in. Here is an example:
 
-```{r load_data_1}
-data <- read_excel(path="data/Method_Validation.data.xlsx", sheet="MS AFP")
+```{r example_data_load}
+tmp <- read_excel(path="data/Method_Validation.data.xlsx", 
+                sheet="MS uE3")
+tmp  # Take a peak
+```
+
+
+> **Exercise:**
+> Load in the alpha fetoprotein (AFP) method comparison data into a tbl named `data`
+
+```{r load_data_1, echo=FALSE}
+data <- read_excel(path="data/Method_Validation.data.xlsx", 
+                sheet="MS AFP")
+data
 ```
 
 > What is a path? Paths describe the location of a file in a filesystem (e.g., your computer, a network drive, etc.). In this case, we are telling the function `read_excel` the location of our file, and the name of the Excel Sheet to open. These are called "arguments" to the function. Functions "take" arguments (or alternatively functions are "passed" arguments).
 
-There are lots of different options for loading in files in R. For tab-delimited text, try `read_tsv`. For comma-delimited text (.csv), try `read_csv`. See more detailed discussion in [MSACL intermediate course](https://github.com/pcmathias/MSACL-intermediate-R-course/tree/master/lesson3).
-
 # Viewing data tables
-Once you have loaded some data into an R variable (in this case, `dat`), you should always briefly visually and manually inspect it. Things to check for include:
 
- - Did the column headers import properly?
- - Did columns get split appropriately, and does every line have the right number of columns?
+## QC data import
+Once you have loaded some data into an R variable (in this case, `data`), you should always briefly visually and manually inspect it. Things to check for include:
+
+ - Did the column headers import properly?  [Need to be able to refer to each column]
+ - Did columns get split appropriately [Do we have the right number of columns]
  - Did any lines get skipped? Did the entire file get loaded?
- 
-Let's next take a look at the data. We can do this in a few different ways.
+
+## Discuss the tbl data structure
+Let's next take a look at the data we have now saved as `data`. We can do this in a few different ways.
 
 ```{r}
 data
 ```
 
+
+Note that it looks very similar to its original form in Excel. There are 3 columns and 161 rows. Each column has a specfic data format (`chr`, `dbl`, etc.). The `read_exel` function assigned these automatically. For our purposes, it is important that our result columns are numeric.
+
 In R-Studio, variables can also be _inspected_ using the "Environment" tab (usually in the top right pane). 
 
-
+> **Exercise:** Click on `data`.
 
 ## Summarizing a data table
 The `summary` command can provide a helpful overview of the data set as well:
@@ -58,6 +76,7 @@ The `summary` command can provide a helpful overview of the data set as well:
 summary(data)
 ```
 
+ 
 ## Working with tables in R:
 
 A quick way to look at only the top `n` rows is using the `head` function:
@@ -71,10 +90,10 @@ head(data, n=3)
 If you wish to show only certain columns, you can specify this with `select`:
 
 ```{r}
-select(data, method_a, method_b)
+select(data, method_a, method_b)   # Select the method_a and methob_b columns from the tbl data
 ```
 
-Advanced topic: What if we want to select columns AND rows? There are two approaches to this:
+Advanced topic: What if we want to select columns AND rows? Here are two approaches to this:
 
 *First approach using intermediate/temporary variables:*
 ```{r}
@@ -90,6 +109,18 @@ data %>%
   head(n=3)
 ```
 
+Note that `data` is not listed explicitly in the `select` and `head` commands. Rather, the result of each command is passed along by the pipe (`%>%`) to following command. Pipes make for cleaner, simpler code and work for `tidyverse` and many other R functions.
+
+> **Exercise:**
+> Use `select` and `tail` to choose The last 20 rows of `method_b` results
+
+```{r, echo=FALSE}
+temp_table <- data %>%
+                tail(n=20) %>%
+                select(method_b)
+temp_table
+```
+
 Finally, we can use the `$` shorthand to isolate _individual_ columns. Note that this is no longer a table, but just an array of values.
 ```{r}
 data$method_a
@@ -97,20 +128,32 @@ data$method_a
 
 # Examine data distribution
 
-Let's focus on the maternal serum AFP values from Method A first.
+Let's focus on the maternal serum AFP values from Method A first. 
 
 ```{r basic_stats}
-mean(data$method_a)  # Mean
-median(data$method_a) # Median
+mean(x = data$method_a)  # Mean
+median(x = data$method_a) # Median
+sd(x = data$method_a) # Standard deviation
+```
+
+*In calling functions (i.e. `mean`), the values can be passed in order the functions arguments, or they can be explicitly assigned (`arg` = `value`). In general, it is good practice to specify the argument receiving each value, because this is safer and easier to follow. However, because this makes statement much longer, it is common to not explicitly list arguments for common functions with few, easily interpretable arguments. As an example, since `mean` and `sd` only take single values, we can simply write and read:*
+
+```{r basic_stats_shorter}
+mean(data$method_a)  # Mean, shorter
 sd(data$method_a) # Standard deviation
 ```
 
-*Exercise*
-Using the functions `mean` and `sd`, write code that will calculate the Coefficient of Variation (CV) for the assay. Hint: The CV is defined as $.
+> *Exercise*
+> Using the functions `mean` and `sd`, write code that will calculate the Coefficient of Variation (CV) for the assay. Hint: The CV is defined as:
 
 \[
 CV(\%) = \mu/\sigma * 100
 \]
+
+```{r}
+cv <- sd(data$method_a) / mean(data$method_a) * 100  # Coefficient of variation
+print(cv)
+```
 
 ## Is it normally distributed?
 There are many approaches to determining "normality" of a distribution. Calculation of mean, median, mode and SDs can help. Visual inspection of the data will also quickly reveal if the data is normal, skewed, multimodal, etc. 
@@ -118,7 +161,8 @@ There are many approaches to determining "normality" of a distribution. Calculat
 > A famous example of how summary statistics can mask true differences is demonstrated by Anscombe's quartet. FJ Anscombe, an English statistician, famously said in 1973 that "Computers should make both calculations and graphs. Both sorts of output should be studied; each will contribute to understanding." An entertaining (involving T-rex) and informative visualization of this problem can be found here: https://www.autodeskresearch.com/publications/samestats
 
 We will use the `ggplot` library to visualize data.
-> The idea of ggplot is to use graphical "building blocks" and combine them to create just about any kind of graphical display you want. Here is an (in-depth tutorial of ggplot)[https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html]
+
+> The idea of ggplot is to use graphical "building blocks" and combine them to create just about any kind of graphical display you want. Here is an [in-depth tutorial of ggplot](https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html).
 
 ``` {r}
 g <-  ggplot(data, aes(x=method_a))
@@ -126,12 +170,21 @@ g <- g + geom_histogram(bins=50)
 g
 ```
 
-*Exercise*
+> *Exercise*
+> Make a second histogram plotting `method_b` values.
 
-Make a second histogram plotting `method_b` values.
+Does this look normal? 
+
+> **Exercise**: Transform the x-axis to log-scale using `scale_x_log10` and visually inspect for normality
+
+```{r echo=FALSE}
+g <-  ggplot(data, aes(x=method_a))
+g <- g + geom_histogram(bins=50)
+g <- g + scale_x_log10()   # Change x-axis scaling
+g
 ```
 
-Does this look normal? How can we quantify this?
+How can we quantify this?
 
 The **skew** and **kurtosis** are so-called **moments** of a distribution and can be used as measure of normality (or non-normality).
 
@@ -141,13 +194,18 @@ skewness(data$method_a)
 kurtosis(data$method_a)
 ```
 
+> **Exercise:** Let's assess the `skewness` of the log-transformed method_a data. Use the `log10` function to transform results.
+
+```{r, echo=FALSE}
+method_a_logged <- log10(data$method_a)
+skewness(method_a_logged)
+```
+
 Another option is to use the **Shapiro-Wilk test of normality**:
 
 ```{r}
 shapiro.test(data$method_a)
 ```
-
--- May want to add Gender, Gestational week here...
 
 ## How to establish reference range?
 Reference ranges can be established in several different ways. Two of the most common approaches are termed **parametric** and **non-parametric**. 
@@ -179,8 +237,51 @@ sigma <- sd(data$method_a)
 lower_bound <- mu - 1.96 * sigma
 upper_bound <- mu + 1.96 * sigma
 
-sprintf("The reference range is (%f, %f)", lower_bound, upper_bound)
+sprintf("The reference range assuming normal distribution is (%f, %f)", lower_bound, upper_bound)
 ```
+
+> **Exercise:** Calculate the parametric reference range assuming that the results are log-normal (rather than normally distributed)
+
+```{r echo=FALSE}
+mu <- mean(log(data$method_a))
+sigma <- sd(log(data$method_a))
+
+lower_bound_transformed <- mu - 1.96 * sigma
+upper_bound_transformed <- mu + 1.96 * sigma
+
+lower_bound_untransformed <- exp(lower_bound_transformed)
+upper_bound_untransformed <- exp(upper_bound_transformed)
+
+sprintf("The reference range assuming log-normal distribution is (%f, %f)", lower_bound_untransformed, upper_bound_untransformed)
+
+```
+
+To visually inspect, let's graphically show the bounds of the reference intervals on the histogram we made above.
+A simple way to do this is to use the `geom_vline` function of ggplot. 
+
+```{r}
+g <-  ggplot(data, aes(x=method_a))
+g <- g + geom_histogram(bins=50)
+g <- g + geom_vline(xintercept=lower_bound_untransformed, color="blue")
+g
+```
+
+> **Exercise:** Add the additional 3 bounds we have just calculated to this plot. Change to a dashed line by specifying `linetype` in the `geom_vline` function.
+
+> 1. Look up the function call for `geom_vline`. What kind of arguments does it take? 
+
+> 2. Start with with the code for the histogram above, add additional lines of code to display the bounds of the parametric reference interval. (_Hint: ggplot allows you to "add" new elements to a plot_)
+
+```{r, echo=FALSE}
+g <-  ggplot(data, aes(x=method_a))
+g <- g + geom_histogram(bins=50)
+g <- g + geom_vline(xintercept=lower_bound_untransformed, linetype=3, color="blue")
+g <- g + geom_vline(xintercept=upper_bound_untransformed, linetype=3, color="blue")
+g <- g + geom_vline(xintercept=lower_bound, linetype=3, color="red")
+g <- g + geom_vline(xintercept=upper_bound, linetype=3, color="red")
+g
+```
+
 
 ### Non-parametric Reference Ranges
 Non-parametric reference ranges are simply the middle 95% of the distribution. Using R, this is done with the straightforward command `quantile`:
@@ -190,48 +291,94 @@ non_parametric_bounds <- quantile(x=data$method_a, probs = c(0.025, 0.975))
 print(non_parametric_bounds)
 ```
 
-Can we verify that the `non_parametric_bounds` includes 95% of the data? Sure thing! We will do this with some new operations and a feature in R called masking:
+Can we verify that the `non_parametric_bounds` includes 95% of the data? Sure thing! We will do this with some new operations and a feature in R called masking. First we need to be able to refer to each bound separately. Don't want to get lost in the weeds here, but not several different ways of extracting elements of the vector `non_parametric_bounds`
+
 ```{r}
-mask <- (data$method_a > non_parametric_bounds["2.5%"]) & (data$method_a < non_parametric_bounds["97.5%"])
-sum(mask)
-length(mask)
-proportion_in_range = sum(mask) / length(mask)
-print(proportion_in_range)
+non_parametric_bounds
+non_parametric_bounds[1]
+non_parametric_bounds[[1]]
+non_parametric_bounds[["2.5%"]]
 ```
 
-
-### Advanced plotting exercise: Plot reference intervals on histogram
-Say we want to graphically show the bounds of the reference intervals on the histogram we made above.
-A simple way to do this is to use the `geom_vline` function of ggplot. 
-
-*Exercise*
-
-1. Look up the function call for `geom_vline`. What kind of arguments does it take? 
-2. Start with with the code for the histogram above, add additional lines of code to display the bounds of the parametric reference interval. (_Hint: ggplot allows you to "add" new elements to a plot_)
+Let's first ask which elements of `method_a` are greater than our lower-bound?
 ```{r}
+mask <- data$method_a > non_parametric_bounds[[1]]
+mask
+```
+
+The result is a boolean (TRUE/FALSE) array. Then lets combine our upper and lower bounds
+```{r}
+mask <- (data$method_a > non_parametric_bounds[[1]]) & 
+                (data$method_a < non_parametric_bounds[[2]])
+mask
+```
+
+This intermediate data structure `mask` is convenient, because we can easily ask how many elements it contains and how many are `TRUE`:
+```{r}
+length(mask)
+sum(mask == TRUE)
+proportion_in_range = sum(mask == TRUE) / length(mask)
+print(proportion_in_range)
+
+#Alternative
+sum(mask) / length(mask)
+```
+
+> **Exercise:** Plot these proposed reference intervals on histogram
+```{r echo=FALSE}
 g <-  ggplot(data, aes(x=method_a))
 g <- g + geom_histogram(bins=50)
-g <- g + geom_vline(xintercept = non_parametric_bounds["2.5%"], color="red")
-g <- g + geom_vline(xintercept = non_parametric_bounds["97.5%"], color="red")
+g <- g + geom_vline(xintercept = non_parametric_bounds["2.5%"], color="red", linetype=3)
+g <- g + geom_vline(xintercept = non_parametric_bounds["97.5%"], color="red", linetype=3)
 g
 ```
 
 
 ## How to verify a proposed reference range?
 
-The lab had previously used a reference range of 20-100 for this particular test. Is this range still valid?
+The lab had previously used a reference range of 20-100 for this particular test. 
 
+```{r}
+g <-  ggplot(data, aes(x=method_a))
+g <- g + geom_histogram(bins=50)
+g <- g + geom_vline(xintercept = 20, color="red", linetype=3)
+g <- g + geom_vline(xintercept = 100, color="red", linetype=3)
+g
+```
+
+Is this range appropriate for our observed results?
 ```{r}
 
 n_samples <- length(data$method_a)
 
-old_range <- c(20, 100)
-n_inrange <- sum(data$method_a >= old_range[1] & data$method_a <= old_range[2])
+old_range <- c(20, 100) #proposed range
+n_inrange <- with(data,              # Note: `with` allows you to specify columns below without writing `data` over and over again
+                  sum(method_a >= old_range[1] & method_a <= old_range[2]))
 
 chisq.test(c(n_inrange, n_samples - n_inrange), p=c(0.95, 0.05))
 binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
 
 ```
+
+> **Exercise:** Let's evaluate our empirically considered parametric reference ranges
+
+```{r, echo=FALSE}
+n_samples <- nrow(data)
+ref_range <- c(lower_bound, upper_bound)
+sprintf("The reference range assuming normal distribution is (%f, %f)", ref_range[1], ref_range[2])
+n_inrange <- with(data,
+                  sum(method_a >= ref_range[1] & method_a <= ref_range[2]))
+binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
+
+
+n_samples <- nrow(data)
+ref_range <- c(lower_bound_untransformed, upper_bound_untransformed)
+sprintf("The reference range assuming log-normal distribution is (%f, %f)", ref_range[1], ref_range[2])
+n_inrange <- with(data,
+                  sum(method_a >= ref_range[1] & method_a <= ref_range[2]))
+binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
+```
+
 
 # Using a Q-Q plot to examine a distribution
 ```{r}
@@ -242,9 +389,10 @@ ggplot(data) + geom_qq(aes(sample=method_a))
 Are there outliers? How can you remove them?
 
 ```{r}
-upper_outlier_bound <- mean(data$method_a) + 3*IQR(data$method_a)
+upper_outlier_bound <- mean(data$method_a) + 3 * IQR(data$method_a)
 
-removed_outliers_data <- filter(data, method_a < upper_outlier_bound)
-ggplot(removed_outliers_data) + geom_qq(aes(sample=method_a)) 
+removed_outliers_dat <- filter(data, 
+                               method_a < upper_outlier_bound)
+ggplot(removed_outliers_dat) + geom_qq(aes(sample=method_a)) 
 
 ```
