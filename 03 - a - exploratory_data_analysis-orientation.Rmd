@@ -1,0 +1,205 @@
+---
+title: "Exploratory data analysis: Orienting yourself with your data set"
+author: "Patrick Mathias"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(lubridate)
+```
+
+# Diving into a new data set
+
+In this section of the course we will walk through a common workflow: exploring a new data set. Before we dive into the data set, we will touch briefly on one way of writing code that can help make it easier to follow.
+
+## Sequencing functions
+
+When you are working with a data set, you often need to manipulate it multiple times in a defined sequence of events. Let's start with a non-sensical example that can help illustrate the issue (adapted from the [tidyverse style guide](http://style.tidyverse.org/pipes.html)).
+
+Let's say we want to apply the functions hop, scoop, and bop to the foo_foo data frame, in that order. One way to approach that is to start with the data, apply the function, and write the output back into the original data frame.
+
+```{r, eval = FALSE}
+# one way to represent a hop, scoop, and a bop, without pipes
+foo_foo <- hop(foo_foo, through = forest)
+foo_foo <- scoop(foo_foo, up = field_mice)
+foo_foo <- bop(foo_foo, on = head)
+```
+
+R allows you to nest functions within one another, but this can get horribly confusing because following a specific sequence of operations requires you to start from the inside of the expression and expand outwards.
+
+```{r, eval = FALSE}
+# another way to represent the same sequence with less code but in a less readable way
+foo_foo <- bop(scoop(hop(foo_foo, through = forest), up = field_mice), on = head)
+```
+
+You want to try and avoid doing things this way because the sequence of operations is so non-intuitive.
+
+Explicitly showing the functions sequentially by line is helpful for readability but it does require some unnecessary typing to keep repeating the name of the data set. R allows you to "pipe" a data frame from one function to another using this funny looking operator: `%>%`. This can cut down on unnecessary code but also preserves the nice formatting that makes it obvious what functions are applied in what order.
+
+```{r, eval = FALSE}
+# a hop, scoop, and a bop with the almight pipes
+foo_foo %>%
+  hop(through = forest) %>%
+  scoop(up = field_mouse) %>%
+  bop(on = head)
+```
+
+Pipes are not compatible with all functions but should work with all of the tidyverse package functions (the magrittr package that defines the pipe is included in the tidyverse). In general, functions expect data as the primary argument and you can think of the pipe as feeding the data to the function. From the perspective of coding style, the most useful suggestion for using pipes is arguably to write the code so that each function is on its own line. The tidyverse style guide [section on pipes](http://style.tidyverse.org/pipes.html) is pretty helpful.
+
+## Loading data and reviewing data types and distributions
+
+First let's refresh your memory on loading in a data set. We have an Excel file that contains our main data set in the data folder called "orders_data_set.xlsx". After loading the file into a variable (in this case a data frame) called "orders", look at the structure of the data using the `str` command
+
+```{r load_data}
+orders <- read_excel("data/orders_data_set.xlsx")
+str(orders)
+```
+
+> *Exercise 1*
+>
+> 1. Which fields of the data frame are characters?
+> 
+> 2. Which are numbers?
+>
+> 3. Of those fields above, which would be best represented as factors?
+>
+> 4. Let's start by running a summary (`summary`) of one of those character fields that we think should be a factor. What information can we determine from that summary?
+>
+> 5. Let's convert one of those fields to a factor using the `as.factor` command and then run a summary. What additional information do you see by converting to a factor?
+
+Tip: White space generally has meaning in programming. When a variable name has a space in it, you can use the `` ` `` character (look to the top left on your keyboard) around the variable name to make sure R understands what variable you are referring to. As an example, `summary(orders$Proc Code)` will not work but `summary(orders$`Proc Code`)` will.
+
+White spaces in names can be annoying to deal with. To get around this, we can rename variable names to remove white spaces, and, in addition, we can convert everyting to a single case (lowercase by default). The janitor package has some handy data science tools, including the ability to clean up variable names in one line using the `clean_names` function:
+
+```{r load_data_clean_headers}
+orders <- read_excel("data/orders_data_set.xlsx") %>%
+  clean_names()
+str(orders)
+```
+
+As you may have seen already, there is more than one way to do the same thing when you're programming. We used `str()` to look at the structure of a data frame or other object. Another way to do this is to use the `glimpse()` function, which produces very similar output but is organized a little more neatly (with 1 line per variable).
+
+```{r glimpse}
+glimpse(orders)
+```
+
+The `str` and `glimpse` functions are helpful to get a quick snapshot of the data, but sometimes you want a little more detail about the data in your data frame.
+
+```{r summary}
+summary(orders)
+```
+
+The `summary` function is most useful when you want to quickly glance at distributions of numerical data and times. You can quickly see the minimum and maximum times and some data on the distribution. It is less helpful when you have characters though.
+
+> Exericse 2
+>
+> Pull a summary of the description variable (only), after converting to a factor using the `as.factor` function. Which test is most frequently ordered in this data set?
+
+```{r convert_factor}
+summary(as.factor(orders$description))
+```
+
+So it looks like converting to a factor might be pretty handy when taking a quick glance at the data! What if we wanted to permanently convert one of our variables to a factor within the data frame? We could do this many different ways, but let's start by creating a new variable (column) using the `mutate` function. `mutate` allows you to perform a function on one or more variables to create (or overwrite) a variable within the same observation (row).
+
+Here we take our orders data frame, pipe it into the `mutate` function and create a new variable called department_fctr that applies the `as.factor` function on our original department variable. We can run the `summary` function to see the results.
+
+```{r single_factor}
+orders <- orders %>%
+  mutate(department_fctr = as.factor(department))
+summary(orders$department_fctr)
+```
+
+> Exercise 3
+>
+> Let's go ahead and convert the description variable to a factor using the `mutate` and `as.factor` functions. This time, rather than creating a new variable, overwrite the original variable by giving it its original name.
+
+```{r single_factor_exercise}
+orders <- orders %>%
+  mutate(description = as.factor(description))
+summary(orders$description)
+```
+
+Factors can be very handy when you want to look at quick summaries of the data. In some cases you may want all of your variables that are characters to actually be factors. We're jumping into a little more advanced concepts, but let's briefly cover one way to convert multiple variables into factors at once.
+
+If we decide to make description, proc_code, order_class_c_descr, lab_status_c_descr, order_status_c_descr, and reason_for_canc_c_descr all into factors, we could use `mutate` and call out every variable (on separate lines for readability):
+
+```{r convert_all_factors_long}
+orders_factors <- orders %>%
+  mutate(description = as.factor(description),
+         proc_code = as.factor(proc_code),
+         order_class_c_descr = as.factor(order_class_c_descr),
+         lab_status_c_descr = as.factor(lab_status_c_descr),
+         order_status_c_descr = as.factor(order_status_c_descr),
+         reason_for_canc_c_descr = as.factor(reason_for_canc_c_descr))
+summary(orders_factors)
+```
+
+An extension of the `mutate` function is `mutate_at`, which serves the same purpose but allows you to choose multiple columns at once. If you're applying the same function to multiple columns, this is a handy way to do that with less code.
+
+```{r convert_all_factors}
+orders <- orders %>%
+  mutate_at(c("description", "proc_code", "order_class_c_descr", "lab_status_c_descr", "order_status_c_descr", "reason_for_canc_c_descr"), as.factor)
+summary(orders)
+```
+
+Yet another way to do this is to use `mutate_if(is.character, as.factor)` but beware! 
+
+Older functions to import files in R automatically convert character variables into factors. This can be helpful for variables like order status where there are only a handful of different possible values for the variable (called "levels" of a factor). But factors behave differently than characters, and your code can produce unexpected output instead of failing.
+
+(Need to insert example)
+
+Finally, the skimr package is worth knowing about. This does some work for you in breaking down distributions of different variables and showing the amount of missing data.
+
+```{r skim}
+install.packages("skimr")
+library(skimr)
+skim(orders)
+```
+
+# Tabulating & visualizing the data
+
+A very common task when analyzing data is tabluating counts based on one or more variables. R has multiple functions that can help you quickly create tables. To demonstrate some tabulations, let's first focus on a single test. One of the most useful functions in the dplyr package is `filter`, which allows you to select specific rows from a data frame. The arguments to the function include the data frame (which can be skipped if you use a pipe) and then one or more conditions to select the rows you want.
+
+Let's filter out the rows associated with complete blood count orders. The procedure code for those rows is "CBC", so the condition we apply to the filter function is `proc_code == CBC`. Note that we use two equal signs instead of one to indicate an equality condition - you will get an errof if you use a single equal sign.
+
+```{r cbc_analysis}
+cbc_orders <- orders %>%
+  filter(proc_code == "CBC")
+```
+
+Next we want to tabulate the counts of CBC orders based on a single variable, department, ie. we wnat ot determine the number of CBCs ordered by each department. To start out, we use the `table` function in base R (no additional package is required to call the function).
+
+```{r cbc_simple_tabulation}
+table(cbc_orders$department)
+```
+
+```{r cbc_complex_tabulation}
+table(cbc_orders$department, cbc_orders$order_status_c_descr)
+```
+
+```{r cbc_analysis}
+cbd_orders <- orders %>%
+  filter(proc_code == "CBD")
+table(cbd_orders$department, cbd_orders$order_status_c_descr)
+```
+
+```{r tabyl}
+cbd_orders %>% 
+  tabyl(department, order_status_c_descr) %>%
+  adorn_totals("row") %>%
+  adorn_percentages("row") %>%
+  adorn_pct_formatting() %>%
+  adorn_ns()
+```
+
+
+```{r}
+orders <- orders %>%
+  mutate(order_week = floor_date(order_time, unit = "week"))
+ggplot(orders, aes(x = order_week)) + 
+  geom_histogram(binwidth = 7*24*60*60)
+```
