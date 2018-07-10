@@ -1,3 +1,4 @@
 *.html
 ._*
 ~*
+.DS_Store

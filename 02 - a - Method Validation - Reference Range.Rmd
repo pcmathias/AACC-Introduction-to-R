@@ -304,7 +304,7 @@ mask <- (data$method_a > non_parametric_bounds[[1]]) &
 mask
 ```
 
-This intermediate data structure `mask` is convenient, because we can easily ask how many elements it contains and how many are `TRUE`:
+This intermediate data structure `mask` is convenient, because we can easily ask how many elements it contains and how many are `TRUE`. The `length` function counts how many elements there are in an object:
 ```{r}
 length(mask)
 sum(mask == TRUE)
@@ -368,7 +368,7 @@ ggplot(data) + geom_qq(aes(sample=method_a))
 ```
 
 
-Are there outliers? How can you remove them?
+Are there outliers? How can you remove them? Here we use the function `filter` that uses boolean logic to specify which observations to keep.
 
 ```{r}
 upper_outlier_bound <- mean(data$method_a) + 3 * IQR(data$method_a)

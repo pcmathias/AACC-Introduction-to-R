@@ -1,5 +1,5 @@
 ---
-title: "Method Validation in R"
+title: "Method Validation -- Precision, Linearity, and calibration verification in R"
 author: "Daniel Herman"
 date: "06/07/2018"
 output: html_document
@@ -14,29 +14,311 @@ library(janitor)
 
 # Overview
 
-In this section we will continue exploring how to use R in method validation by studying precision, linearity, and calibration verification.
+In this section, we will evaluate analytical method precision, linearity, and calibration verification.
 
 # Precision
 
 ## Load data
 
--- TODO: need to swap out data in excel document. Have placeholder data in tab "Precision"
+> **Exercise:** Load the `Precision` tab of `Method_Validation.data.xlsx` into the object `data`
+
+```{r echo=FALSE}
+data <- read_xlsx(path = "data/Method_Validation.data.xlsx", sheet = "Precision")
+str(data)
+head(data)
+```
+```{r, eval=FALSE}
+data <- 
+  
+```
 
 ## Describe data and explore its distribution
 
-Let's briefly describe data, as we did previously.
+Let's figure out what we have got. Looks like there are 7 variables (`r names(data)`) with a maximum of 60 observations. However, there are many `NA`'s, which indicates missing values. In this set we have missing data just because it was not loaded into our example dataset, so we can focus on describing the data that is present. There are lots of ways to describe missingess. 
+
+Start by asking what is missing with `is.na()`.
+
+```{r}
+tmp <- is.na(data)
+head(tmp)
+```
+
+How many missing values are there? We can count `TRUE`'s like in the previous section using `sum` and `length`:
+
+```{r}
+sum(tmp)
+sum(tmp) / length(tmp) * 100
+sprintf("There are %d (%.0f%%) missing values.", 
+        sum(tmp), sum(tmp) / length(tmp) * 100)
+```
+
+> **Exercise**: How many different analytes are there? Use the `unique` function to distill an object to a set of unique observations.
+
+```{r, echo=FALSE}
+data$Analyte
+unique(data$Analyte)
+sprintf("There are %d different analytes", length(unique(data$Analyte)))
+```
+
+
+## Measure precision
+
+Let's focus on the first control `P1` inter-day measurements for `AFP`.
+
+To match how we did this in 02a, we can extract this data from the tibble into a simple vector named `tmp`:
+```{r}
+tmp <- data %>%
+  filter(Analyte == "AFP") %>%
+  select(P1)  %>%
+  .[["P1"]]
+tmp
+```
+
+Then calculate the `mean`, `sd`, and `CV` as earlier
+
+```{r, echo=FALSE}
+mean(tmp)
+sd(tmp)
+sd(tmp) / mean(tmp) * 100
+sprintf("Mean = %2.1f, SD = %2.2f, CV = %3.1f%%", mean(tmp), sd(tmp), sd(tmp) / mean(tmp) * 100)
+```
+
+As we scale such calculations to multiple variables, it is much easier to do within tbl framework using `summarize` to calculate the `mean` across all observations of a specific variable `P1`:
+```{r}
+data %>%
+  filter(Analyte == "AFP") %>%
+  summarize(mean_P1 = mean(P1))
+```
+
+> **Exercise**: Add to the above result the standard deviation and CV, by adding additional arguments to `summarize`
+
+```{r, echo=FALSE}
+data %>%
+  filter(Analyte == "AFP") %>%
+  summarize(mean_P1 = mean(P1),
+            sd_P1 = sd(P1),
+            CV_P1 = sd(P1) / mean(P1) * 100)
+
+```
+
+```{r, eval=FALSE}
+data %>%
+  
+
+```
+
+
+> **Exercise**: Plot histogram of these results with vertical lines marking parametric 95% central range. Consider changing the `binwidth`
+
+```{r, echo=FALSE}
+g <- data %>%
+  filter(Analyte == "AFP") %>%
+  ggplot(aes(x=P1))
+g <- g + geom_histogram(binwidth=0.5)
+g <- g + geom_vline(aes(xintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue")
+g <- g + geom_vline(aes(xintercept = mean(P1) - 2 * sd(P1)), linetype=2, color="blue")
+g
+```
+
+```{r, eval=FALSE}
+g <- data %>%
+  filter(Analyte == XXXXXX) %>%
+  ggplot(aes(x=XXXX))
+g <- g + geom_histogram(binwidth=XXXXX)
+g <- g + geom_vline(aes(xintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue")
+g <- g + geom_vline(aes(xintercept = XXXXXXX), linetype=2, color="blue")
+g
+```
+
+As expected, interday results look relatively normally distributed. The other we classically look at such results are longitudinally. Let's plot results over time using `geom_point`
+
+```{r}
+g <- data %>%
+  filter(Analyte == "AFP") %>%
+  ggplot(aes(x=Sample, y=P1))
+g <- g + geom_point()
+g
+```
+
+> **Exercise:** Customize this plot:
+- Add horizontal lines using `geom_hline` for the mean, +/- 1 SD, and +/-1 2SDs
+- Change the y-axis range using `ylim` to 6 - 10
+
+```{r, echo=FALSE}
+g <- data %>%
+  filter(Analyte == "AFP") %>%
+  ggplot(aes(x=Sample, y=P1))
+g <- g + geom_point()
+g <- g + geom_hline(aes(yintercept = mean(P1)), linetype=1, color="blue")
+g <- g + geom_hline(aes(yintercept = mean(P1) + 1 * sd(P1)), linetype=3, color="blue")
+g <- g + geom_hline(aes(yintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue")
+g <- g + geom_hline(aes(yintercept = mean(P1) - 1 * sd(P1)), linetype=3, color="blue")
+g <- g + geom_hline(aes(yintercept = mean(P1) - 2 * sd(P1)), linetype=2, color="blue")
+g <- g + ylim(6, 10)
+g
+
+```
+
+```{r, eval=FALSE}
+g <- data %>%
+  filter(Analyte == "AFP") %>%
+  ggplot(aes(x=Sample, y=P1))
+g <- g + geom_point()
+g <- g + geom_hline(aes(yintercept = mean(P1)), linetype=1, color="blue")
+g <- g + geom_hline(aes(yintercept = mean(P1) + 1 * sd(P1)), linetype=3, color="blue")
+g <- g + geom_hline(aes(yintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue")
+g <- g + geom_hline(aes(       )    )
+g <- g + geom_hline(aes(       )    )
+g <- g + ylim(     )
+g
+
+```
+
+Is this imprecision acceptable? ...depends on analytical and clinical goals.
 
 ## LOB
 
-## LOQ
+Limit of the Blank is the minimum concentration that a sample without the analyte will rarely be as high as. We often approximate this as the 95th percentile of distribution of results from measuring a BLANK sample.
+
+Unfortunately, our loaded datasset has no measures of a blank sample: 
+```{r}
+data$BLANK
+```
+
+So, let's simulate some. Let's simulate normally distributed data with mean 1.6 and standard deviation of 1.2 using `rnorm`.
+
+```{r}
+n_samples <- 1e4
+x <- rnorm(n=n_samples, mean = 1.6, sd = 1.2)
+head(x)
+
+sim_data <- tibble(sample = 1:n_samples,  # Add to tbl
+                   x = x)
+head(sim_data)
+```
+
+Spot check the histogram of this simulated data:
+```{r}
+g <- sim_data %>%
+  ggplot(aes(x=x))
+g <- g + geom_histogram()
+g <- g + geom_vline(aes(xintercept = mean(x) + 2 * sd(x)), linetype=2, color="blue")
+g <- g + geom_vline(aes(xintercept = mean(x) - 2 * sd(x)), linetype=2, color="blue")
+g
+```
+
+
+> **Exercise:** Calculate LOB as 1.645 SDs above mean of the blank
+
+```{r}
+mean(x) + 1.645*sd(x)
+```
+
+Alternatives for similar calculations
+```{r}
+quantile(x, probs = 0.95)  # non-parametric 95th percentile
+mean(x) + qnorm(0.95) * sd(x)   # Extract the SD factor for the 95th percentile in normal distribution
+```
 
 # Linearity and Calibration verification
 
-## Load data
+## Load data for AFP
 
--- TODO: need to add data to excel document
-# ? Multivariate analyses
-## ? Pairwise plots
-## ? Co-linearity
+```{r}
+data <- read_xlsx(path = "data/Method_Validation.data.xlsx", sheet = "Linearity") %>%
+  filter(Test == "AFP")
+str(data)
+head(data)
+```
+
+Calculate average result for each sample using `mutate`
+```{r}
+data <- data %>% 
+  mutate(Observed = (Result_1 + Result_2 + Result_3)/3)
+```
+
+## Calibration verification
+
+Plot calverification results for AFP
+```{r}
+g <- data %>%
+  ggplot(aes(x=Assigned_Value, y=Observed))
+g <- g + geom_point()
+g <- g + geom_abline(slope=1, intercept=0, linetype=2, color="gray")
+g
+```
+
+How far off are observed values from assigned?
+```{r}
+data <- data %>%
+  mutate(value_diff = Observed - Assigned_Value,
+         value_percent_diff = (Observed - Assigned_Value)/Assigned_Value * 100)
+tmp$value_percent_diff
+```
+
+Do these meet our goals? Let's apply a simple goal of % difference < 30%. Do all dilutions meet this threshold?
+```{r}
+data %>%
+  mutate(pass_calvar = value_percent_diff < 30) %>%
+  filter(!pass_calvar)
+```
+
+Seems that our acceptability criteria was too simplistic. What about criteria of %difference < 30% or absolute difference < 1
+```{r}
+data %>%
+  filter(Test == "AFP") %>%
+  mutate(pass_calvar = (value_percent_diff < 30) | value_diff < 1) %>%
+  filter(!pass_calvar)
+```
+All pass!
+
+Let's plot these absolute and percent differences
+```{r}
+tmp <- data
+max_diff <- abs(max(tmp$value_diff, na.rm=T))
+max_percent_diff <- abs(max(tmp$value_percent_diff, na.rm=T))
+
+g <- tmp %>%
+  ggplot(aes(x=Assigned_Value, y=value_diff))
+g <- g + geom_point()
+g <- g + geom_hline(yintercept = 0, linetype=1, color="gray")
+g <- g + ylim(-max_diff, max_diff)
+g <- g + ylab("Observed - Assigned")
+g
+
+g <- tmp %>%
+  ggplot(aes(x=Assigned_Value, y=value_percent_diff))
+g <- g + geom_point()
+g <- g + geom_hline(yintercept = 0, linetype=1, color="gray")
+g <- g + ylim(-100, 100)
+g <- g + ylab("% Observed - Assigned")
+g
+```
 
 
+## Linearity -- additional exercises:
+The dataset gives us the assigned values for each sample, so we can back calculate the expected ratios between each sample based on dilution
+```{r}
+data <- data %>%
+  mutate(dilution = Assigned_Value / max(Assigned_Value))
+data$dilution
+```
+
+> **Exercise:** Calculate each samples results based on expected dilution factor and observed result in S6. Assume there is no contribution from S0 in the mixing experiment
+
+```{r}
+Observed_S6 <- max(data$Observed)
+data <- data %>%
+  mutate(expected_result = Observed_S6 * dilution)
+data$expected_result
+```
+
+
+Plot linearity results
+```{r}
+g <- data %>%
+  ggplot(aes(x=expected_result, y=Observed))
+g <- g + geom_point()
+g <- g + geom_abline(slope=1, intercept=0, linetype=2, color="gray")
+g
+```
