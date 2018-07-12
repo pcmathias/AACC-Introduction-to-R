@@ -59,7 +59,7 @@ orders <- read_excel("data/orders_data_set.xlsx")
 str(orders)
 ```
 
-> *Exercise 1*
+> *Exercise*
 >
 > 1. Which fields of the data frame are characters?
 > 
@@ -95,7 +95,7 @@ summary(orders)
 
 The `summary` function is most useful when you want to quickly glance at distributions of numerical data and times. You can quickly see the minimum and maximum times and some data on the distribution. It is less helpful when you have characters though.
 
-> Exericse 2
+> *Exericse*
 >
 > Pull a summary of the description variable (only), after converting to a factor using the `as.factor` function. Which test is most frequently ordered in this data set?
 
@@ -113,7 +113,7 @@ orders <- orders %>%
 summary(orders$department_fctr)
 ```
 
-> Exercise 3
+> *Exercise*
 >
 > Let's go ahead and convert the description variable to a factor using the `mutate` and `as.factor` functions. This time, rather than creating a new variable, overwrite the original variable by giving it its original name.
 
@@ -176,6 +176,8 @@ Next we want to tabulate the counts of CBC orders based on a single variable, de
 ```{r cbc_simple_tabulation}
 table(cbc_orders$department)
 ```
+
+Now let's generate a more complex table to visualize the number of CBC orders by department AND split out by order status.
 
 ```{r cbc_complex_tabulation}
 table(cbc_orders$department, cbc_orders$order_status_c_descr)
