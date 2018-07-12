@@ -183,14 +183,27 @@ Now let's generate a more complex table to visualize the number of CBC orders by
 table(cbc_orders$department, cbc_orders$order_status_c_descr)
 ```
 
+> *Exercise*
+>
+> Let's practice making tables. This time, create a table showing the breakdown of CBC with differential (procedure code CBD) by department and order class. Which clinics draw a majority of their own samples? Which clinics use the most external orders (ie. use results from outside labs)?
+
 ```{r cbc_analysis}
 cbd_orders <- orders %>%
   filter(proc_code == "CBD")
-table(cbd_orders$department, cbd_orders$order_status_c_descr)
+table(cbd_orders$department, cbd_orders$order_class_c_descr)
 ```
 
+We used the janitor package earlier to help clean up variable (column) names. This package also includes helpful functions for tabulating. The basic `tabyl` funcationality works similarly to the `table` function in base R, but the syntax of the arguments is different. Rather than explicitly calling the combination of object and variable name (indicated by the "$"), the `tabyl` function adopts the syntax we've seen before where the first argument is the object (tibble in this case) that can be piped in, and the variables can serve as inputs to the function without calling the name of the object.
+
+```{r basic_tabyl}
+cbc_orders %>% 
+  tabyl(department, order_status_c_descr)
+```
+
+The basic functionality of `tabyl` does not improve much over the base `table` function, but there are a series of helper functions beginning with `adorn_` that can modify the table output to be something more helpful. In the example below, we use `adorn_percentages` to convert from raw counts to percentages calculated across the rows. We also include the raw counts using the `adorn_ns()` function to see the full data set.
+
 ```{r tabyl}
-cbd_orders %>% 
+cbc_orders %>% 
   tabyl(department, order_status_c_descr) %>%
   adorn_totals("row") %>%
   adorn_percentages("row") %>%
