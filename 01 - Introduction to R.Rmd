@@ -9,7 +9,9 @@ In this lesson we will cover some R basics including installing/configuring R, a
 
 ## What is R?
 
-R is a statistical programming language.  Using R you can load, analyze, and visualize data.  R has the same functionality you are used to in other spreadsheet applications (e.g. Microsoft Excel) but offers greater functionality and flexibility.  R also provides an environment in which we can conduct reproducible data analysis.  R affords us the capabilities to document our data analysis and save it in a way that we can revisit our analysis at a later date, update our approach when inspiration strikes, and share our analysis with friends. 
+R is a statistical programming language.  Using R you can load, analyze, and visualize data.  R has the same functionality you are used to in other spreadsheet applications (e.g. Microsoft Excel) but offers greater functionality and flexibility.
+
+R also provides an environment in which we can conduct reproducible data analysis.  R affords us the capabilities to document our data analysis and save it in a way that we can revisit our analysis at a later date, update our approach when inspiration strikes, and share our analysis with friends.
 
 ## Installing R (and some other stuff to make R work)
 
@@ -27,9 +29,10 @@ Download and install [RStudio](https://www.rstudio.com/products/rstudio/download
 
 When you launch RStudio you will be presented with with a series of panes.  Let's start by getting oriented to the RStudio application.
 
+![Screen shot of RStudio](assets/RStudio_screenshot.png)
+
 In general, the left side of the screen is used to write and execute code, and the right side of the screen provides information about the environment you are working with. The output of your code typically appears on the left side, but can show up on the right, if you are creating a plot from the Console.
 
-![Screen shot of RStudio](assets/RStudio_screenshot.png)
 When you first open R, on the left you will see the **Console** tab automatically open and fill the entire left side of the screen.  The console is one place to enter and execute our R code.  
 
 By default the right side is split into an upper and lower pane, and each pane contains multiple tabs. If you select the **Files** tab on the lower right pane, you will see the file hierarchy for whatever the default working directory R is using. The **Plots** tab shows the output of the last plot that was generated using code in the console, and the **Packages** tab shows the list of packages that are installed on your computer (and therefore available to load for your computing session).
