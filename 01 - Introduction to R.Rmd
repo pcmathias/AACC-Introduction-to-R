@@ -1,5 +1,8 @@
 ---
 title: "Introduction to R"
+author:
+  - "Joe Rudolf"
+  - "Patrick Mathias"
 output: html_document
 ---
 
