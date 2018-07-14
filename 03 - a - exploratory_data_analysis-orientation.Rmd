@@ -12,7 +12,7 @@ library(janitor)
 library(lubridate)
 ```
 
-# Diving into a new data set
+# Exploratory data analysis: Orienting yourself with your data set
 
 In this section of the course we will walk through a common workflow: exploring a new data set. Before we dive into the data set, we will touch briefly on one way of writing code that can help make it easier to follow.
 
@@ -160,16 +160,18 @@ library(skimr)
 skim(orders)
 ```
 
-# Tabulating & visualizing the data
+## Tabulating our data
 
-A very common task when analyzing data is tabluating counts based on one or more variables. R has multiple functions that can help you quickly create tables. To demonstrate some tabulations, let's first focus on a single test. One of the most useful functions in the dplyr package is `filter`, which allows you to select specific rows from a data frame. The arguments to the function include the data frame (which can be skipped if you use a pipe) and then one or more conditions to select the rows you want.
+A very common task when analyzing data is tabluating counts based on one or more variables. In Excel this is commonly handled with pivot tables. R has multiple functions that can help you quickly create tables. To demonstrate some tabulations, let's first focus on a single test. One of the most useful functions in the dplyr package is `filter`, which allows you to select specific rows from a data frame. The arguments to the function include the data frame (which can be skipped if you use a pipe) and then one or more conditions to select the rows you want.
 
-Let's filter out the rows associated with complete blood count orders. The procedure code for those rows is "CBC", so the condition we apply to the filter function is `proc_code == CBC`. Note that we use two equal signs instead of one to indicate an equality condition - you will get an errof if you use a single equal sign.
+Let's filter out the rows associated with complete blood count orders. The procedure code for those rows is "CBC", so the condition we apply to the filter function is `proc_code == CBC`. Note that we use two equal signs instead of one to indicate an equality condition - you will get an error if you use a single equal sign.
 
 ```{r cbc_analysis}
 cbc_orders <- orders %>%
   filter(proc_code == "CBC")
 ```
+
+With that step, we have now create a tibble that only has the rows with a CBC order.
 
 Next we want to tabulate the counts of CBC orders based on a single variable, department, ie. we wnat ot determine the number of CBCs ordered by each department. To start out, we use the `table` function in base R (no additional package is required to call the function).
 
@@ -193,6 +195,8 @@ cbd_orders <- orders %>%
 table(cbd_orders$department, cbd_orders$order_class_c_descr)
 ```
 
+## Creating more complicated tables
+
 We used the janitor package earlier to help clean up variable (column) names. This package also includes helpful functions for tabulating. The basic `tabyl` funcationality works similarly to the `table` function in base R, but the syntax of the arguments is different. Rather than explicitly calling the combination of object and variable name (indicated by the "$"), the `tabyl` function adopts the syntax we've seen before where the first argument is the object (tibble in this case) that can be piped in, and the variables can serve as inputs to the function without calling the name of the object.
 
 ```{r basic_tabyl}
@@ -211,6 +215,7 @@ cbc_orders %>%
   adorn_ns()
 ```
 
+## Simple summary visualizations
 
 ```{r}
 orders <- orders %>%
