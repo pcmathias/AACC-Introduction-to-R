@@ -182,8 +182,8 @@ We will use the `ggplot` library to visualize data.
 > The idea of ggplot is to use graphical "building blocks" and combine them to create just about any kind of graphical display you want. Here is an [in-depth tutorial of ggplot](https://tutorials.iq.harvard.edu/R/Rgraphics/Rgraphics.html).
 
 ``` {r}
-g <-  ggplot(data, aes(x=method_a))
-g <- g + geom_histogram(bins=50)
+g <-  ggplot(data)
+g <- g + geom_histogram(bins=50, aes(x=method_a))
 g
 ```
 What's going on here? Take a look at this visual breakdown:
@@ -193,8 +193,8 @@ What's going on here? Take a look at this visual breakdown:
 > Make a second histogram plotting `method_b` values.
 
 ``` {r}
-g <-  ggplot(data, aes(x=method_b))
-g <- g + geom_histogram(bins=50)
+g <-  ggplot(data)
+g <- g + geom_histogram(bins=50, aes(x=method_b))
 g
 ```
 
@@ -203,8 +203,8 @@ Does these look normal?
 > **Exercise**: Transform the x-axis to log-scale using `scale_x_log10` and visually inspect for normality
 
 ```{r}
-g <-  ggplot(data, aes(x=method_a))
-g <- g + geom_histogram(bins=50)
+g <-  ggplot(data)
+g <- g + geom_histogram(bins=50, aes(x=method_a))
 g <- g + scale_x_log10()   # Change x-axis scaling
 g
 ```
@@ -294,8 +294,8 @@ lower_bound_transformed <- mu - 1.96 * sigma
 lower_bound_untransformed <- exp(lower_bound_transformed)
 
 # new code to plot
-g <-  ggplot(data, aes(x=method_a))
-g <- g + geom_histogram(bins=50)
+g <-  ggplot(data)
+g <- g + geom_histogram(bins=50, aes(x=method_a))
 g <- g + geom_vline(xintercept=lower_bound_untransformed, color="blue")
 g
 ```
@@ -307,8 +307,8 @@ g
 > 2. Start with with the code for the histogram above, add additional lines of code to display the bounds of the parametric reference interval. (_Hint: ggplot allows you to "add" new elements to a plot_)
 
 ```{r, echo=FALSE}
-g <-  ggplot(data, aes(x=method_a))
-g <- g + geom_histogram(bins=50)
+g <-  ggplot(data)
+g <- g + geom_histogram(bins=50, aes(x=method_a))
 g <- g + geom_vline(xintercept=lower_bound_untransformed, linetype=3, color="blue")
 g <- g + geom_vline(xintercept=upper_bound_untransformed, linetype=3, color="blue")
 g <- g + geom_vline(xintercept=lower_bound, linetype=3, color="red")
@@ -361,8 +361,8 @@ sum(mask) / length(mask)
 > **Exercise:** Plot these proposed reference intervals on histogram
 
 ```{r echo=FALSE}
-g <-  ggplot(data, aes(x=method_a))
-g <- g + geom_histogram(bins=50)
+g <-  ggplot(data)
+g <- g + geom_histogram(bins=50, aes(x=method_a))
 g <- g + geom_vline(xintercept = non_parametric_bounds["2.5%"], color="red", linetype=3)
 g <- g + geom_vline(xintercept = non_parametric_bounds["97.5%"], color="red", linetype=3)
 g
@@ -374,8 +374,8 @@ g
 The lab had previously used a reference range of 20-100 for this particular test. 
 
 ```{r}
-g <-  ggplot(data, aes(x=method_a))
-g <- g + geom_histogram(bins=50)
+g <-  ggplot(data)
+g <- g + geom_histogram(bins=50, aes(x=method_a))
 g <- g + geom_vline(xintercept = 20, color="red", linetype=3)
 g <- g + geom_vline(xintercept = 100, color="red", linetype=3)
 g
