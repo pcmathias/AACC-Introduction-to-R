@@ -22,9 +22,9 @@ Relatively "clean" data has already been organized in separate tabs in an excel 
 
  1. R uses the `read_excel` function to open a excel spreadsheet located on the `path` "www/Method_Validation.data.xlsx".
  2. We specify a `sheet`, which corresponds to the worksheet name (the 'tabs' in the lower left when you open an excel sheet).
- 3. The result is *assigned* via the `<-` operation (also known as the assignment operator) to the variable to the left of the assignement operator.
+ 3. The result is *assigned* via the `<-` operation (also known as the assignment operator) to the object to the left of the assignement operator.
 
-Here's a graphical representation of how a function such as `read_excel` can assign values to a new variable:
+Here's a graphical representation of how a function such as `read_excel` can assign values to a new object:
 ![](assets/read_excel.png){width=450px}
 
 Click the green arrow to execute this code chunk:
@@ -63,7 +63,7 @@ Other cheat sheets exist as well, [check them out here](https://www.rstudio.com/
 # Viewing data tables
 
 ## QC data import
-Once you have loaded some data into an R variable (in this case, `data`), you should always briefly visually and manually inspect it. Things to check for include:
+Once you have loaded some data into an R object (in this case, `data`), you should always briefly visually and manually inspect it. Things to check for include:
 
  - Did the column headers import properly?  [Need to be able to refer to each column]
  - Did columns get split appropriately [Do we have the right number of columns]
@@ -79,10 +79,10 @@ data
 
 Note that it looks very similar to its original form in Excel. There are 3 columns and 161 rows. Each column has a specfic data format (`chr`, `dbl`, etc.). The `read_excel` function assigned these automatically. For our purposes, it is important that our result columns are numeric (`dbl` means "double wide" and is a type of numeric data format).
 
-There are a few ways to examine a variable in R:
+There are a few ways to examine an object in R:
 
-1. Printing the contents to the console by simply executing a line with the variable's name (as above)
-2. In R-Studio, variables can also be _inspected_ using the "Environment" tab (usually in the top right pane). 
+1. Printing the contents to the console by simply executing a line with the object's name (as above)
+2. In R-Studio, objects can also be _inspected_ using the "Environment" tab (usually in the top right pane). 
 
 > **Exercise:** Click on `data`.
 
@@ -112,7 +112,7 @@ select(data, method_a, method_b)   # Select the method_a and methob_b columns fr
 
 Advanced topic: What if we want to select columns AND rows? Here are two approaches to this:
 
-*First approach using intermediate/temporary variables:*
+*First approach using intermediate/temporary objects:*
 ```{r}
 temp_table <- select(data, specimen, method_a)
 final_table <- head(temp_table, n=3)
