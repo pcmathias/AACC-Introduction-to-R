@@ -3,23 +3,23 @@ title: "Introduction to R"
 output: html_document
 ---
 
-# Overview
+# Introduction to R
 
 In this lesson we will cover some R basics including installing/configuring R, a quick introduction to coding, and the fundamentals of making our data analysis reporducible.  This content can be a little dry but provides the necessary building blocks for the more interesting content to come.  Hang in there and we will get to importing, manipulating, and visualizing real laboratory data ASAP!  
 
-# What is R?
+## What is R?
 
 R is a statistical programming language.  Using R you can load, analyze, and visualize data.  R has the same functionality you are used to in other spreadsheet applications (e.g. Microsoft Excel) but offers greater functionality and flexibility.  R also provides an environment in which we can conduct reproducible data analysis.  R affords us the capabilities to document our data analysis and save it in a way that we can revisit our analysis at a later date, update our approach when inspiration strikes, and share our analysis with friends. 
 
-# Installing R (and some other stuff to make R work)
+## Installing R (and some other stuff to make R work)
 
-## R
+### R
 
 R is the programming language that we will be using to conduct our data analysis today.
 
 To install R, go to the [Comprehensive R Archive Network (CRAN)](https://cloud.r-project.org]).  Select the version of R for your operating system (Windows, Mac OS, Linux)
 
-## RStudio
+### RStudio
 
 R studio is the development environment in which we will do our R programming.
 
@@ -38,7 +38,7 @@ The **Environment** tab in the pane in the upper right corner of the screen show
 
 Another very useful tab on the top right is the **History** tab.  Here we can see the historical record of the code we have executed in the console.
 
-## The Tidyverse
+### The Tidyverse
 
 To enhance the functionality of R, we need to install additional packages.  A package is a collection of functions that extend the capabilities of the base R programming language.
 
@@ -50,9 +50,9 @@ Installing the tidyverse package is as easy as entering the following line of co
 install.packages("tidyverse", dependencies = TRUE)
 ```
 
-# Configuring the RStudio Environment
+## Configuring the RStudio Environment
 
-## Setting the Working Directory
+### Setting the Working Directory
 
 Let's create a folder on our desktop called "R_intro" in which to save our work today.  Now let's establish our R_intro folder as our working directory.
 
@@ -64,7 +64,7 @@ We can check to see that we have set the correct working directory by running th
 getwd()
 ```
 
-## Loading the tidyverse
+### Loading the tidyverse
 
 We have previously installed the tidyverse package but to use the package in our analysis we need to load it during the session we intend to use the functions in.
 
@@ -85,7 +85,7 @@ library(tidyverse)
 > 2. Load the janitor package to use during this session, similarly to how you loaded tidyverse before this exercise. Step 1 gets the package on your computer for future use; step 2 allows you to use the functions in the packages you load during that specific R session. If you exit R without saving you will have to reload the package to use its functions the next time you open up R.
 > 3. Read about the janitor package by searching through all documentation using the command `??janitor`. You can find help materials for function or package that is already loaded into your current session of R using a single question mark. If you want to find information for a package or function that is not currently loaded in the environment, you can search all of the help documentation using two question marks.
 
-# Basics of coding
+## Basics of coding
 
 In its most basic form R is a calculator
 
@@ -167,11 +167,11 @@ Clinical laboratory data is commonly arranged in a spreadsheet format, where eac
 
 For more inofrmation on the tibble data structure, refer to the [Tibbles section](http://r4ds.had.co.nz/tibbles.html) in the R for Data Science book. For a more detailed discussion of objects and other gory details about how the R language works, refer to the [R language definition](https://cran.r-project.org/doc/manuals/r-release/R-lang.html).
 
-# Creating reproducible data analyis
+## Creating reproducible data analyis
 
 Entering code in the console is a great way to develop and iterate your analysis.  However, it is easy to lose track of the pieces of code we have executed in the console. To truly make our code reproducible, we need to place it in a container that we can edit, save, and execute sequentially.  R Markdown files (extension .RMD) provide an authoring environment for us to do just that!
 
-## Creating an R Markdown File
+### Creating an R Markdown File
 
 Let's create a simple R Markdown file together.
 
@@ -208,7 +208,7 @@ ggplot(data = mpg_hp) + geom_point(mapping = aes(x = mpg, y = hp))
 
 Now let's save our R Markdown file to our working directory (File -> Save As) as "Our First R Markdown File.RMD"
 
-## Running our code
+### Running our code
 
 There are multiple options for running our code. 
 
@@ -225,17 +225,17 @@ Since all of the code is complete, let's Knit to an html file.
 
 R Markdown is a wonderful way to document our analysis and ensure its reproducibility.  We will plan to use R Markdown throughout the course and recommend that you incorporate R Markdown documentation as your preferred authoring tool. Going forward, the easiest way to interact with the lessons is to open up the R Markdown file for the lesson (within the course folder that you download) within R Studio, follow along by executing code chunks, and then filling in any blanks for exercises.
 
-## Sharing our code
+### Sharing our code
 
 Documents can be knitted as html, PDF, or word files.  These documents can be shared with your collaborators so others can see your results.  Additionally you can share the R Markdown file itself (along with any data files used for your analysis) so that others can run (and tweak) your analysis. 
 
-# Learning to Learn to Code
+## Learning to Learn to Code
 
 Learning to write code (including the functions available to you and the appropriate syntax to make your code work) can be frustrating!  Learning a new language takes time so be patient with yourself.  We all go through this process and your intution improves with your experience.
 
 Inevitably, you will at times get stuck (especially when you are first starting).  However, there are some great resources to get you un-stuck and part of learning to code is learning how to leverage the wealth of knowledge of others.
 
-## Help Command
+### Help Command
 
 If you know (or have an idea of a function) you would like to use, you can use the help command to find out more. Just type the "?" before the function of interest.
 
@@ -244,7 +244,7 @@ If you know (or have an idea of a function) you would like to use, you can use t
 ?abs()
 ```
 
-## The Internet
+### The Internet
 
 Chances are, if you are facing a data anlysis dilemma, many others have faced the exact same (or at least very similar) challenge.  Head to your favorite search engine.
 
@@ -254,17 +254,17 @@ Just ask your question (making sure to include "R" in there somewhere) and you w
 
 Chances are one of your first hits will be [Stack Overflow](https://stackoverflow.com/).  Stack Overflow is a great resource for developers to ask and answer questions.  If you have a question, it has likely been answered at least once on Stack Overflow.
 
-## Cheat Sheets
+### Cheat Sheets
 
 The folks who make RStudio offer a number of really great [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) on their website that you can download/print and keep next to your desk as quick references.
 
-## A Good Book
+### A Good Book
 
 Even in the 21st century, it never hurts to have a good book by your side.
 
 The content in this course is oriented around the tidyverse.  If you would like to continue your studies leveraging the tidyverse, a great companion is R for Data Science.  This book is available freely in a digital format [here](http://r4ds.had.co.nz/) and print versions are available as well.
 
-## Taking a Break
+### Taking a Break
 
 Sometimes you won't be able to brute force your way through a problem and your other resources (help functions, the internet, and your reference books) will seemingly let you down.  This can be very frustrating!  Don't despair, walk away for a bit.  Oftentimes it just takes a fresh set of eyes to reframe your question or rethink you approach, and what seemed impossible, suddenly becomes obvious.
 
