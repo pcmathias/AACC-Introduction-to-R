@@ -209,11 +209,13 @@ The basic functionality of `tabyl` does not improve much over the base `table` f
 ```{r tabyl}
 cbc_orders %>% 
   tabyl(department, order_status_c_descr) %>%
-  adorn_totals("row") %>%
-  adorn_percentages("row") %>%
-  adorn_pct_formatting() %>%
-  adorn_ns()
+  adorn_totals("row") %>% # tabulate operations below across rows
+  adorn_percentages("row") %>% # express counts as percentages
+  adorn_pct_formatting() %>% # clean up percentages for nicer printing
+  adorn_ns() # add back in counts (N's)
 ```
+
+The janitor package is very useful for cleaning up dirty, manually curated spreadsheets. You can read more about it [here](https://github.com/sfirke/janitor).
 
 ## Simple summary visualizations
 
