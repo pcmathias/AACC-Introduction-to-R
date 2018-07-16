@@ -11,7 +11,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE, comment=NA)
 library(tidyverse)
 library(readxl)
-# library(janitor)
 ```
 
 # Overview
@@ -19,8 +18,16 @@ library(readxl)
 In this section we will walk through examples of how to use R to analyze standard method validation experiments. We will use real data acquired as part of a method transition for immunoassays (unconjugated estriol, alpha fetoprotein, and inhibin-A) used for prenatal assessment of Trisomy 21, Trisomy 18, and open neural tube defect risk assessment.
 
 # Load data
+Relatively "clean" data has already been organized in separate tabs in an excel document. Let's first load one of these data sets. To do this we will use the `read_excel` function. We need to specify the path to our excel file and the worksheet we would like to load in. Below is an example, which does the following: 
 
-Relatively "clean" data has already been organized in separate tabs in an excel document. Let's first load one of these data sets. To do this we will use the `read_excel` function. Let's first take a look at this function. Click the green arrow to execute this code chunk:
+ 1. R uses the `read_excel` function to open a excel spreadsheet located on the `path` "www/Method_Validation.data.xlsx".
+ 2. We specify a `sheet`, which corresponds to the worksheet name (the 'tabs' in the lower left when you open an excel sheet).
+ 3. The result is *assigned* via the `<-` operation (also known as the assignment operator) to the variable to the left of the assignement operator.
+
+Here's a graphical representation of how a function such as `read_excel` can assign values to a new variable:
+![](images/read_excel.png){width=450px}
+
+Click the green arrow to execute this code chunk:
 
 ```{r explore_function}
 ?read_excel
@@ -35,6 +42,7 @@ tmp  # Take a peak
 ```
 
 
+
 > **Exercise:**
 > Load in the alpha fetoprotein (AFP) method comparison data into a tbl named `data`
 
@@ -44,7 +52,13 @@ data <- read_excel(path="data/Method_Validation.data.xlsx",
 data
 ```
 
-> What is a path? Paths describe the location of a file in a filesystem (e.g., your computer, a network drive, etc.). In this case, we are telling the function `read_excel` the location of our file, and the name of the Excel Sheet to open. These are called "arguments" to the function. Functions "take" arguments (or alternatively functions are "passed" arguments).
+*What is a path? Paths describe the location of a file in a filesystem (e.g., your computer, a network drive, etc.). In this case, we are telling the function `read_excel` the location of our file, and the name of the Excel Sheet to open. These are called "arguments" to the function. Functions "take" arguments (or alternatively functions are "passed" arguments).*
+
+### More on data importing
+What about reading other sorts of data? [Check out the R **cheat sheet** specifically for importing data](https://github.com/rstudio/cheatsheets/raw/master/data-import.pdf).
+
+Other cheat sheets exist as well, [check them out here](https://www.rstudio.com/resources/cheatsheets/)
+
 
 # Viewing data tables
 
@@ -65,7 +79,10 @@ data
 
 Note that it looks very similar to its original form in Excel. There are 3 columns and 161 rows. Each column has a specfic data format (`chr`, `dbl`, etc.). The `read_excel` function assigned these automatically. For our purposes, it is important that our result columns are numeric (`dbl` means "double wide" and is a type of numeric data format).
 
-In R-Studio, variables can also be _inspected_ using the "Environment" tab (usually in the top right pane). 
+There are a few ways to examine a variable in R:
+
+1. Printing the contents to the console by simply executing a line with the variable's name (as above)
+2. In R-Studio, variables can also be _inspected_ using the "Environment" tab (usually in the top right pane). 
 
 > **Exercise:** Click on `data`.
 
@@ -147,11 +164,12 @@ sd(data$method_a) # Standard deviation
 > Using the functions `mean` and `sd`, write code that will calculate the Coefficient of Variation (CV) for the assay. Hint: The CV is defined as:
 
 \[
-CV(\%) = \mu/\sigma * 100
+CV(\%) = \sigma/\mu * 100
 \]
 
 ```{r}
-# Write your answer here
+cv <- sd(data$method_a) / mean(data$method_a) * 100  # Coefficient of variation
+print(cv)
 ```
 
 ## Is it normally distributed?
@@ -168,12 +186,16 @@ g <-  ggplot(data, aes(x=method_a))
 g <- g + geom_histogram(bins=50)
 g
 ```
+What's going on here? Take a look at this visual breakdown:
+![](images/ggplot_1.png){width=450px}
 
 > *Exercise*
 > Make a second histogram plotting `method_b` values.
 
 ``` {r}
-# Write your answer here
+g <-  ggplot(data, aes(x=method_b))
+g <- g + geom_histogram(bins=50)
+g
 ```
 
 Does these look normal? 
@@ -181,7 +203,10 @@ Does these look normal?
 > **Exercise**: Transform the x-axis to log-scale using `scale_x_log10` and visually inspect for normality
 
 ```{r}
-# Write your answer here
+g <-  ggplot(data, aes(x=method_a))
+g <- g + geom_histogram(bins=50)
+g <- g + scale_x_log10()   # Change x-axis scaling
+g
 ```
 
 How can we quantify this?
@@ -197,7 +222,8 @@ kurtosis(data$method_a)
 > **Exercise:** Let's assess the `skewness` of the log-transformed method_a data. Use the `log10` function to transform results.
 
 ```{r, echo=FALSE}
-# Write your answer here
+method_a_logged <- log10(data$method_a)
+skewness(method_a_logged)
 ```
 
 Another option is to use the **Shapiro-Wilk test of normality**:
@@ -206,7 +232,9 @@ Another option is to use the **Shapiro-Wilk test of normality**:
 shapiro.test(data$method_a)
 ```
 
-## How to establish reference range?
+## Establishing a reference range
+
+### Overview
 Reference ranges can be established in several different ways. Two of the most common approaches are termed **parametric** and **non-parametric**. 
 
 | |Parametric|Non-parametric|
@@ -242,12 +270,21 @@ sprintf("The reference range assuming normal distribution is (%f, %f)", lower_bo
 > **Exercise:** Calculate the parametric reference range assuming that the results are log-normal (rather than normally distributed). Hint: First transform the data as above with the `log()` function, and then "untransform" back into real numbers with `exp()`
 
 ```{r echo=FALSE}
-# Write your answer here
+mu <- mean(log(data$method_a))
+sigma <- sd(log(data$method_a))
 
+lower_bound_transformed <- mu - 1.96 * sigma
+upper_bound_transformed <- mu + 1.96 * sigma
+
+lower_bound_untransformed <- exp(lower_bound_transformed)
+upper_bound_untransformed <- exp(upper_bound_transformed)
+
+sprintf("The reference range assuming log-normal distribution is (%f, %f)", lower_bound_untransformed, upper_bound_untransformed)
 ```
 
-To visually inspect, let's graphically show the bounds of the reference intervals on the histogram we made above.
-A simple way to do this is to use the `geom_vline` function of ggplot. 
+To visually inspect, let's graphically show the bounds of the reference intervals on the histogram we made above. A simple way to do this is to use the `geom_vline` function of ggplot. 
+1. Look up the function call for `geom_vline`. What kind of arguments does it take? 
+2. Start with with the code for the histogram above, add additional lines of code to display the bounds of the parametric reference interval. (*Hint: Remember that ggplot allows you to "add" new elements to a plot*)
 
 ```{r}
 # Code from exercise answer above
@@ -270,7 +307,13 @@ g
 > 2. Start with with the code for the histogram above, add additional lines of code to display the bounds of the parametric reference interval. (_Hint: ggplot allows you to "add" new elements to a plot_)
 
 ```{r, echo=FALSE}
-# Write your answer here
+g <-  ggplot(data, aes(x=method_a))
+g <- g + geom_histogram(bins=50)
+g <- g + geom_vline(xintercept=lower_bound_untransformed, linetype=3, color="blue")
+g <- g + geom_vline(xintercept=upper_bound_untransformed, linetype=3, color="blue")
+g <- g + geom_vline(xintercept=lower_bound, linetype=3, color="red")
+g <- g + geom_vline(xintercept=upper_bound, linetype=3, color="red")
+g
 ```
 
 
@@ -318,7 +361,11 @@ sum(mask) / length(mask)
 > **Exercise:** Plot these proposed reference intervals on histogram
 
 ```{r echo=FALSE}
-# Write your answer here
+g <-  ggplot(data, aes(x=method_a))
+g <- g + geom_histogram(bins=50)
+g <- g + geom_vline(xintercept = non_parametric_bounds["2.5%"], color="red", linetype=3)
+g <- g + geom_vline(xintercept = non_parametric_bounds["97.5%"], color="red", linetype=3)
+g
 ```
 
 
@@ -358,11 +405,17 @@ n_inrange <- with(data,
                   sum(method_a >= ref_range[1] & method_a <= ref_range[2]))
 binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
 
-# Now write the same code for the log-transformed variables you calculated above
+
+n_samples <- nrow(data)
+ref_range <- c(lower_bound_untransformed, upper_bound_untransformed)
+sprintf("The reference range assuming log-normal distribution is (%f, %f)", ref_range[1], ref_range[2])
+n_inrange <- with(data,
+                  sum(method_a >= ref_range[1] & method_a <= ref_range[2]))
+binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
 ```
 
 
-# Using a Q-Q plot to examine a distribution
+# Advanced: Using a Q-Q plot to examine a distribution
 ```{r}
 ggplot(data) + geom_qq(aes(sample=method_a))
 ```
