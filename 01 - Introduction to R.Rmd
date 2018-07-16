@@ -124,29 +124,29 @@ x <- 1
 
 Take a look at the Environment tab on the upper right. You can now see your object in that window.
 
-    **Exercise**
-
-    1. Now let's assign that same object x another value (eg. 2).
-
+> **Exercise**
+>
+> 1. Now let's assign that same object x another value (eg. 2).
+>
 ```{r, eval = FALSE}
 x <- 
 ```
-
-    Review your Environment tab. What happened to your object?
-
-    2. Next let's assign a new object a our old object x.
-
+>
+> Review your Environment tab. What happened to your object?
+>
+> 2. Next let's assign a new object a our old object x.
+>
 ```{r, eval = FALSE}
 
 ```
-
-    3. Re-assign x to its original value 1.
-
+>
+> 3. Re-assign x to its original value 1.
+>
 ```{r, eval = FALSE}
 
 ```
-
-    Review the Environment tab. What happened to a? Was that the behavior you expected?
+>
+> Review the Environment tab. What happened to a? Was that the behavior you expected?
 
 
 Now let's try something a little more sophisticated. Instead of putting a single number into our object, let's put a series of numbers into it using the `c()` function, which combines values into a vector.
