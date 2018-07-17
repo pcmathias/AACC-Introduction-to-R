@@ -43,14 +43,16 @@ tmp  # Take a peak
 
 
 
-> **Exercise:**
-> Load in the alpha fetoprotein (AFP) method comparison data into a tbl named `data`
+**Exercise:**
+Load in the alpha fetoprotein (AFP) method comparison data into a tbl named `data`
 
 ```{r load_data_1, echo=FALSE}
 data <- read_excel(path="data/Method_Validation.data.xlsx", 
                 sheet="MS AFP")
 data
 ```
+
+**End exercise:**
 
 *What is a path? Paths describe the location of a file in a filesystem (e.g., your computer, a network drive, etc.). In this case, we are telling the function `read_excel` the location of our file, and the name of the Excel Sheet to open. These are called "arguments" to the function. Functions "take" arguments (or alternatively functions are "passed" arguments).*
 
@@ -84,7 +86,9 @@ There are a few ways to examine an object in R:
 1. Printing the contents to the console by simply executing a line with the object's name (as above)
 2. In R-Studio, objects can also be _inspected_ using the "Environment" tab (usually in the top right pane). 
 
-> **Exercise:** Click on `data`.
+**Exercise:** 
+Click on `data`.
+**End exercise:**
 
 ## Summarizing a data table
 The `summary` command can provide a helpful overview of the data set as well:
@@ -128,8 +132,8 @@ data %>%
 
 Note that `data` is not listed explicitly in the `select` and `head` commands. Rather, the result of each command is passed along by the pipe (`%>%`) to following command. Pipes make for cleaner, simpler code and work for `tidyverse` and many other R functions.
 
-> **Exercise:**
-> Use `select` and `tail` to choose The last 20 rows of `method_b` results
+**Exercise:**
+Use `select` and `tail` to choose The last 20 rows of `method_b` results
 
 ```{r, echo=FALSE}
 temp_table <- data %>%
@@ -137,6 +141,7 @@ temp_table <- data %>%
                 select(method_b)
 temp_table
 ```
+**End exercise:**
 
 Finally, we can use the `$` shorthand to isolate _individual_ columns. Note that this is no longer a table, but just an array of values.
 ```{r}
@@ -160,8 +165,8 @@ mean(data$method_a)  # Mean, shorter
 sd(data$method_a) # Standard deviation
 ```
 
-> *Exercise*
-> Using the functions `mean` and `sd`, write code that will calculate the Coefficient of Variation (CV) for the assay. Hint: The CV is defined as:
+**Exercise:**
+Using the functions `mean` and `sd`, write code that will calculate the Coefficient of Variation (CV) for the assay. Hint: The CV is defined as:
 
 \[
 CV(\%) = \sigma/\mu * 100
@@ -171,6 +176,7 @@ CV(\%) = \sigma/\mu * 100
 cv <- sd(data$method_a) / mean(data$method_a) * 100  # Coefficient of variation
 print(cv)
 ```
+**End exercise:**
 
 ## Is it normally distributed?
 There are many approaches to determining "normality" of a distribution. Calculation of mean, median, mode and SDs can help. Visual inspection of the data will also quickly reveal if the data is normal, skewed, multimodal, etc. 
@@ -189,8 +195,8 @@ g
 What's going on here? Take a look at this visual breakdown:
 ![](assets/ggplot_1.png){width=450px}
 
-> *Exercise*
-> Make a second histogram plotting `method_b` values.
+**Exercise:**
+Make a second histogram plotting `method_b` values.
 
 ``` {r}
 g <-  ggplot(data)
@@ -199,8 +205,10 @@ g
 ```
 
 Does these look normal? 
+**End exercise:**
 
-> **Exercise**: Transform the x-axis to log-scale using `scale_x_log10` and visually inspect for normality
+**Exercise:**
+Transform the x-axis to log-scale using `scale_x_log10` and visually inspect for normality
 
 ```{r}
 g <-  ggplot(data)
@@ -208,6 +216,7 @@ g <- g + geom_histogram(bins=50, aes(x=method_a))
 g <- g + scale_x_log10()   # Change x-axis scaling
 g
 ```
+**End exercise:**
 
 How can we quantify this?
 
@@ -219,12 +228,15 @@ skewness(data$method_a)
 kurtosis(data$method_a)
 ```
 
-> **Exercise:** Let's assess the `skewness` of the log-transformed method_a data. Use the `log10` function to transform results.
+**Exercise:**
+Let's assess the `skewness` of the log-transformed method_a data. Use the `log10` function to transform results.
 
 ```{r, echo=FALSE}
 method_a_logged <- log10(data$method_a)
 skewness(method_a_logged)
 ```
+
+**End exercise:**
 
 Another option is to use the **Shapiro-Wilk test of normality**:
 
@@ -267,7 +279,8 @@ upper_bound <- mu + 1.96 * sigma
 sprintf("The reference range assuming normal distribution is (%f, %f)", lower_bound, upper_bound)
 ```
 
-> **Exercise:** Calculate the parametric reference range assuming that the results are log-normal (rather than normally distributed). Hint: First transform the data as above with the `log()` function, and then "untransform" back into real numbers with `exp()`
+**Exercise:**
+Calculate the parametric reference range assuming that the results are log-normal (rather than normally distributed). Hint: First transform the data as above with the `log()` function, and then "untransform" back into real numbers with `exp()`
 
 ```{r echo=FALSE}
 mu <- mean(log(data$method_a))
@@ -281,6 +294,8 @@ upper_bound_untransformed <- exp(upper_bound_transformed)
 
 sprintf("The reference range assuming log-normal distribution is (%f, %f)", lower_bound_untransformed, upper_bound_untransformed)
 ```
+
+**End exercise:**
 
 To visually inspect, let's graphically show the bounds of the reference intervals on the histogram we made above. A simple way to do this is to use the `geom_vline` function of ggplot. 
 1. Look up the function call for `geom_vline`. What kind of arguments does it take? 
@@ -300,11 +315,11 @@ g <- g + geom_vline(xintercept=lower_bound_untransformed, color="blue")
 g
 ```
 
-> **Exercise:** Add the additional 3 bounds we have just calculated to this plot. Change to a dashed line by specifying `linetype` in the `geom_vline` function.
+**Exercise:**
+Add the additional 3 bounds we have just calculated to this plot. Change to a dashed line by specifying `linetype` in the `geom_vline` function.
 
-> 1. Look up the function call for `geom_vline`. What kind of arguments does it take? 
-
-> 2. Start with with the code for the histogram above, add additional lines of code to display the bounds of the parametric reference interval. (_Hint: ggplot allows you to "add" new elements to a plot_)
+  1. Look up the function call for `geom_vline`. What kind of arguments does it take? 
+  2. Start with with the code for the histogram above, add additional lines of code to display the bounds of the parametric reference interval. (_Hint: ggplot allows you to "add" new elements to a plot_)
 
 ```{r, echo=FALSE}
 g <-  ggplot(data)
@@ -316,6 +331,7 @@ g <- g + geom_vline(xintercept=upper_bound, linetype=3, color="red")
 g
 ```
 
+**End exercise:**
 
 ### Non-parametric Reference Ranges
 Non-parametric reference ranges are simply the middle 95% of the distribution. Using R, this is done with the straightforward command `quantile`:
@@ -358,7 +374,8 @@ print(proportion_in_range)
 sum(mask) / length(mask)
 ```
 
-> **Exercise:** Plot these proposed reference intervals on histogram
+**Exercise:**
+Plot these proposed reference intervals on histogram
 
 ```{r echo=FALSE}
 g <-  ggplot(data)
@@ -367,7 +384,7 @@ g <- g + geom_vline(xintercept = non_parametric_bounds["2.5%"], color="red", lin
 g <- g + geom_vline(xintercept = non_parametric_bounds["97.5%"], color="red", linetype=3)
 g
 ```
-
+**End exercise:**
 
 ## How to verify a proposed reference range?
 
@@ -395,7 +412,8 @@ binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
 
 ```
 
-> **Exercise:** Let's evaluate our empirically considered parametric reference ranges
+**Exercise:**
+Let's evaluate our empirically considered parametric reference ranges
 
 ```{r, echo=FALSE}
 n_samples <- nrow(data)
@@ -413,7 +431,7 @@ n_inrange <- with(data,
                   sum(method_a >= ref_range[1] & method_a <= ref_range[2]))
 binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
 ```
-
+**End exercise:**
 
 # Advanced: Using a Q-Q plot to examine a distribution
 ```{r}
