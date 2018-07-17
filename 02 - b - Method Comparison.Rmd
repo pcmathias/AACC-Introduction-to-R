@@ -70,8 +70,7 @@ Is `t.test` the right function? Consider the histograms above and our previous w
 |Many populations|ANOVA|Kruskal Wallis / one-way anova|
 |Populations across several treatments/times|repeated measures ANOVA|Friedman test|
 
-**Exercise** 
-
+**Exercise:** 
 Using the table above, select the _right_ test for comparing `method_a` and `method_b`. Look up the function call using google, R documentation or any other source. Write out the function and calculate a p-value below
 
 ```{r}
@@ -132,7 +131,8 @@ PB_results <- mcreg(data$method_a, data$method_b, method.reg = "PaBa")
 PB_results@para
 ```
 
-**Exercise:** Add another `geom_abline` to the plot above for the Passing-Bablock regression coefficients determined above.
+**Exercise:**
+Add another `geom_abline` to the plot above for the Passing-Bablock regression coefficients determined above.
 
 ```{r}
 ggplot(data) +
@@ -141,7 +141,6 @@ ggplot(data) +
   geom_abline(intercept = deming_results@para[1], slope = deming_results@para[2], color="red") +
   geom_abline(intercept = PB_results@para[1], slope = PB_results@para[2], color="green")
 ```
-
 **End Exercise**
 
 ### Extra-credit: Outlier robustness
@@ -188,3 +187,4 @@ data %>%
   count() %>%
   spread(method_a_bin, n)
 ```
+**End Exercise** 
