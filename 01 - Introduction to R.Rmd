@@ -6,6 +6,10 @@ author:
 output: html_document
 ---
 
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE, comment = NA)
+```
+
 # Introduction to R
 
 In this lesson we will cover some R basics including installing/configuring R, a quick introduction to coding, and the fundamentals of making our data analysis reporducible.  This content can be a little dry but provides the necessary building blocks for the more interesting content to come.  Hang in there and we will get to importing, manipulating, and visualizing real laboratory data ASAP!  
