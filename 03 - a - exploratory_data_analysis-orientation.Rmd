@@ -59,7 +59,7 @@ orders <- read_excel("data/orders_data_set.xlsx")
 str(orders)
 ```
 
-> *Exercise*
+> **Exercise**
 >
 > 1. Which fields of the data frame are characters?
 > 
