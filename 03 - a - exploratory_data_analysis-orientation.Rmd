@@ -253,38 +253,78 @@ ggplot(data = orders) +
 >
 > 1. Plot a bar graph of the orders data set showing the breakdown of order status.
 >
-```{r}
-
+```{r, eval = FALSE}
+ggplot(data = orders) + 
+  geom_bar(mapping = aes(x = order_status_c_descr)) 
 ```
 >
 > 2. Plot a bar graph showing the breakdown of order class.
-```{r}
-
+```{r, eval = FALSE}
+ggplot(data = orders) + 
+  geom_bar(mapping = aes(x = order_class_c_descr)) 
 ```
 
 Plotting order volumes as a function of time can be helpful across a variety of settings: monitoring a utilization intervention, analyzing seasonality for specific tests, creating projections for workload, etc. We can revisit the bar graph but map the time of order to the x-axis.
 
 ```{r}
-ggplot(data = orders) + geom_bar(mapping = aes(x = order_time))
+ggplot(data = orders) + 
+  geom_bar(mapping = aes(x = order_time))
 ```
 
 This bar chart looks very uneven, with bars that are spread far apart. Let's try a geom function that is related to `geom_bar()` but intended to visualize distributions of continuous variables like time: `geom_histogram()`.
 
 ```{r}
-ggplot(data = orders) + geom_histogram(mapping = aes(x = order_time))
+ggplot(data = orders) + 
+  geom_histogram(mapping = aes(x = order_time))
 ```
 
 Note that R output a warning: "`stat_bin()` using `bins = 30`. Pick better value with `binwidth`." By default `geom_histogram()` splits the continous variable into 30 bins, which makes the bars look very uneven over time. That split is arbitrary and probably does not reflect the true distribution of data.
 
-How do we fix this? The ggplot2 functions use seconds as their default unit of time, so we can define a binwidth that is multiples of seconds to reflect days or weeks. For example, one day = 60*60*24 seconds.
+How do we fix this? The `geom_histogram()` function uses seconds as its default unit of time (but will use days if the variable is a date rather than a time), so we can define a binwidth that is multiples of seconds to reflect days or weeks. For example, one day = 60*60*24 seconds.
 
 ```{r}
-ggplot(data = orders) + geom_histogram(mapping = aes(x = order_time), binwidth = 60*60*24)
+ggplot(data = orders) + 
+  geom_histogram(mapping = aes(x = order_time), binwidth = 60*60*24)
 ```
 
 That pattern looks more accurate, with decreased volumes occuring on weekends. Alternately, we can look at volumes by week instead of by day.
 
 ```{r}
-ggplot(data = orders) + geom_histogram(mapping = aes(x = order_time), binwidth = 60*60*24*7)
+ggplot(data = orders) + 
+  geom_histogram(mapping = aes(x = order_time), binwidth = 60*60*24*7)
+```
+
+What if we want to change the x-axis label of our plot? We simply add another layer called `xlab()` and add the string we want to insert.
+
+```{r}
+ggplot(data = orders) + 
+  geom_histogram(mapping = aes(x = order_time), binwidth = 60*60*24*7) +
+  xlab("Time")
+```
+
+Now let's add another mapping to our plot. We may want to analyze the number of orders that are cancelled and visualize that alongside the total number of orders. We simply add another variable to the aesthetic function, and instead of plotting against an axis, we are going to fill in the bars with colors based on order status.
+
+```{r}
+ggplot(data = orders) +
+  geom_histogram(
+    mapping = aes(x = order_time, fill = order_status_c_descr),
+    binwidth = 60*60*24*7
+  ) +
+  xlab("Time")
+```
+
+> **Exercise**
+>
+> Plot the weekly volume of a subset of common orders: basic metabolic panel, hemoglobin A1C, lipid panel, and TSH (proc_codes BMP, A1C, LIPID, TSH) and show the breakdown of tests by fill in the bar chart.
+> 
+```{r}
+orders_subset <- orders %>%
+  filter(proc_code %in% c("BMP", "A1C", "LIPID", "TSH"))
+ggplot(data = orders_subset) +
+  geom_histogram(
+    mapping = aes(x = order_time, fill = proc_code),
+    binwidth = 60*60*24*7
+  ) +
+  xlab("Time")
 ```
 
