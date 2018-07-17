@@ -12,4 +12,10 @@ To maximize our course time, please attempt to complete the following tasks ***p
 
 ## Using the content in this course
 
-This course is intended as an introduction for clinical laboratory professionals who have limited to no knowledge of computer programming or of the R language. The easiest way to get up and running with the content (if you are not familiar with git) is to download a .zip file with the repository contents using the "Clone or download" button and select "Download ZIP". Unzip the file to a convenient destination that you will remember and select "Set Working Directory" from the Session menu at the top of the screen in RStudio, then navigate to that location. You can then open up the course files in RStudio, run completed lines or chunks of code, and fill in the blanks for exercises.
+This course is intended as an introduction for clinical laboratory professionals who have limited to no knowledge of computer programming or of the R language. The easiest way to get up and running with the content (if you are not familiar with git):
+
+1. Download the .zip file with the repository contents using the "Clone or download" button and select "Download ZIP"
+2. Unzip the file to a convenient destination that you will remember
+3. Select "Set Working Directory" from the Session menu at the top of the screen in RStudio, then navigate to that location. 
+
+You can then open up the course files in RStudio, run completed lines or chunks of code, and fill in the blanks for exercises.
