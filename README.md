@@ -8,7 +8,9 @@ output:
 
 This repository contains the course content for How to Truly "Excel" at Data Analysis and Visualization: An Introduction to the R Programming Language at AACC 2018 on July 29, 2018. This course is intended as an introduction for clinical laboratory professionals who have limited to no knowledge of computer programming or of the R language. 
 
-## Pre-course requirements (*complete 1 week or more in advance of the course*)
+## Pre-course requirements
+
+**Complete 1 week or more in advance of the course**
 
 To maximize our course time, please attempt to complete the following tasks ***prior*** to arriving:
 
@@ -19,7 +21,9 @@ To maximize our course time, please attempt to complete the following tasks ***p
 
 If you have any problems with steps 1-3 above, refer to the introduction lecture where there is more detail: (https://github.com/pcmathias/AACC-Introduction-to-R/blob/master/01%20-%20Introduction%20to%20R.Rmd). If you continue to have problems, please reach out to pcm10 <at> uw <dot> edu.
 
-## Preparing for the course (*complete 1-2 days in advance of the course*)
+## Preparing for the course
+
+**Complete 1-2 days in advance of the course**
 
 The easiest way to get up and running with the content (to decrease set up time) is to follow these instructions a couple days before the course:
 
