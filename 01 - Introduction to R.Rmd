@@ -70,6 +70,8 @@ We can check to see that we have set the correct working directory by running th
 getwd()
 ```
 
+**End Pre-class Homework:  Once you have reached this point you are ready for class.  Please stop here for now**
+
 ### Loading the tidyverse
 
 We have previously installed the tidyverse package but to use the package in our analysis we need to load it during the session we intend to use the functions in.
