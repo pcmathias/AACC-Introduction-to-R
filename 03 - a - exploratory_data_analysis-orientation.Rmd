@@ -219,9 +219,72 @@ The janitor package is very useful for cleaning up dirty, manually curated sprea
 
 ## Simple summary visualizations
 
-```{r}
-orders <- orders %>%
-  mutate(order_week = floor_date(order_time, unit = "week"))
-ggplot(orders, aes(x = order_week)) + 
-  geom_histogram(binwidth = 7*24*60*60)
+One of R's greatest strengths is its ability to create complex visualizations without writing a large amount of complex code. When we reviewed our method validation data, we were oriented to the ggplot2 package. With our orders data, we can dive into how plots using this package work.
+
+The general syntax for plotting with ggplot follows this structure:
+
+```{r, eval = FALSE}
+ggplot(data = <tibble>) +
+  <geom_function>(mapping = aes(<mapping(s)>))
 ```
+
+The data is expected to be in a tibble (data frame) where each row represents a unique observation and each column represents a distinct variable ("tidy" data - for more on tidy data info read [here](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)). Code for plotting with this package includes the following components:
+
+1. The `ggplot()` function identifies the data set you want to plot 
+2. A variety of different geom functions produce the visualizations that you layer on top of your data set
+3. The input for these geom functions is a mapping of which variables to plot
+
+Let's look at a simple visualization of our orders data set, so our orders data set is the input for the `ggplot()` function. We are interested in the breakdown of order volumes by department. One straight-forward visualization is a bar chart, so we use the `geom_bar()` function and provide the department as the input into the `aes()`, which is an aesthetic. In this case, we provide department as the x-axis. Note that the geom function follows the `ggplot()` function after a "+" (this is a distinct situation from using pipes).
+
+```{r}
+ggplot(data = orders) + 
+  geom_bar(mapping = aes(x = department))
+```
+
+The definitely shows the data, but the x-axis is not readable because there are so many categories. The easiest solution is to flip the axes using the `coord_flip()` function.
+
+```{r}
+ggplot(data = orders) + 
+  geom_bar(mapping = aes(x = department)) +
+  coord_flip()
+```
+
+> **Exercise**
+>
+> 1. Plot a bar graph of the orders data set showing the breakdown of order status.
+>
+```{r}
+
+```
+>
+> 2. Plot a bar graph showing the breakdown of order class.
+```{r}
+
+```
+
+Plotting order volumes as a function of time can be helpful across a variety of settings: monitoring a utilization intervention, analyzing seasonality for specific tests, creating projections for workload, etc. We can revisit the bar graph but map the time of order to the x-axis.
+
+```{r}
+ggplot(data = orders) + geom_bar(mapping = aes(x = order_time))
+```
+
+This bar chart looks very uneven, with bars that are spread far apart. Let's try a geom function that is related to `geom_bar()` but intended to visualize distributions of continuous variables like time: `geom_histogram()`.
+
+```{r}
+ggplot(data = orders) + geom_histogram(mapping = aes(x = order_time))
+```
+
+Note that R output a warning: "`stat_bin()` using `bins = 30`. Pick better value with `binwidth`." By default `geom_histogram()` splits the continous variable into 30 bins, which makes the bars look very uneven over time. That split is arbitrary and probably does not reflect the true distribution of data.
+
+How do we fix this? The ggplot2 functions use seconds as their default unit of time, so we can define a binwidth that is multiples of seconds to reflect days or weeks. For example, one day = 60*60*24 seconds.
+
+```{r}
+ggplot(data = orders) + geom_histogram(mapping = aes(x = order_time), binwidth = 60*60*24)
+```
+
+That pattern looks more accurate, with decreased volumes occuring on weekends. Alternately, we can look at volumes by week instead of by day.
+
+```{r}
+ggplot(data = orders) + geom_histogram(mapping = aes(x = order_time), binwidth = 60*60*24*7)
+```
+
