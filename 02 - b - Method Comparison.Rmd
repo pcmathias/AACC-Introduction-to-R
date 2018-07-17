@@ -9,25 +9,114 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(readxl)
-library(janitor)
 ```
 
 # Overview
 
 In this section we will continue exploring how to use R in method validation by comparing results from two different methods.
 
-# Load data
+## Load data
 
 Let's load in hCG data, just as we did in the previous session.
+```{r load_data_1, echo=FALSE}
+data <- read_excel(path="data/Method_Validation.data.xlsx", 
+                sheet="MS HCG")
+data
+```
 
-# Describe data and explore its distribution
+## Describe data and explore its distribution
 
-Let's briefly describe data, as we did previously.
+Let's use pipes and so
 
-# Method comparison 
-## Quantitative
+```{r}
+data %>%
+  
+```
+
+### Stacking histograms
+
+What if we want to plot the distribution of both `method_a` and `method_b`? What we need is a so-called **tidy dataframe**.
+
+IMAGE OF TIDY DATAFRAME HERE
+
+The "long" and "short" of tibbles.
+
+
+```{r}
+long_data <- gather(data, key="method", value="value", -specimen)
+
+long_data %>%
+  ggplot(aes(`value`, colour = `method`)) +
+  geom_freqpoly(bins=20, )
+```
+
+## Method comparison 
+
+### Using a statistical test
+R is a statistical programming language, so simple statistical testing is straightforward:
+```{r}
+# Note we are using the paired=TRUE variant of the t.test, since we have paired measurements.
+t.test(data$method_a, data$method_b, paired=TRUE)
+```
+
+For more information on the `t.test` function, (follow this link)[https://www.statmethods.net/stats/ttest.html].
+
+### Using the RIGHT statistical test
+Is `t.test` the right function? Consider the histograms above and our previous work with log normalizing the values. 
+
+|Populations|Parametric|Non-parametric|
+|:-------------|:-------------------------:|:-------------------------:|
+|Two populations|t-test|Mann-Whitney U|
+|Many populations|ANOVA|Kruskal Wallis / one-way anova|
+|Populations across several treatments/times|repeated measures ANOVA|Friedman test|
+
+> **Exercise:** 
+
+Using the table above, select the _right_ test for comparing `method_a` and `method_b`. Look up the function call using google, R documentation or any other source. Write out the function and calculate a p-value below
+
+```{r}
+wilcox.test(data$method_a, data$method_b, paired=TRUE)
+```
+
+## Regressions
+
 ### Simple linear regression
+
+Let's begin by simply plotting `method_a` and `method_b` as a scatter plot:
+```{r}
+ggplot(data) + 
+  geom_point(aes(method_a, method_b))
+```
+
+
+Adding a least-squares regression line is easy with a little bit of magic from `ggplot`:
+
+```{r}
+ggplot(data) + 
+  geom_point(aes(method_a, method_b)) + 
+  geom_smooth(method = "lm", aes(method_a, method_b))
+```
+
+What if we want to just extract the coefficients of the linear model? We can utilize R's formula notation format and the `lm` function:
+
+```{r}
+regression <- lm(method_b ~ method_a, data)
+summary(regression)
+```
+
 ### Deming regression
+
+In fact, a least-squares regression, while a good approximation, is not the 
+
+
+```{r}
+install.packages("mcr")
+library(mcr)
+deming_results <- mcreg(data$method_a,data$method_b, method.reg = "Deming")
+deming_results@para  # "para" short for "parameters"-- this is a library/method specific term here
+
+```
+
 ### Passing-Bablock
 
 ## Compare methods by concordance relative to decision thresholds
