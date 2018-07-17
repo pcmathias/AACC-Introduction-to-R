@@ -1,3 +1,9 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+
 # Introduction to R Course
 
 This repository contains the course content for How to Truly "Excel" at Data Analysis and Visualization: An Introduction to the R Programming Language at AACC 2018 on July 29, 2018. This course is intended as an introduction for clinical laboratory professionals who have limited to no knowledge of computer programming or of the R language. 
@@ -9,7 +15,7 @@ To maximize our course time, please attempt to complete the following tasks ***p
 1. Install (or update) R from Comprehensive R Archive Network (CRAN) at (https://cloud.r-project.org).  Select the version of R for your operating system (Windows, Mac OS, Linux).
 1. Download and install RStudio at (https://www.rstudio.com/products/rstudio/download/#download).  Select the installer for your Operating System.
 1. Launch RStudio after installation. On the left side of the screen (the Console tab), install the tidyverse package by copying and pasting the following code into your Console and hitting enter: `install.packages("tidyverse", dependencies = TRUE)`.
-1. Complete the pre-course survey [here](https://goo.gl/forms/9mal6vQKwWYiXjyd2).
+1. Complete the pre-course survey at (https://goo.gl/forms/9mal6vQKwWYiXjyd2).
 
 If you have any problems with steps 1-3 above, refer to the introduction lecture where there is more detail: (https://github.com/pcmathias/AACC-Introduction-to-R/blob/master/01%20-%20Introduction%20to%20R.Rmd). If you continue to have problems, please reach out to pcm10 <at> uw <dot> edu.
 
