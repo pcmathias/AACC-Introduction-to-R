@@ -207,7 +207,7 @@ geom_histogram(binwidth = 1)
 
 ```
 
-##Date Differential by Patient/Test
+## Date Differential by Patient/Test
 
 Now that we have refreshed our tabulation skills, let's revist working with dates.  Sometimes it is useful to look at the interval between orders for a given test.  Let's look at the time interval between CBCs for individual patients in our data set.
 
@@ -248,7 +248,7 @@ geom_histogram(binwidth = 5)
 
 We can see that intervals between CBCs range from 1 to nearly 100 days in this data set, but most repeat CBCs are performed before ~45 days have elapsed.
 
-##Bringing different data sets together:
+## Bringing different data sets together:
 
 The `join` function can also help us to bring two different data sets together for analysis using a shared key variable.
 
