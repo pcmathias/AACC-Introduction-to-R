@@ -1,0 +1,190 @@
+---
+title: "Method Validation in R"
+author: "Daniel Herman"
+date: "06/07/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(readxl)
+```
+
+# Overview
+
+In this section we will continue exploring how to use R in method validation by comparing results from two different methods.
+
+## Load data
+
+Let's load in hCG data, just as we did in the previous session.
+```{r load_data_1, echo=FALSE}
+data <- read_excel(path="data/Method_Validation.data.xlsx", 
+                sheet="MS HCG")
+glimpse(data)
+```
+
+## Describe data and explore its distribution
+
+Let's use pipes to summarize and calculate a few statistics:
+
+```{r}
+data %>%
+  summarize(method_a_mean=mean(method_a), method_a_sd=sd(method_a),
+            method_b_mean=mean(method_b), method_b_sd=sd(method_b))
+```
+
+### Overlapping histograms
+
+What if we want to plot the distribution of both `method_a` and `method_b` in the same plot? We are going to start by creating a "long dataframe" using the `gather` function. This "unpacks" multiple columns into just two columns, where the **first column** is the `key` and the **second column** is the `value`:
+[assets/data_gather.png]()
+```{r}
+long_data <- gather(data, key="method", value="value", -specimen)
+```
+Take a moment to compare the `data` and `long_data` objects. How are they different? Note that when we have a "long" datafarme, every row is a named observation (also known as a key-value pair). For reference, the reverse transformation (from "long" to "wide") is done with the `spread` function.
+
+
+Once in a long-form format, we can tell ggplot to use both the value and the method columns to plot two different frequency histograms.
+
+```{r}
+ggplot(long_data) + geom_freqpoly(bins=20, aes(x=`value`, color=`method`))
+```
+
+## Method comparison (t-tests, and more)
+
+### Using a statistical test
+R is a statistical programming language, so simple statistical testing is straightforward:
+```{r}
+# Note we are using the paired=TRUE variant of the t.test, since we have paired measurements.
+t.test(data$method_a, data$method_b, paired=TRUE)
+```
+
+For more information on the `t.test` function, (follow this link)[https://www.statmethods.net/stats/ttest.html].
+
+### Using the RIGHT statistical test
+Is `t.test` the right function? Consider the histograms above and our previous work with log normalizing the values. 
+
+|Populations|Parametric|Non-parametric|
+|:-------------|:-------------------------:|:-------------------------:|
+|Two populations|t-test|Mann-Whitney U|
+|Many populations|ANOVA|Kruskal Wallis / one-way anova|
+|Populations across several treatments/times|repeated measures ANOVA|Friedman test|
+
+**Exercise** 
+
+Using the table above, select the _right_ test for comparing `method_a` and `method_b`. Look up the function call using google, R documentation or any other source. Write out the function and calculate a p-value below
+
+```{r}
+wilcox.test(data$method_a, data$method_b, paired=TRUE)
+```
+**End Exercise** 
+
+## Regressions
+
+### Simple linear regression
+
+Let's begin by simply plotting `method_a` and `method_b` as a scatter plot. Notice how we are using the `aes()` to define "mappings" from our data to the x and y coordinates:
+```{r}
+ggplot(data) + 
+  geom_point(aes(x=method_a, y=method_b))
+```
+
+
+Adding a least-squares regression line is easy with a little bit of magic from `ggplot`. The `lm` (Linear Model) function does all the work here!
+
+```{r}
+ggplot(data) + 
+  geom_point(aes(x=method_a, y=method_b)) + 
+  geom_smooth(method = "lm", aes(x=method_a, y=method_b))
+```
+
+What if we want to just extract the coefficients of the linear model? We can utilize R's formula notation format and the `lm` function:
+
+```{r}
+regression <- lm(method_b ~ method_a, data)
+summary(regression)
+```
+
+### Deming regression
+
+In fact, a least-squares regression, while a good approximation for this type of data, minimizes errors only in the y-dimension. The *Deming regrssion* differs from the simple linear regression in that it accounts for errors in observations on both the x- and the y- axis, thus making it more suitable for estimating a best-fit line between two measured variables.
+
+```{r}
+library(mcr) # remember, you may need to install.packages("mcr") in the console first!
+deming_results <- mcreg(data$method_a,data$method_b, method.reg = "Deming")
+deming_results@para  # "para" short for "parameters"-- this is a library/method specific term here
+
+```
+
+Now let's add it to our plot. We can use the `geom_abline()` ggplot function to add a line with a slope and intercept. The intercept and slope are stored in `deming_results@para[1]` and `deming_results@para[2]` respectively.
+
+```{r}
+ggplot(data) +
+  geom_point(aes(x=method_a, y=method_b))  +
+  geom_smooth(method = "lm", aes(x=method_a, y=method_b), se=FALSE) +
+  geom_abline(intercept = deming_results@para[1], slope = deming_results@para[2], color="red")
+```
+
+### Passing-Bablock
+
+```{r}
+PB_results <- mcreg(data$method_a, data$method_b, method.reg = "PaBa")
+PB_results@para
+```
+
+**Exercise:** Add another `geom_abline` to the plot above for the Passing-Bablock regression coefficients determined above.
+
+```{r}
+ggplot(data) +
+  geom_point(aes(x=method_a, y=method_b))  +
+  geom_smooth(method = "lm", aes(x=method_a, y=method_b), se=FALSE) +
+  geom_abline(intercept = deming_results@para[1], slope = deming_results@para[2], color="red") +
+  geom_abline(intercept = PB_results@para[1], slope = PB_results@para[2], color="green")
+```
+
+**End Exercise**
+
+### Extra-credit: Outlier robustness
+How "robust" are each of these methods to outliers? Let's try it out.
+```{r}
+# Step 1: make a copy of the data so we don't change the original
+data_with_outliers <- data
+# Step 2: modify the data to include some outliers (fake data!)
+data_with_outliers$method_a[10:12] <- 100000
+# Step 3: same plotting code as above, using our new fake data
+ggplot(data_with_outliers) +
+  geom_point(aes(x=method_a, y=method_b))  +
+  geom_smooth(method = "lm", aes(x=method_a, y=method_b), se=FALSE) +
+  geom_abline(intercept = deming_results@para[1], slope = deming_results@para[2], color="red") +
+  geom_abline(intercept = PB_results@para[1], slope = PB_results@para[2], color="green")
+
+```
+
+That is quite a difference!
+
+## Compare methods by concordance relative to decision thresholds
+Next, let's compare method A and B using decision thresholds. For the purpose of this tutorial, we will simply use 25,000 as our threshold.
+
+```{r}
+threshold <- 25000
+data %>% 
+  group_by(method_a > threshold, method_b > threshold) %>% 
+  count()
+```
+Looking at this table, method_a and method_b are *discordant* across our threshold in 40 cases, and *concordant* in 58 + 48 cases.
+
+**Exercise**: Write code to compare accuracy across two different decision thresholds (25000 and 50000, for example)
+
+Hint: In the `group_by` function, use the `cut()` function to group a numerical range into a set of categoreis:
+     `group_by(method_a_bin = cut(method_a, breaks=c(-Inf, 25000, 50000, Inf), labels=c("low","middle","high"))`
+
+Hint #2: You will have to group_by using `cut()` for both `method_a` and `method_b`, then you `count()` the resulting groups. Look at previous code for inspiration!
+
+Hint #3: For a nicer formatted table, use the `spread()` function to create a confusion matrix
+```{r}
+data %>%
+  group_by(method_a_bin = cut(method_a, breaks=c(-Inf, 25000, 50000, Inf), labels=c("low","middle","high")), 
+           method_b_bin = cut(method_b, breaks=c(-Inf, 25000, 50000, Inf), labels=c("low","middle","high"))) %>%
+  count() %>%
+  spread(method_a_bin, n)
+```
