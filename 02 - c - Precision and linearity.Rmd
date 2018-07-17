@@ -12,8 +12,6 @@ library(readxl)
 #library(janitor)
 ```
 
-# Method Validation -- Precision, Calibration Verification, and Linearity
-
 In this section, we will evaluate analytical method precision, calibration verification, linearity.
 
 ## Precision
@@ -133,20 +131,20 @@ data %>%
 ```{r, eval=FALSE}
 g <- data %>%
   filter(Analyte == ________) %>%
-  ggplot(aes(x=________))
-g <- g + geom_histogram(binwidth=_________)
-g <- g + geom_vline(aes(xintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue")
-g <- g + geom_vline(aes(xintercept = _________), linetype=2, color="blue")
+  ggplot()
+g <- g + geom_histogram(aes(x=________), binwidth=_________) +
+  geom_vline(aes(xintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue") +
+  geom_vline(aes(xintercept = _________), linetype=2, color="blue")
 g
 ```
 
 ```{r, echo=FALSE}
 g <- data %>%
   filter(Analyte == "AFP") %>%
-  ggplot(aes(x=P1))
-g <- g + geom_histogram(binwidth=0.5)
-g <- g + geom_vline(aes(xintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue")
-g <- g + geom_vline(aes(xintercept = mean(P1) - 2 * sd(P1)), linetype=2, color="blue")
+  ggplot()
+g <- g + geom_histogram(aes(x=P1), binwidth=0.5) +
+  geom_vline(aes(xintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue") +
+  geom_vline(aes(xintercept = mean(P1) - 2 * sd(P1)), linetype=2, color="blue")
 g
 ```
 
@@ -155,8 +153,8 @@ As expected, interday replicates of QC samples look relatively normally distribu
 ```{r}
 g <- data %>%
   filter(Analyte == "AFP") %>%
-  ggplot(aes(x=Sample, y=P1))
-g <- g + geom_point()
+  ggplot()
+g <- g + geom_point(aes(x=Sample, y=P1))
 g
 ```
 
@@ -168,14 +166,14 @@ g
 ```{r, eval=FALSE}
 g <- data %>%
   filter(Analyte == "AFP") %>%
-  ggplot(aes(x=Sample, y=P1))
-g <- g + geom_point()
-g <- g + geom_hline(aes(yintercept = mean(P1)), linetype=1, color="blue")
-g <- g + geom_hline(aes(yintercept = mean(P1) + 1 * sd(P1)), linetype=3, color="blue")
-g <- g + geom_hline(aes(yintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue")
-g <- g + geom_hline(_______)
-g <- g + geom_hline(_______________)
-g <- g + ylim(_________)
+  ggplot()
+g <- g + geom_point(aes(x=Sample, y=P1)) +
+  geom_hline(aes(yintercept = mean(P1)), linetype=1, color="blue") +
+  geom_hline(aes(yintercept = mean(P1) + 1 * sd(P1)), linetype=3, color="blue") +
+  geom_hline(aes(yintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue") +
+  geom_hline(_______) +
+  geom_hline(_______________) +
+  ylim(_________)
 g
 
 ```
@@ -183,14 +181,14 @@ g
 ```{r, echo=FALSE}
 g <- data %>%
   filter(Analyte == "AFP") %>%
-  ggplot(aes(x=Sample, y=P1))
-g <- g + geom_point()
-g <- g + geom_hline(aes(yintercept = mean(P1)), linetype=1, color="blue")
-g <- g + geom_hline(aes(yintercept = mean(P1) + 1 * sd(P1)), linetype=3, color="blue")
-g <- g + geom_hline(aes(yintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue")
-g <- g + geom_hline(aes(yintercept = mean(P1) - 1 * sd(P1)), linetype=3, color="blue")
-g <- g + geom_hline(aes(yintercept = mean(P1) - 2 * sd(P1)), linetype=2, color="blue")
-g <- g + ylim(6, 10)
+  ggplot()
+g <- g + geom_point(aes(x=Sample, y=P1)) +
+  geom_hline(aes(yintercept = mean(P1)), linetype=1, color="blue") +
+  geom_hline(aes(yintercept = mean(P1) + 1 * sd(P1)), linetype=3, color="blue") +
+  geom_hline(aes(yintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue") +
+  geom_hline(aes(yintercept = mean(P1) - 1 * sd(P1)), linetype=3, color="blue") +
+  geom_hline(aes(yintercept = mean(P1) - 2 * sd(P1)), linetype=2, color="blue") +
+  ylim(6, 10)
 g
 
 ```
@@ -222,11 +220,10 @@ head(sim_data)
 
 Spot check the histogram of this simulated data:
 ```{r}
-g <- sim_data %>%
-  ggplot(aes(x=x))
-g <- g + geom_histogram()
-g <- g + geom_vline(aes(xintercept = mean(x) + 2 * sd(x)), linetype=2, color="blue")
-g <- g + geom_vline(aes(xintercept = mean(x) - 2 * sd(x)), linetype=2, color="blue")
+g <- ggplot(data=sim_data) +
+  geom_histogram(aes(x=x)) +
+  geom_vline(aes(xintercept = mean(x) + 2 * sd(x)), linetype=2, color="blue") +
+  geom_vline(aes(xintercept = mean(x) - 2 * sd(x)), linetype=2, color="blue")
 g
 ```
 
@@ -240,10 +237,10 @@ tmp$x[observation_list] <- 0
 
 # replot
 g <- tmp %>%
-  ggplot(aes(x=x))
-g <- g + geom_histogram()
-g <- g + geom_vline(aes(xintercept = mean(x) + 2 * sd(x)), linetype=2, color="blue")
-g <- g + geom_vline(aes(xintercept = mean(x) - 2 * sd(x)), linetype=2, color="blue")
+  ggplot()
+g <- g + geom_histogram(aes(x=x)) +
+  geom_vline(aes(xintercept = mean(x) + 2 * sd(x)), linetype=2, color="blue") +
+  geom_vline(aes(xintercept = mean(x) - 2 * sd(x)), linetype=2, color="blue")
 g
 ```
 
@@ -288,10 +285,9 @@ data <- data %>%
 
 Plot calverification results for AFP
 ```{r}
-g <- data %>%
-  ggplot(aes(x=Assigned_Value, y=Observed))
-g <- g + geom_point()
-g <- g + geom_abline(slope=1, intercept=0, linetype=2, color="gray")
+g <- ggplot(data=data) +
+  geom_point(aes(x=Assigned_Value, y=Observed)) +
+  geom_abline(slope=1, intercept=0, linetype=2, color="gray")
 g
 ```
 
@@ -341,34 +337,31 @@ tmp <- data
 # Figure out plot symmetric y-axis limits
 max_diff <- abs( max(tmp$value_diff, na.rm=T) ) 
 
-g <- tmp %>%
-  ggplot(aes(x=Assigned_Value, y=value_diff))
-g <- g + geom_point()
-g <- g + geom_hline(yintercept = 0, linetype=1, color="gray")
-g <- g + ylim(-max_diff, max_diff)
-g <- g + ylab("Observed - Assigned")       # Change y-axis label
+g <- ggplot(data=tmp) +
+  geom_point(aes(x=Assigned_Value, y=value_diff)) +
+  geom_hline(yintercept = 0, linetype=1, color="gray") +
+  ylim(-max_diff, max_diff) +
+  ylab("Observed - Assigned")       # Change y-axis label
 g
 ```
 
 > **Exercise:** Adapt the above code to plot the percent differences
 
 ```{r, eval=FALSE}
-g <- tmp %>%
-  ggplot(___________)
-g <- g + geom_point()
-g <- g + geom_hline(yintercept = 0, linetype=1, color="gray")
-g <- g + ylim(____________)
-g <- g + ylab(_________________)
+g <- ggplot(___________) +
+  geom_point(_______) +
+  geom_hline(yintercept = 0, linetype=1, color="gray") +
+  ylim(____________) +
+  ylab(_________________)
 g
 ```
 
 ```{r, echo=FALSE}
-g <- tmp %>%
-  ggplot(aes(x=Assigned_Value, y=value_percent_diff))
-g <- g + geom_point()
-g <- g + geom_hline(yintercept = 0, linetype=1, color="gray")
-g <- g + ylim(-100, 100)
-g <- g + ylab("% Observed - Assigned")
+g <- ggplot(data=tmp) +
+  geom_point(aes(x=Assigned_Value, y=value_percent_diff)) +
+  geom_hline(yintercept = 0, linetype=1, color="gray") +
+  ylim(-100, 100) +
+  ylab("% Observed - Assigned")
 g
 ```
 
@@ -403,10 +396,9 @@ data %>%
 
 Plot linearity results
 ```{r}
-g <- data %>%
-  ggplot(aes(x=expected_result, y=Observed))
-g <- g + geom_point()
-g <- g + geom_abline(slope=1, intercept=0, linetype=2, color="gray")
+g <- ggplot(data=data) +
+  geom_point(aes(x=expected_result, y=Observed)) +
+  geom_abline(slope=1, intercept=0, linetype=2, color="gray")
 g
 ```
 
