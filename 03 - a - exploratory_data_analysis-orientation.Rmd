@@ -145,6 +145,19 @@ orders_arranged <- orders %>%
   arrange(patient_id, order_time)
 ```
 
+**Exercise**
+
+Let's take these functions out for a spin. Generate a tibble that includes only the BMP orders with the following variables: order ID and time stamp variables (order_time, result_time, review_time). Sort the data by order_time, starting with the latest time stamp in the data set and ending with the earliest.
+
+```{r, eval = FALSE}
+bmp_orders <- orders %>%
+  filter(proc_code == "BMP") %>%
+  select(order_id, order_time, result_time, review_time) %>%
+  arrange(desc(order_time))
+```
+
+**End Exercise**
+
 ### Add extra columns with `mutate()`
 
 Earlier we saw that factors can be helpful when summarizing data. What if we wanted to permanently convert one of our variables to a factor within the data frame? We could do this many different ways, but let's start by creating a new variable (column) using the `mutate()` function. `mutate()` allows you to perform a function on one or more variables to create (or overwrite) a variable within the same observation (row).
@@ -214,7 +227,7 @@ table(cbc_orders$department, cbc_orders$order_status_c_descr)
 
 Let's practice making tables. This time, create a table showing the breakdown of CBC with differential (procedure code CBD) by department and order class. Which clinics draw a majority of their own samples? Which clinics use the most external orders (ie. use results from outside labs)?
 
-```{r cbc_analysis}
+```{r cbd_analysis}
 cbd_orders <- orders %>%
   filter(proc_code == "CBD")
 table(cbd_orders$department, cbd_orders$order_class_c_descr)
