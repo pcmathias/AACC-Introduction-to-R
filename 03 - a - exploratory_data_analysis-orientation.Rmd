@@ -111,6 +111,8 @@ summary(as.factor(orders$description))
 
 Much of the laboratory data we work with has a tibble (data frame) structure, with rows as observations and columns as variables. Sometimes we start with a giant spreadsheet with tens of columns where we only care about a few columns. Sometimes we start with a spreadsheet with thousands or millions of rows and only care about a small subset of those. There are a variety of functions in the dplyr package that help us reshape our rectangular data quickly.
 
+### Make your data skinny with `select()`
+
 When starting with a wide tibble (lots of columns), we can make it skinny by selecting specific columns using the `select()` function. In addition to supplying the data frame as the first argument (not needed if using the pipe), `select()` expects the names of the variables you would like to extract.
 
 ```{r select}
@@ -118,6 +120,8 @@ orders_skinny <- orders %>%
   select(order_id, patient_id, description, order_time)
 glimpse(orders_skinny)
 ```
+
+### Shorten your tall data with `filter()`
 
 Alternately, we might have a long tibble (lots of rows) but only want to select specific rows meeting some criteria. One of the most useful functions in the dplyr package is `filter()`, which allows you to select specific rows from a data frame. The arguments to the function include the data frame (which can be skipped if you use a pipe) and then one or more conditions to select the rows you want.
 
@@ -130,6 +134,8 @@ cbc_orders <- orders %>%
 
 With that step, we have now create a tibble that only has the rows with a CBC order.
 
+### Sort your data with `arrange()`
+
 In some cases we do not want to remove rows from our tibble but would like to re-order the rows to manually review the data or perform some other operations. The `arrange()` function can order the rows by the variables you specify. Be default, it will sort from smallest to largest, but you can also sort in descending order using the `desc()` function as an argument.
 
 We may want to sort first by patient ID, then by order time.
@@ -139,9 +145,11 @@ orders_arranged <- orders %>%
   arrange(patient_id, order_time)
 ```
 
-Earlier we saw that factors can be helpful when summarizing data. What if we wanted to permanently convert one of our variables to a factor within the data frame? We could do this many different ways, but let's start by creating a new variable (column) using the `mutate` function. `mutate` allows you to perform a function on one or more variables to create (or overwrite) a variable within the same observation (row).
+### Add extra columns with `mutate()`
 
-Here we take our orders data frame, pipe it into the `mutate` function and create a new variable called department_fctr that applies the `as.factor` function on our original department variable. We can run the `summary` function to see the results.
+Earlier we saw that factors can be helpful when summarizing data. What if we wanted to permanently convert one of our variables to a factor within the data frame? We could do this many different ways, but let's start by creating a new variable (column) using the `mutate()` function. `mutate()` allows you to perform a function on one or more variables to create (or overwrite) a variable within the same observation (row).
+
+Here we take our orders data frame, pipe it into the `mutate()` function and create a new variable called department_fctr that applies the `as.factor` function on our original department variable. We can run the `summary` function to see the results.
 
 ```{r single_factor}
 orders <- orders %>%
@@ -188,16 +196,6 @@ Yet another way to do this is to use `mutate_if(is.character, as.factor)` but be
 
 Older functions to import files in R automatically convert character variables into factors. This can be helpful for variables like order status where there are only a handful of different possible values for the variable (called "levels" of a factor). But factors behave differently than characters, and your code can produce unexpected output instead of failing.
 
-(Need to insert example)
-
-Finally, the skimr package is worth knowing about. This does some work for you in breaking down distributions of different variables and showing the amount of missing data.
-
-```{r skim}
-install.packages("skimr")
-library(skimr)
-skim(orders)
-```
-
 ## Tabulating our data
 
 A very common task when analyzing data is tabluating counts based on one or more variables. In Excel this is commonly handled with pivot tables. R has multiple functions that can help you quickly create tables. To demonstrate some tabulations, let's first focus on a single test and return to our CBC orders tibble we created in the previous section. We want to tabulate the counts of CBC orders based on a single variable, department, ie. we wnat ot determine the number of CBCs ordered by each department. To start out, we use the `table` function in base R (no additional package is required to call the function).
@@ -224,7 +222,18 @@ table(cbd_orders$department, cbd_orders$order_class_c_descr)
 
 **End Exercise**
 
-## Creating more complicated tables
+
+### Taking a quick look at your data with `skim()` (Optional)
+
+The skimr package is worth knowing about. This does some work for you in breaking down distributions of different variables and showing the amount of missing data.
+
+```{r skim}
+install.packages("skimr")
+library(skimr)
+skim(orders)
+```
+
+### Creating more complicated tables (Optional)
 
 We used the janitor package earlier to help clean up variable (column) names. This package also includes helpful functions for tabulating. The basic `tabyl` funcationality works similarly to the `table` function in base R, but the syntax of the arguments is different. Rather than explicitly calling the combination of object and variable name (indicated by the "$"), the `tabyl` function adopts the syntax we've seen before where the first argument is the object (tibble in this case) that can be piped in, and the variables can serve as inputs to the function without calling the name of the object.
 
