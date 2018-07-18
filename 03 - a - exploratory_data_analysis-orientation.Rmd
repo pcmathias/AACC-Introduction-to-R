@@ -50,9 +50,9 @@ foo_foo %>%
 
 Pipes are not compatible with all functions but should work with all of the tidyverse package functions (the magrittr package that defines the pipe is included in the tidyverse). In general, functions expect data as the primary argument and you can think of the pipe as feeding the data to the function. From the perspective of coding style, the most useful suggestion for using pipes is arguably to write the code so that each function is on its own line. The tidyverse style guide [section on pipes](http://style.tidyverse.org/pipes.html) is pretty helpful.
 
-## Loading data and reviewing data types and distributions
+## Loading data and reviewing data types
 
-First let's refresh your memory on loading in a data set. We have an Excel file that contains our main data set in the data folder called "orders_data_set.xlsx". After loading the file into a variable (in this case a data frame) called "orders", look at the structure of the data using the `str` command
+First let's refresh your memory on loading in a data set. We have an Excel file that contains our main data set in the data folder called "orders_data_set.xlsx". After loading the file into a variable (in this case a data frame) called "orders", look at the structure of the data using the `str()` function.
 
 ```{r load_data}
 orders <- read_excel("data/orders_data_set.xlsx")
@@ -69,7 +69,7 @@ str(orders)
 
 4. Let's start by running a summary (`summary`) of one of those character fields that we think should be a factor. What information can we determine from that summary?
 
-5. Let's convert one of those fields to a factor using the `as.factor` command and then run a summary. What additional information do you see by converting to a factor?
+5. Let's convert one of those fields to a factor using the `as.factor()` command and then run a summary. What additional information do you see by converting to a factor?
 
 **End Exercise**
 
@@ -95,7 +95,7 @@ The `str` and `glimpse` functions are helpful to get a quick snapshot of the dat
 summary(orders)
 ```
 
-The `summary` function is most useful when you want to quickly glance at distributions of numerical data and times. You can quickly see the minimum and maximum times and some data on the distribution. It is less helpful when you have characters though.
+The `summary` function is most useful when you want to quickly glance at distributions of numerical data and times. You can quickly see the minimum and maximum times and some data on the distribution. It is less helpful when you have characters. One way to deal with this issue to convert a character variable into a factor using the `as.factor()`function.
 
 **Exericse**
 
@@ -107,7 +107,39 @@ summary(as.factor(orders$description))
 
 **End Exercise**
 
-So it looks like converting to a factor might be pretty handy when taking a quick glance at the data! What if we wanted to permanently convert one of our variables to a factor within the data frame? We could do this many different ways, but let's start by creating a new variable (column) using the `mutate` function. `mutate` allows you to perform a function on one or more variables to create (or overwrite) a variable within the same observation (row).
+## Reshaping rectangular data
+
+Much of the laboratory data we work with has a tibble (data frame) structure, with rows as observations and columns as variables. Sometimes we start with a giant spreadsheet with tens of columns where we only care about a few columns. Sometimes we start with a spreadsheet with thousands or millions of rows and only care about a small subset of those. There are a variety of functions in the dplyr package that help us reshape our rectangular data quickly.
+
+When starting with a wide tibble (lots of columns), we can make it skinny by selecting specific columns using the `select()` function. In addition to supplying the data frame as the first argument (not needed if using the pipe), `select()` expects the names of the variables you would like to extract.
+
+```{r select}
+orders_skinny <- orders %>%
+  select(order_id, patient_id, description, order_time)
+glimpse(orders_skinny)
+```
+
+Alternately, we might have a long tibble (lots of rows) but only want to select specific rows meeting some criteria. One of the most useful functions in the dplyr package is `filter()`, which allows you to select specific rows from a data frame. The arguments to the function include the data frame (which can be skipped if you use a pipe) and then one or more conditions to select the rows you want.
+
+Let's extract the rows associated with complete blood count orders. The procedure code for those rows is "CBC", so the condition we apply to the filter function is `proc_code == CBC`. Note that we use two equal signs instead of one to indicate an equality condition - you will get an error if you use a single equal sign.
+
+```{r filter}
+cbc_orders <- orders %>%
+  filter(proc_code == "CBC") # note the two equal signs for evaluating equality (because one equal is for assignment)
+```
+
+With that step, we have now create a tibble that only has the rows with a CBC order.
+
+In some cases we do not want to remove rows from our tibble but would like to re-order the rows to manually review the data or perform some other operations. The `arrange()` function can order the rows by the variables you specify. Be default, it will sort from smallest to largest, but you can also sort in descending order using the `desc()` function as an argument.
+
+We may want to sort first by patient ID, then by order time.
+
+```{r arrange}
+orders_arranged <- orders %>%
+  arrange(patient_id, order_time)
+```
+
+Earlier we saw that factors can be helpful when summarizing data. What if we wanted to permanently convert one of our variables to a factor within the data frame? We could do this many different ways, but let's start by creating a new variable (column) using the `mutate` function. `mutate` allows you to perform a function on one or more variables to create (or overwrite) a variable within the same observation (row).
 
 Here we take our orders data frame, pipe it into the `mutate` function and create a new variable called department_fctr that applies the `as.factor` function on our original department variable. We can run the `summary` function to see the results.
 
@@ -168,21 +200,10 @@ skim(orders)
 
 ## Tabulating our data
 
-A very common task when analyzing data is tabluating counts based on one or more variables. In Excel this is commonly handled with pivot tables. R has multiple functions that can help you quickly create tables. To demonstrate some tabulations, let's first focus on a single test. One of the most useful functions in the dplyr package is `filter`, which allows you to select specific rows from a data frame. The arguments to the function include the data frame (which can be skipped if you use a pipe) and then one or more conditions to select the rows you want.
-
-Let's filter out the rows associated with complete blood count orders. The procedure code for those rows is "CBC", so the condition we apply to the filter function is `proc_code == CBC`. Note that we use two equal signs instead of one to indicate an equality condition - you will get an error if you use a single equal sign.
-
-```{r cbc_analysis}
-cbc_orders <- orders %>%
-  filter(proc_code == "CBC")
-```
-
-With that step, we have now create a tibble that only has the rows with a CBC order.
-
-Next we want to tabulate the counts of CBC orders based on a single variable, department, ie. we wnat ot determine the number of CBCs ordered by each department. To start out, we use the `table` function in base R (no additional package is required to call the function).
+A very common task when analyzing data is tabluating counts based on one or more variables. In Excel this is commonly handled with pivot tables. R has multiple functions that can help you quickly create tables. To demonstrate some tabulations, let's first focus on a single test and return to our CBC orders tibble we created in the previous section. We want to tabulate the counts of CBC orders based on a single variable, department, ie. we wnat ot determine the number of CBCs ordered by each department. To start out, we use the `table` function in base R (no additional package is required to call the function).
 
 ```{r cbc_simple_tabulation}
-table(cbc_orders$department)
+table(cbc_orders$department) # recall the dollar sign syntax to indicate a variable from an object
 ```
 
 Now let's generate a more complex table to visualize the number of CBC orders by department AND split out by order status.
