@@ -1,0 +1,237 @@
+Exploratory data analysis: Orienting yourself with your data set
+========================================================
+author: Patrick Mathias
+date: July 18, 2018
+autosize: true
+
+Why use R to explore your data?
+========================================================
+
+Point and click interface is not reproducible
+
+  - What happens when you refresh your data in a month?
+  - Is it easy to show someone else what you did?
+  - How do you know you made a mistake?
+
+Packages & functions for everything!
+
+
+Refresher on pipes (%>%)
+========================================================
+
+- Pipes pass the object on the left as the first argument to function on right
+- Can chain functions together line after line for sequential operations
+
+```{r, eval = FALSE}
+object %>% function(_____, next argument, ...)
+```
+
+So if we want to take the mean of a vector x (and remove NA's):
+```{r, eval = FALSE}
+x %>% mean(na.rm = TRUE)
+```
+is the same as
+```{r, eval = FALSE}
+mean(x, na.rm = TRUE)
+```
+
+Refresher on loading data
+========================================================
+
+Functions in readr and readxl packages import data from spreadsheet files
+
+![](assets/read_excel.png)
+
+Cleaning up variable names after loading
+========================================================
+
+- Spaces in variable names are annoying
+- Use `` ` `` character around variables names with spaces
+- Or use `clean_names()` function from janitor package to:
+  - Convert to all lowercase
+  - Turn spaces into underscores
+  - (Other options available)
+```{r, eval = FALSE}
+<DATA_FRAME> <- read_excel(<FILE_NAME>) %>%
+  clean_names()
+```
+
+Multiple methods to quickly review data
+========================================================
+
+- `str()` shows variable names, data types, and sample data (like `head()`)
+- `glimpse()` is a prettier (?) version of `str()`
+- `summary()` provides statistical summary data
+  - Not helpful for character variables
+  - Characters can be converted to factors using `as.factor()`
+  
+Exercise time!
+========================================================
+
+Complete "Loading data and reviewing data types" exercises
+
+Reshaping rectangular data
+========================================================
+
+We live in a world full of spreadsheets
+
+Common workflows:
+- Make wide data (lots of columns) skinnier
+- Make tall data (lots of rows) shorter
+- Sort rows based on multiple criteria
+- Add a column based on data in other columns
+
+Use select() to extract specific columns
+========================================================
+
+![](assets/select.png)
+
+Use select() to extract specific columns
+========================================================
+
+Extract 4 columns from 15 column orders data set
+
+```{r, eval = FALSE}
+orders_skinny <- orders %>%
+  select(order_id, patient_id, description, order_time)
+```
+
+Use filter() to extract specific rows
+========================================================
+
+![](assets/filter.png)
+
+Use filter() to extract specific rows
+========================================================
+
+Requires using operators such as ==, <, >, != (not equals to)
+
+Select CBC orders from data set
+
+```{r, eval = FALSE}
+cbc_orders <- orders %>%
+  filter(proc_code == "CBC")
+```
+
+Sort data with arrange()
+========================================================
+
+![](assets/arrange.png)
+
+Sort data with arrange()
+========================================================
+
+- Can sort by multiple variables (will start with first, then move to second, and so on)
+- Use `desc()` to sort in desending order
+
+Sort by patient_id, then order time:
+
+```{r, eval = FALSE}
+orders_arranged <- orders %>%
+  arrange(patient_id, order_time)
+```
+
+Add extra columns with mutate()
+========================================================
+
+- `mutate()` adds columns based on function
+- Generally works on variables within the same row
+  - Functions such as `lead()` or `lag()` to grab data from other rows
+  - Can evaluate a condition based on data from other variables in same row
+- Overwrite variable by naming <NEW_VARIABLE> identical to old variable name
+  
+```{r, eval = FALSE}
+mutate(<DATA_FRAME>, <NEW_VARIABLE> = FUNCTION(<VARIABLE1>, <VARIABLE2>, ...))
+```
+
+Add extra columns with mutate()
+========================================================
+
+Create a new column that has the department stored as a factor instead of a character
+
+```{r, eval = FALSE}
+orders <- orders %>%
+  mutate(department_fctr = as.factor(department))
+```
+
+Other functions in mutate family such as `mutate_at()` and `mutate_if()` perform function on multiple columns at once
+
+Exercise time!
+========================================================
+
+Complete "Reshaping rectangular data" exercises
+
+Creating tables in R is easy
+========================================================
+
+- Built-in `table()` function tallies based on input variable
+- Uses `$` syntax (base R): `<DATA_FRAME>$<VARIABLE>`
+- When tabulating across more than 2 variables, consider using dplyr functions (`filter()` in particular to subset data)
+
+Creating tables in R is easy
+========================================================
+
+Tabulating counts of CBC orders (after filtering orders data) by department:
+```{r, eval = FALSE}
+table(cbc_orders$department)
+```
+
+Tabluating order status by department for CBC orders:
+```{r, eval = FALSE}
+table(cbc_orders$department, cbc_orders$order_status_c_descr)
+```
+
+Exercise time!
+========================================================
+
+Complete "Tabluating our data" exercises
+
+Plotting with ggplot() is complicated but powerful
+========================================================
+
+![](assets/ggplot_1.png)
+
+Components of ggplot() command
+========================================================
+
+1. `ggplot()` function identifies data set 
+2. Different geom functions produce visualizations you layer on your data
+3. Input for geom functions is a mapping of which variables to plot
+
+Example ggplot() for exploring data
+========================================================
+
+Plotting counts of single variable department, with flipped coordinate to make labels easier to read
+
+```{r, eval = FALSE}
+ggplot(data = orders) + 
+  geom_bar(mapping = aes(x = department)) +
+  coord_flip()
+```
+
+Example ggplot() for exploring data
+========================================================
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(readxl)
+library(janitor)
+orders <- read_excel("data/orders_data_set.xlsx") %>%
+  clean_names()
+ggplot(data = orders) + 
+  geom_bar(mapping = aes(x = department)) +
+  coord_flip()
+```
+
+Tips for ggplot geoms
+========================================================
+
+- `geom_bar()` for counts with categories
+- `geom_histogram()` for distribution across continuous variables
+- `geom_point()` for scatterplots - two continuous variables
+- Cheatsheets are helpful for identifying best geom: (https://www.rstudio.com/resources/cheatsheets/)
+
+Exercise time!
+========================================================
+
+Complete "Simple summary visualizations" exercises
