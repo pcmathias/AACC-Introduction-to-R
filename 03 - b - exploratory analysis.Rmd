@@ -6,8 +6,9 @@ output: html_document
 ---
 
   
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE, comment = NA)
+
 library(tidyverse)
 library(readxl)
 library(janitor)
@@ -65,7 +66,9 @@ head(week_of_order)
 Here, the number "33" represents the 33rd week of the year.
 
 
-**Exercise:** Can you isolate the day of the week from the order?  Hint: use the `wday` function.
+**Exercise** 
+
+Can you isolate the day of the week from the order?  Hint: use the `wday` function.
 
 ```{r}
 
@@ -79,6 +82,8 @@ head(day_of_week_of_order)
 Here, the number "1" represents a Sunday.
 
 For more interesting date time functions, check out the R Studio [Dates and Times Cheat Sheet](https://www.rstudio.com/resources/cheatsheets/).
+
+**End exercise**
 
 ## Plotting Time Points for Data Exploration
 
@@ -96,7 +101,9 @@ geom_histogram(bins = 24)
 Our data visualization shows that most orders are placed in the mid-morning and mid-afternoon with a break for lunch.  Also, as we might expect there aren't a lot of orders placed in the middle of the night.
 
 
-**Exercise:**  Can you perform a similar analysis and visualization to look at the result_time data using the `hour` function and `ggplot`?
+**Exercise**  
+
+Can you perform a similar analysis and visualization to look at the result_time data using the `hour` function and `ggplot`?
   
 ```{r}
 
@@ -108,6 +115,8 @@ ggplot(orders, aes(x = result_hour)) +
 ```
 
 It looks like the lab gets busy issuing results around 5 in the morning and that the evening rush begins to tail off around 9-10 at night.
+
+**End exercise**
 
 ## Exploring Time Intervals and Plotting the Data
 
@@ -147,7 +156,9 @@ ggplot(order_to_result_delta, aes(x = order_time_to_result_time)) +
 ```
 
 
-**Exercise:**  What if we wanted to look at result time to review time instead?  Can you leverage the same approach as above to calculate and plot the difference between review time and the result time.  This will give us a look at the time between when results are available and when those results are reviewed by the ordering provider.
+**Exercise**  
+
+What if we wanted to look at result time to review time instead?  Can you leverage the same approach as above to calculate and plot the difference between review time and the result time.  This will give us a look at the time between when results are available and when those results are reviewed by the ordering provider.
 
 ```{r}
 
@@ -159,6 +170,8 @@ ggplot(result_to_review_delta, aes(x = result_time_to_review_time)) +
   geom_histogram(binwidth = 60*60)
 
 ```
+
+**End exercise**
 
 Note that the default date difference calculation is in seconds.  We can make some changes to our code to look a this data in other time components (such as hours). The `difftime` function allows us to specify a unit, for example hours in the example below.  We also have to make some changes to our `filter` logic and `ggplot` binwidth criteria to reflect that we are working with hours now and not seconds.
 
@@ -189,7 +202,9 @@ ggplot(orders_count, aes(x = n)) +
 
 The vast majority of patient's received 10 or less tests during the time window that this data set covers.  It looks like there are a few patients that received as many as 50 tests.
 
-**Exercise:**  What if we wanted to know only number of CBCs per patient?  Can you use the `filter` function to limit the data CBC orders before counting?
+**Exercise**  
+
+What if we wanted to know only number of CBCs per patient?  Can you use the `filter` function to limit the data CBC orders before counting?
 
 ```{r}
 
@@ -207,13 +222,15 @@ geom_histogram(binwidth = 1)
 
 ```
 
+**End exercise**
+
 ## Date Differential by Patient/Test
 
 Now that we have refreshed our tabulation skills, let's revist working with dates.  Sometimes it is useful to look at the interval between orders for a given test.  Let's look at the time interval between CBCs for individual patients in our data set.
 
-To measure the difference in time between CBCs for a given patient we need to first make a combination of all of a patient's CBCs with all of the patient's other CBCs.  The `join` function allows us to join a data set to itself or another data set.  The nuances of joins exceed the scope of an introductory coding course, but we provide two examples below as templates for your future analysis.  If you would like to read more on joins, the "R for Data Science" book has a nice chapter on [Relational Data](http://r4ds.had.co.nz/relational-data.html).
+To measure the difference in time between CBCs for a given patient we need to first make a combination of all of a patient's CBCs with all of the patient's other CBCs.  The `join` function allows us to join a data set to itself or another data set using a shared key, an attribute (or column) shared between the two data sets.  The nuances of joins exceed the scope of an introductory coding course, but we provide two examples below as templates for your future analysis.  If you would like to read more on joins, the "R for Data Science" book has a nice chapter on [Relational Data](http://r4ds.had.co.nz/relational-data.html).
 
-Let's create the combination of patient CBCs and display the output.
+Let's create the combination of patient CBCs, calculate the difference between CBC times, and display the output.
 
 
 ```{r}
@@ -291,7 +308,9 @@ CBC
 
 ```
 
-**Exercise:**  What if we just wanted to look at Factor V Leiden.  Hint: proc_code = "F5DNA")
+**Exercise**  
+
+What if we just wanted to look at Factor V Leiden.  Hint: proc_code = "F5DNA")
 
 ```{r}
 
@@ -306,3 +325,4 @@ F5DNA
 
 ```
 
+**End exercise**
