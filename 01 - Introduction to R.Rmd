@@ -74,7 +74,7 @@ We can check to see that we have set the correct working directory by running th
 getwd()
 ```
 
-**End Pre-class Homework:  Once you have reached this point you are ready for class.  Please stop here for now**
+**End Pre-class Homework:  Once you have reached this point you are ready for class.  Please stop here for now.**
 
 ### Loading the tidyverse
 
