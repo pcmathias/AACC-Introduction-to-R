@@ -1,0 +1,16 @@
+
+.small-code pre code {
+  font-size: 1em;
+}
+
+.inverse {
+  background: #272822;
+  color: #d6d6d6;
+  text-shadow: 0 0 20px #333;
+}
+.inverse h1, .inverse h2, .inverse h3 {
+  color: #f3f3f3;
+}
+.smaller {
+    font-size: 75%;
+}
