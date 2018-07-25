@@ -18,7 +18,7 @@ In this section, we will evaluate analytical method precision, calibration verif
 
 ### Load data
 
-> **Exercise:** Load the `Precision` tab of `Method_Validation.data.xlsx` into the object `data`.
+**Exercise 1:** Load the `Precision` tab of `Method_Validation.data.xlsx` into the object `data`.
 ```{r, eval=FALSE}
 data <- 
   
@@ -58,7 +58,7 @@ data %>%
   summarize_all(sum)   # Apply `sum` to each columns
 ```
 
-> **Exercise**: How many different analytes (`Analyte`) are there? Use the `unique` function to distill an object to a set of unique observations.
+**Exercise 2**: How many different analytes (`Analyte`) are there? Use the `unique` function to distill an object to a set of unique observations.
 
 ```{r, eval=FALSE}
 
@@ -108,7 +108,7 @@ data %>%
 
 ### Visualize 
 
-> **Exercise**: Add to the above result the standard deviation and CV for variable `P1`, by adding additional arguments to `summarize`
+**Exercise 3**: Add to the above result the standard deviation and CV for variable `P1`, by adding additional arguments to `summarize`
 
 ```{r, eval=FALSE}
 data %>%
@@ -126,7 +126,7 @@ data %>%
 ```
 
 
-> **Exercise**: Plot histogram of these results with vertical lines marking parametric 95% central range. Consider changing the `binwidth`
+**Exercise 4**: Plot histogram of these results with vertical lines marking parametric 95% central range. Consider changing the `binwidth`
 
 ```{r, eval=FALSE}
 g <- data %>%
@@ -158,7 +158,7 @@ g <- g + geom_point(aes(x=Sample, y=P1))
 g
 ```
 
-> **Exercise:** Customize this plot to make it look a bit more useful
+**Exercise 5:** Customize this plot to make it look a bit more useful
 
 - Add horizontal lines using `geom_hline` for the mean, +/- 1 SD, and +/-1 2SDs
 - Change the y-axis range using `ylim` to 6 - 10
@@ -244,7 +244,7 @@ g <- g + geom_histogram(aes(x=x)) +
 g
 ```
 
-> **Exercise:** Calculate LOB as 1.645 SDs above mean of the blank
+**Exercise 6:** Calculate LOB as 1.645 SDs above mean of the blank
 ```{r, eval=FALSE}
 mean(________)
 sd(___________)
@@ -314,7 +314,7 @@ tmp %>%
   filter(!pass_calvar)
 ```
 
-> **Exercise:** Seems that our acceptability criteria was too simplistic because it only considered relative differences. What about criteria for %difference < 30% or absolute difference < 1? 
+**Exercise 7:** Seems that our acceptability criteria was too simplistic because it only considered relative differences. What about criteria for %difference < 30% or absolute difference < 1? 
 > Note: multiple boolean vectors can be `AND`ed together using the bitwise or operator `|` (e.g. `(is.na(A)) | (A < 5)).
 
 ```{r, eval=FALSE}
@@ -345,7 +345,7 @@ g <- ggplot(data=tmp) +
 g
 ```
 
-> **Exercise:** Adapt the above code to plot the percent differences
+**Exercise 8:** Adapt the above code to plot the percent differences
 
 ```{r, eval=FALSE}
 g <- ggplot(___________) +
@@ -374,7 +374,7 @@ data <- data %>%
 data$dilution
 ```
 
-> **Exercise:** Calculate each samples results based on expected dilution factor and observed result in S6. Assume there is no contribution from S0 in the mixing experiment
+**Exercise 9:** Calculate each samples results based on expected dilution factor and observed result in S6. Assume there is no contribution from S0 in the mixing experiment
 
 ```{r, eval=FALSE}
 Observed_S6 <- max(____________)
