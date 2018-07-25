@@ -1,33 +1,28 @@
----
-title: "Method Validation in R -- Method Comparison"
-authors: 
- - "Niklas Krumm"
- - "Daniel Herman"
-date: "06/07/2018"
-output: html_document
----
+Method Validation in R -- Method Comparison
+========================================================
+author: Niklas Krumm, Daniel S. Herman
+date: July 2018
+autosize: true
+css: assets/custom.css
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, comment=NA)
-library(tidyverse)
-library(readxl)
-```
-
-## Overview
-
+Overview
+========================================================
 In this section we will continue exploring how to use R in method validation by comparing results from two different methods.
 
-## Load data
-
+Load data
+========================================================
 Let's load in hCG data, just as we did in the previous session.
+
 ```{r load_data_1}
+library(tidyverse)
+library(readxl)
 hcg <- read_excel(path="data/Method_Validation.data.xlsx", 
                 sheet="MS HCG")
 glimpse(hcg)
 ```
 
-## Describe data and explore its distribution
-
+Describe data and explore its distribution
+========================================================
 Let's use pipes to summarize and calculate a few statistics:
 
 ```{r}
@@ -38,16 +33,19 @@ hcg %>%
             method_b_sd = sd(method_b))
 ```
 
-## Overlapping histograms
-
-What if we want to plot the distribution of both `method_a` and `method_b` in the same plot? We've used `geom_histogram` previously. Let's try the related ggplot function `geom_freqpoly`, starting with a single method.
+How to visualize multiple distributions?
+========================================================
+What if we want to plot the distribution of both `method_a` and `method_b` in the same plot? 
+- We've used `geom_histogram` previously. 
+- Let's try the related ggplot function `geom_freqpoly`, starting with a single method.
 
 ```{r}
 ggplot(data = hcg) + 
-  geom_freqpoly(bins=20, 
-                aes(x=method_a))
+  geom_freqpoly(bins=20, aes(x=method_a))
 ```
 
+Overlapping histograms
+========================================================
 Now, let's add a second method and mark the two using `geom_freqpoly`.
 
 ```{r}
@@ -56,9 +54,11 @@ ggplot(data = hcg) +
   geom_freqpoly(bins=20, aes(x=method_b, color="red")) 
 ```
 
-**Exercise 1:**
-
-Make a similar display of method a and method b distributions using the `geom_density` function. Set the `fill` and `color` functions to distinguish between the two methods. Test using the `alpha` parameter to increase the shape translucency
+Exercise 1
+========================================================
+Make a similar display of method a and method b distributions using the `geom_density` function. 
+- Set the `fill` and `color` functions to distinguish between the two methods. 
+- Test using the `alpha` parameter to increase the shape translucency
 
 ```{r, eval=FALSE}
 ggplot(data = hcg) + 
@@ -73,43 +73,20 @@ ggplot(data = hcg) +
 
 ```
 
-**End exercise**
+Method comparison (t-tests, and more)
+===========================
 
-### (Optional) Tibble reorganization: `gather`
-Now, these plots required to separate calls to the `geom_*` functions for each method. This works, but makes legends needing manual cleanup and does not scale well.
-
-Another way is to create a "long dataframe" using the `gather` function. This "unpacks" multiple columns into just two columns, where the **first column** is the `key` and the **second column** is the `value`:
-[assets/data_gather.png]()
-```{r}
-long_hcg <- hcg %>%
-  gather(key="method", value="value", 
-         -specimen)
-head(long_hcg)
-```
-
-Take a moment to compare the `hcg` and `long_hcg` objects. How are they different? Note that when we have a "long" datafarme, every row is a named observation (also known as a key-value pair). For reference, the reverse transformation (from "long" to "wide") is done with the `spread` function.
-
-Once in a long-form format, we can tell ggplot to use both the `value` variable for our x-axis and the `method` variable to set the coloring (fill and color) and the resulting legend.
-
-```{r}
-ggplot(long_hcg) + 
-  geom_density(aes(x=value, fill=method, color=method), 
-               alpha=0.5)
-```
-
-## Method comparison (t-tests, and more)
-
-### Using a statistical test
+Using a statistical test
+===========================
+class: small-code
 R is a statistical programming language, so simple statistical testing is straightforward:
 ```{r}
-# Note we are using the paired=TRUE variant of the t.test, since we have paired measurements.
 t.test(hcg$method_a, hcg$method_b, 
-       paired=TRUE)
+       paired=TRUE)    # Note we are using the paired=TRUE, since we have paired measurements.
 ```
 
-For more information on the `t.test` function, (follow this link)[https://www.statmethods.net/stats/ttest.html].
-
-**Exercise 2:**
+Exercise 2
+==========================
 Evaluate parametric comparability of method means after log-transformation
 
 ```{r, eval=FALSE}
@@ -123,10 +100,11 @@ t.test(___________, ____________,
 t.test(log(hcg$method_a), log(hcg$method_b), 
        paired=TRUE)
 ```
-**End exercise**
 
-### Using the RIGHT statistical test
-Is `t.test` the right function? Consider the histograms above and our previous work with log normalizing the values. 
+Using the RIGHT statistical test
+====================================
+- Is `t.test` the right function? 
+- Consider the histograms above and our previous work with log normalizing the values. 
 
 |Populations|Parametric|Non-parametric|
 |:-------------|:-------------------------:|:-------------------------:|
@@ -134,8 +112,15 @@ Is `t.test` the right function? Consider the histograms above and our previous w
 |Many populations|ANOVA|Kruskal Wallis / one-way anova|
 |Populations across several treatments/times|repeated measures ANOVA|Friedman test|
 
-**Exercise 3:** 
-Using the table above, select the _right_ test for comparing `method_a` and `method_b`. Look up the function call using google, R documentation or any other source. Write out the function and calculate a p-value below
+Exercise 3
+====================================
+Using the table below, select the _right_ test for comparing `method_a` and `method_b` and assess.
+
+|Populations|Parametric|Non-parametric|
+|:-------------|:-------------------------:|:-------------------------:|
+|Two populations|t-test|Mann-Whitney U|
+|Many populations|ANOVA|Kruskal Wallis / one-way anova|
+|Populations across several treatments/times|repeated measures ANOVA|Friedman test|
 
 ```{r, eval=FALSE}
 hcg %>%
@@ -143,22 +128,26 @@ hcg %>%
 ```
 
 ```{r, echo=FALSE}
-wilcox.test(hcg$method_a, hcg$method_b, paired=TRUE)
+sprintf("P-value: %3.2g", 
+        wilcox.test(hcg$method_a, hcg$method_b, paired=TRUE)$p.value)
 ```
-**End Exercise** 
 
-## Regression
+Regression
+====================================
 
-### Simple linear regression
-
-Let's begin by simply plotting `method_a` and `method_b` as a scatter plot. Notice how we are using the `aes()` to define "mappings" from our data to the x and y coordinates:
+Visualize x & y results
+====================================
+Let's begin by simply plotting `method_a` and `method_b` as a scatter plot. 
+- Notice how we are using the `aes()` to define "mappings" from our data to the x and y coordinates:
 ```{r}
-ggplot(hcg) + 
+ggplot(data=hcg) + 
   geom_point(aes(x=method_a, y=method_b))
 ```
 
-
-Adding a least-squares regression line is easy with a little bit of magic from `ggplot`. The `lm` (Linear Model) function does all the work here!
+Simple linear regression
+====================================
+Adding a least-squares regression line is easy with a little bit of magic from `ggplot`. 
+- The `lm` (Linear Model) function does all the work here!
 
 ```{r}
 ggplot(hcg) + 
@@ -166,7 +155,9 @@ ggplot(hcg) +
   geom_smooth(method = "lm", aes(x=method_a, y=method_b))
 ```
 
-It's tough to see the fit in the low result range, so we can transform our axis:
+Simple linear regression - 2
+====================================
+It's tough to see the fit in the low result range, so we can transform our axis.
 
 ```{r}
 ggplot(hcg) + 
@@ -175,7 +166,11 @@ ggplot(hcg) +
   scale_x_log10() + scale_y_log10()
 ```
 
-What if we want to just extract the coefficients of the linear model? We can utilize R's formula notation format and the `lm` function:
+Linear fit coefficients
+=================================
+class: small-code
+What if we want to just extract the coefficients of the linear model? 
+- We can utilize R's formula notation format and the `lm` function:
 
 ```{r}
 regression <- lm(method_b ~ method_a, hcg)
@@ -183,39 +178,38 @@ summary(regression)
 coef(regression)
 ```
 
-## Deming regression
-
-In fact, a least-squares regression, while a good approximation for this type of data, assumes that the x-dimension has no measurement error so it minimizes errors only in the y-dimension. The *Deming regression* differs from the simple linear regression in that it accounts for errors in observations on both the x- and the y- axes, thus making it more suitable for estimating a best-fit line between two measured variables.
+Deming regression
+==================================
+class: small-code
+- Considers measurement error in x- and y-axes
 
 ```{r}
-library(mcr)            # remember, you may need to install.packages("mcr") in the console first!
+library(mcr)    
 deming_results <- mcreg(hcg$method_a, hcg$method_b, 
                         method.reg = "Deming")
-deming_results@para         # "para" short for "parameters"-- this is a library/method specific term here
+deming_results@para         # "para" short for "parameters" (take a `glimpse` at `deming_results`)
 ```
 
-To see what slots (attributes) `deming_results` has beyond `para`, look at `glimpse(deming_results)`
-
-**Exercise 4:**
-
-Another issue in standard regression is if the random error scales with analyte concentration, then the observed absolute errors are higher for the higher concentrations. This means that error at the high-end is more heavily factored into the regression fit. One way of adjusting for this is weighting errors for high concentrations less. 
-
-Run the regression using the weighted deming method of the `mcreg` function. How do the slope and intercept differ?
+Exercise 4
+=======================
+What if the fit is not perfectly linear, but slightly different in the low versus high range?
+Let's use the weighted deming method of the `mcreg` function, to explore one way of balancing the effect of error throughout the result range.
 
 ```{r, eval=FALSE}
-wdeming_results <- 
-wdeming_results@para         # "para" short for "parameters"-- this is a library/method specific term here
+wdeming_results <- __________________
+wdeming_results@para         
 ```
 
 ```{r, echo=FALSE}
 wdeming_results <- mcreg(hcg$method_a, hcg$method_b, 
                         method.reg = "WDeming")
-wdeming_results@para         # "para" short for "parameters"-- this is a library/method specific term here
+wdeming_results@para         
 ```
 
-**End exercise**
-
-Now let's add the lines to our plot. We can use the `geom_abline()` ggplot function to add a line with a slope and intercept. The intercept and slope are stored in `deming_results@para[1]` and `deming_results@para[2]`, respectively.
+Compare multiple regression fits - 1
+================================
+Now let's add the lines to our plot using `geom_abline()` 
+- The intercept and slope are stored in `deming_results@para[1]` and `deming_results@para[2]`, respectively.
 
 ```{r}
 ggplot(hcg) +
@@ -224,7 +218,11 @@ ggplot(hcg) +
   geom_abline(intercept = deming_results@para[1], slope = deming_results@para[2], color="red")
 ```
 
-What about the weighted deming fit line? What about the subrange between 0 and 40000? Let's also add a 1:1 line to help interpret fit.
+Compare multiple regression fits - 2
+================================
+class:small-code
+- What about the weighted deming fit line? What about the subrange between 0 and 40000? 
+- Let's also add a 1:1 line to help interpret fit.
 
 ```{r}
 ggplot(hcg) +
@@ -234,18 +232,20 @@ ggplot(hcg) +
   geom_abline(intercept = wdeming_results@para[1], slope = wdeming_results@para[2], color="yellow") +
   xlim(0, 40000) + ylim(0, 40000) +
   geom_abline(intercept=0, slope=1, linetype=2, color="gray")
-  
 ```
 
-
-## Passing-Bablock
+Passing-Bablock
+=================================
+- Non-parametric regression
 
 ```{r}
 PB_results <- mcreg(hcg$method_a, hcg$method_b, method.reg = "PaBa")
 PB_results@para
 ```
 
-**Exercise 5:**
+Exercise 5
+================================
+class: small-code
 Add another `geom_abline` to the plot above for the Passing-Bablock regression coefficients determined above.
 
 ```{r, eval=FALSE}
@@ -268,9 +268,9 @@ ggplot(hcg) +
   geom_abline(intercept = PB_results@para[1], slope = PB_results@para[2], color="yellow")
 ```
 
-**End Exercise**
-
-### Extra-credit: Outlier robustness
+Extra-credit: Outlier robustness
+===============================
+class: small-code
 How "robust" are each of these methods to outliers? Let's try it out.
 ```{r}
 # Step 1: make a copy of the data so we don't change the original
@@ -293,10 +293,10 @@ ggplot(hcg_with_outliers) +
 
 ```
 
-That is quite a difference!
-
-## Compare methods by concordance relative to decision thresholds
-Next, let's compare method A and B using decision thresholds. For the purpose of this tutorial, we will simply use 25,000 as our threshold.
+Compare methods by concordance relative to decision thresholds
+==================================
+Next, let's compare method A and B using decision thresholds. 
+- For the purpose of this tutorial, we will simply use 25,000 as our threshold.
 
 ```{r}
 threshold <- 25000
@@ -304,10 +304,13 @@ threshold <- 25000
 tmp <- hcg %>%
   mutate(method_a_pos = method_a > threshold,   # Create binary indicator for method_a
          method_b_pos = method_b > threshold)
-  table(x=tmp$method_a_pos, y=tmp$method_b_pos)
+table(x=tmp$method_a_pos, y=tmp$method_b_pos)
 ```
-Looking at this table, method_a and method_b are *discordant* across our threshold in 40 cases, and *concordant* in 58 + 48 cases.
 
+_Method_a and method_b are *discordant* across our threshold in 40 cases, and *concordant* in 58 + 48 cases_
+
+Compare methods by concordance relative to decision thresholds
+==================================
 A tidy way to do this without using `tmp` and `table` is:
 
 ```{r}
@@ -319,18 +322,22 @@ hcg %>%
   count(method_a_pos, method_b_pos)
 ```
 
+Compare methods by concordance relative to decision thresholds
+==================================
+class: small-code
 Now to convert this into a standard concordance table:
 
 ```{r}
 hcg %>%
-  mutate(method_a_pos = method_a > threshold,   # Create binary indicator for method_a
+  mutate(method_a_pos = method_a > threshold,   # Create method_a binary indicator
          method_b_pos = method_b > threshold) %>%
   count(method_a_pos, method_b_pos)  %>%
-  spread(method_b_pos, n, fill=0, sep=".")   # Spreads method_b_pos from a single variable to a variable for each value
+  spread(method_b_pos, n, fill=0, sep=".")   # Spreads method_b_pos from one variable to multiple
 ```
 
-
-**Exercise 6**: Write code to compare accuracy across two different decision thresholds (25000 and 50000, for example)
+Exercise 6
+======================
+Write code to compare accuracy across two different decision thresholds (25000 and 50000, for example)
 
 _Hint #1_: In the `mutate` function, use the `cut()` function to break a numerical range into multiple a set of factor levels (categories):
      For instance, for method_a you could run `cut(hcg$method_a, breaks=c(0, 20, 40, Inf), labels=c("low","middle","high"))` to convert to a factor for 0-20, 20-40, 40-Inf.
@@ -339,10 +346,10 @@ _Hint #2_: Look at previous code for inspiration!
 
 ```{r, eval=FALSE}
 hcg %>%
-  mutate(method_a_bin = ________________________________,   # Create factor indicator for method_a
+  mutate(method_a_bin = ________________________________,   # Create method_a factor
          method_b_bin = _________________________________) %>%
   count(method_a_bin, method_b_bin)  %>%
-  spread(method_b_bin, n, fill=0, sep=".")   # Spreads method_b_pos from a single variable to a variable for each value
+  spread(method_b_bin, n, fill=0, sep=".")   # Spreads method_b_pos from a one to multiple variables
 ```
 
 ```{r, echo=FALSE}
@@ -357,4 +364,5 @@ hcg %>%
   spread(method_b_bin, n, fill=0, sep=".")   # Spreads method_b_pos from a single variable to a variable for each value
 ```
 
-**End Exercise** 
+Done!!
+=====================

@@ -1,6 +1,8 @@
 ---
 title: "Method Validation -- Precision, Linearity, and calibration verification in R"
-author: "Daniel Herman"
+authors: 
+ - "Daniel Herman"
+ - "Niklas Krumm"
 date: "06/07/2018"
 output: html_document
 ---
