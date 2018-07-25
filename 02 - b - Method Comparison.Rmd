@@ -70,7 +70,7 @@ Is `t.test` the right function? Consider the histograms above and our previous w
 |Many populations|ANOVA|Kruskal Wallis / one-way anova|
 |Populations across several treatments/times|repeated measures ANOVA|Friedman test|
 
-**Exercise:** 
+**Exercise 1:** 
 Using the table above, select the _right_ test for comparing `method_a` and `method_b`. Look up the function call using google, R documentation or any other source. Write out the function and calculate a p-value below
 
 ```{r}
@@ -131,7 +131,7 @@ PB_results <- mcreg(data$method_a, data$method_b, method.reg = "PaBa")
 PB_results@para
 ```
 
-**Exercise:**
+**Exercise 2:**
 Add another `geom_abline` to the plot above for the Passing-Bablock regression coefficients determined above.
 
 ```{r}
@@ -172,7 +172,7 @@ data %>%
 ```
 Looking at this table, method_a and method_b are *discordant* across our threshold in 40 cases, and *concordant* in 58 + 48 cases.
 
-**Exercise**: Write code to compare accuracy across two different decision thresholds (25000 and 50000, for example)
+**Exercise 3**: Write code to compare accuracy across two different decision thresholds (25000 and 50000, for example)
 
 Hint: In the `group_by` function, use the `cut()` function to group a numerical range into a set of categoreis:
      `group_by(method_a_bin = cut(method_a, breaks=c(-Inf, 25000, 50000, Inf), labels=c("low","middle","high"))`
