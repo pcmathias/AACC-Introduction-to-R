@@ -429,7 +429,7 @@ n_samples <- length(afp$method_a)
 
 old_range <- c(20, 100) #proposed range
 n_inrange <- sum(afp$method_a >= old_range[1] & 
-                   afp$method_a <= old_range[2])s
+                   afp$method_a <= old_range[2])
 
 chisq.test(c(n_inrange, n_samples - n_inrange), 
            p=c(0.95, 0.05))
