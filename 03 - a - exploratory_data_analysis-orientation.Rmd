@@ -59,7 +59,7 @@ orders <- read_excel("data/orders_data_set.xlsx")
 str(orders)
 ```
 
-**Exercise**
+**Exercise 1**
 
 1. Which fields of the data frame are characters?
  
@@ -97,7 +97,7 @@ summary(orders)
 
 The `summary` function is most useful when you want to quickly glance at distributions of numerical data and times. You can quickly see the minimum and maximum times and some data on the distribution. It is less helpful when you have characters. One way to deal with this issue to convert a character variable into a factor using the `as.factor()`function.
 
-**Exericse**
+**Exericse 2**
 
 Pull a summary of the description variable (only), after converting to a factor using the `as.factor` function. Which test is most frequently ordered in this data set?
 
@@ -145,7 +145,7 @@ orders_arranged <- orders %>%
   arrange(patient_id, order_time)
 ```
 
-**Exercise**
+**Exercise 3**
 
 Let's take these functions out for a spin. Generate a tibble that includes only the BMP orders with the following variables: order ID and time stamp variables (order_time, result_time, review_time). Sort the data by order_time, starting with the latest time stamp in the data set and ending with the earliest.
 
@@ -170,7 +170,7 @@ orders <- orders %>%
 summary(orders$department_fctr)
 ```
 
-**Exercise**
+**Exercise 4**
 
 Let's go ahead and convert the description variable to a factor using the `mutate` and `as.factor` functions. This time, rather than creating a new variable, overwrite the original variable by giving it its original name.
 
@@ -223,7 +223,7 @@ Now let's generate a more complex table to visualize the number of CBC orders by
 table(cbc_orders$department, cbc_orders$order_status_c_descr)
 ```
 
-**Exercise**
+**Exercise 5**
 
 Let's practice making tables. This time, create a table showing the breakdown of CBC with differential (procedure code CBD) by department and order class. Which clinics draw a majority of their own samples? Which clinics use the most external orders (ie. use results from outside labs)?
 
@@ -300,7 +300,7 @@ ggplot(data = orders) +
   coord_flip()
 ```
 
-**Exercise**
+**Exercise 6**
 
 1. Plot a bar graph of the orders data set showing the breakdown of order status.
 
@@ -367,7 +367,7 @@ ggplot(data = orders) +
   xlab("Time")
 ```
 
-**Exercise**
+**Exercise 7**
 
 Plot the weekly volume of a subset of common orders: basic metabolic panel, hemoglobin A1C, lipid panel, and TSH (proc_codes BMP, A1C, LIPID, TSH) and show the breakdown of tests by fill in the bar chart.
  
