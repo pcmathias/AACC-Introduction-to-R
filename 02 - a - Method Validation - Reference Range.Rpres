@@ -164,9 +164,26 @@ ggplot(data=afp) +
 
 ggplot
 ========================================================
-What's going on here? Take a look at this visual breakdown:
+What's going on here? 
 
 ![](assets/ggplot_1.png)
+
+1. `ggplot()` function identifies data set 
+2. Different geom functions produce visualizations you layer on your data
+3. Input for geom functions is a mapping of which variables to plot
+
+ggplot: Histogram example
+========================================================
+
+```{r, fig.width=8, fig.height=6, fig.align='center'}
+library(tidyverse)
+ggplot(data=afp) +
+  geom_histogram(bins=50, aes(x=method_a))
+```
+
+1. `ggplot()` function identifies data set 
+2. Different geom functions produce visualizations you layer on your data
+3. Input for geom functions is a mapping of which variables to plot
 
 Exercise 4
 ========================================================
@@ -295,8 +312,8 @@ Visually inspect proposed reference intervals
 ========================================================
 class: small-code
 - Start with with the code for the histogram above
-- Add lines using the `geom_vline` function of ggplot.
-```{r, fig.width=8, fig.height=2, fig.align="center"}
+- Add lines using the ggplot function `geom_vline`
+```{r, fig.width=8, fig.height=4, fig.align="center"}
 # Code from exercise answer above
 mu <- mean(log(afp$method_a))
 sigma <- sd(log(afp$method_a))
