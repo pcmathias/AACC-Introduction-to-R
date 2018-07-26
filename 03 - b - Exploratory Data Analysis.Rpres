@@ -94,29 +94,456 @@ head(day_of_week_of_order)
 
 Here, the number "1" represents a Sunday.
 
-Working with Time Data
+Plotting Time Data
 ========================================================
+Let's use the `hour` function to isolate the hour component of our order and then use `ggplot` to visualize the data.
 
-Working with Time Data
-========================================================
+```{r, eval=FALSE}
 
-Working with Time Data
-========================================================
+order_hour <- hour(orders$order_time)
 
+ggplot(data = orders) +
+  geom_histogram(mapping = aes(x = order_hour), bins = 24)
 
-
-
-
-Slide With Code
-========================================================
-
-```{r}
-summary(cars)
 ```
 
-Slide With Plot
+Plotting Time Data
+========================================================
+```{r, echo=FALSE}
+
+order_hour <- hour(orders$order_time)
+
+ggplot(data = orders) +
+  geom_histogram(mapping = aes(x = order_hour), bins = 24)
+
+```
+
+
+Exercise 2
+========================================================
+Can you perform a similar analysis and visualization to look at the result_time data using the `hour` function and `ggplot`?
+
+Exercise 2 (Answer)
+========================================================
+```{r, eval=FALSE}
+
+result_hour <- hour(orders$result_time)
+
+ggplot(data = orders) + 
+  geom_histogram(mapping = aes(x = result_hour), bins = 24)
+
+```
+
+Exercise 2 (Answer)
+========================================================
+```{r, echo=FALSE}
+
+result_hour <- hour(orders$result_time)
+
+ggplot(data = orders) + 
+  geom_histogram(mapping = aes(x = result_hour), bins = 24)
+
+```
+
+Focusing in on Completed Orders
+========================================================
+Not all tests that are ordered are completed.  We can look at a `summary` of the order status get a sense for this.
+
+```{r}
+
+summary(as.factor(orders$order_status_c_descr))
+
+```
+
+
+Results that aren't completed won't have a result time so we should `filter` our data first to only "Completed results".  That will allow us to work only with test results that have both an order time and result time.
+
+```{r}
+
+completed_orders <- orders %>%
+  filter(order_status_c_descr == "Completed")
+
+```
+
+
+Calculating Order to Result Time
+========================================================
+```{r, eval=FALSE}
+
+order_to_result_delta <- completed_orders %>%
+  mutate(order_time_to_result_time = result_time - order_time) %>%
+  filter(order_time_to_result_time > 0 & order_time_to_result_time < 60*60*24)
+
+
+ggplot(data = order_to_result_delta) + 
+  geom_histogram(mapping = aes(x = order_time_to_result_time), binwidth = 60*60)
+
+```
+
+
+Calculating Order to Result Time
+========================================================
+```{r, echo=FALSE}
+
+order_to_result_delta <- completed_orders %>%
+  mutate(order_time_to_result_time = result_time - order_time) %>%
+  filter(order_time_to_result_time > 0 & order_time_to_result_time < 60*60*24)
+
+
+ggplot(data = order_to_result_delta) + 
+  geom_histogram(mapping = aes(x = order_time_to_result_time), binwidth = 60*60)
+
+```
+
+
+Exercise 3
+========================================================
+What if we wanted to look at result time to review time instead?  
+
+Can you leverage the same approach as above to calculate and plot the difference between review time and the result time?  
+
+This will give us a look at the time between when results are available and when those results are reviewed by the ordering provider.
+
+
+Exercise 3 (Answer)
+========================================================
+```{r, eval=FALSE}
+
+result_to_review_delta <- completed_orders %>%
+  mutate(result_time_to_review_time = review_time - result_time) %>%
+  filter(result_time_to_review_time > 0 & result_time_to_review_time < 60*60*24 )
+
+ggplot(data = result_to_review_delta) + 
+  geom_histogram(mapping = aes(x = result_time_to_review_time), binwidth = 60*60)
+
+```
+
+
+Exercise 3 (Answer)
 ========================================================
 
 ```{r, echo=FALSE}
-plot(cars)
+
+result_to_review_delta <- completed_orders %>%
+  mutate(result_time_to_review_time = review_time - result_time) %>%
+  filter(result_time_to_review_time > 0 & result_time_to_review_time < 60*60*24 )
+
+ggplot(data = result_to_review_delta) + 
+  geom_histogram(mapping = aes(x = result_time_to_review_time), binwidth = 60*60)
+
 ```
+
+Changing Time Units
+========================================================
+- Note that the default date difference calculation is in seconds.  
+
+- We can make some changes to our code to look a this data in other time components (such as hours). 
+
+- The `difftime` function allows us to specify a unit, for example hours in the example below.  We also have to make some changes to our `filter` logic and `ggplot` binwidth criteria to reflect that we are working with hours now and not seconds.
+
+```{r, eval=FALSE}
+
+order_to_result_delta <- completed_orders %>%
+  mutate(order_time_to_result_time = difftime(result_time, order_time, units = "hour")) %>%
+  filter(order_time_to_result_time > 0 & order_time_to_result_time < 24)
+
+ggplot(data = order_to_result_delta) + 
+  geom_histogram(mapping = aes(x = order_time_to_result_time), binwidth = 1)
+
+```
+
+Changing Time Units
+========================================================
+```{r, echo=FALSE}
+
+order_to_result_delta <- completed_orders %>%
+  mutate(order_time_to_result_time = difftime(result_time, order_time, units = "hour")) %>%
+  filter(order_time_to_result_time > 0 & order_time_to_result_time < 24)
+
+ggplot(data = order_to_result_delta) + 
+  geom_histogram(mapping = aes(x = order_time_to_result_time), binwidth = 1)
+
+```
+
+
+Counting Tests Per Patient
+========================================================
+We will return to date time calculations in a bit but first let's quickly revisit tabulating data.  `Count` is a useful function for tabulation.  
+
+Say we wanted to know the number of completed tests per patient in our data set.  Since our data set has one test per patient per line, we can count the frequency of a patient's record number (MRN) as measure of the number of orders per patient.
+
+```{r, eval=FALSE}
+
+orders_count <- completed_orders %>%
+  count(patient_id)
+
+ggplot(data = orders_count) +
+  geom_histogram(mapping = aes(x = n), binwidth = 1)
+
+```
+
+
+Counting Tests Per Patient
+========================================================
+```{r, echo=FALSE}
+
+orders_count <- completed_orders %>%
+  count(patient_id)
+
+ggplot(data = orders_count) +
+  geom_histogram(mapping = aes(x = n), binwidth = 1)
+
+```
+
+Exercise 4
+========================================================
+What if we wanted to know only number of CBCs per patient?  
+
+Can you use the `filter` function to limit the data CBC orders before counting?
+
+Exercise 4 (Answer)
+========================================================
+```{r, eval=FALSE}
+
+cbc_orders <- filter(completed_orders, proc_code == "CBC")
+
+#Group and Count
+
+cbc_count <- cbc_orders %>%
+count(patient_id)
+
+#Plot
+
+ggplot(data = cbc_count) + 
+  geom_histogram(mapping = aes(x = n), binwidth = 1)
+
+```
+
+Exercise 4 (Answer)
+========================================================
+
+```{r, echo=FALSE}
+
+cbc_orders <- filter(completed_orders, proc_code == "CBC")
+
+#Group and Count
+
+cbc_count <- cbc_orders %>%
+count(patient_id)
+
+#Plot
+
+ggplot(data = cbc_count) + 
+  geom_histogram(mapping = aes(x = n), binwidth = 1)
+
+```
+
+
+Date Differential by Patient and Test
+========================================================
+Sometimes it is useful to look at the interval between orders for a given test.  
+
+Let's look at the time interval between CBCs for individual patients in our data set.
+
+To measure the difference in time between CBCs for a given patient we need to first make a combination of all of a patient's CBCs with all of the patient's other CBCs.  
+
+The `join` function allows us to join a data set to itself or another data set using a shared key, an attribute (or column) shared between the two data sets.
+
+Let's create the combination of patient CBCs, calculate the difference between CBC times, and display the output.
+
+Date Differential by Patient and Test
+========================================================
+```{r, eval=FALSE}
+
+cbc_orders <- filter(completed_orders, proc_code == "CBC")
+
+cbc1 = select(cbc_orders, patient_id, result_time)
+cbc2 = select(cbc_orders, patient_id, result_time)
+
+cbc_join <- full_join(cbc1, cbc2, by= "patient_id")
+
+cbc_join <- cbc_join %>%
+  mutate(cbc_time_diff = difftime(result_time.x, result_time.y, units = "days")) %>%
+  filter(cbc_time_diff > 0)
+
+cbc_join <- cbc_join %>%
+  group_by(patient_id, result_time.x) %>%
+  summarize(minimum = min(cbc_time_diff))
+
+cbc_join
+
+```
+
+
+Date Differential by Patient and Test
+========================================================
+```{r, echo=FALSE}
+
+cbc_orders <- filter(completed_orders, proc_code == "CBC")
+
+cbc1 = select(cbc_orders, patient_id, result_time)
+cbc2 = select(cbc_orders, patient_id, result_time)
+
+cbc_join <- full_join(cbc1, cbc2, by= "patient_id")
+
+cbc_join <- cbc_join %>%
+  mutate(cbc_time_diff = difftime(result_time.x, result_time.y, units = "days")) %>%
+  filter(cbc_time_diff > 0)
+
+cbc_join <- cbc_join %>%
+  group_by(patient_id, result_time.x) %>%
+  summarize(minimum = min(cbc_time_diff))
+
+cbc_join
+
+```
+
+
+Plotting Date Differential by Patient and Test
+========================================================
+Now let's plot the intervals using our old friend 'ggplot'.
+
+```{r, eval=FALSE}
+
+ggplot(data = cbc_join) + 
+  geom_histogram(mapping = aes(x = minimum), binwidth = 5)
+
+```
+
+
+Plotting Date Differential by Patient and Test
+========================================================
+
+```{r, echo=FALSE}
+
+ggplot(data = cbc_join) + 
+  geom_histogram(mapping = aes(x = minimum), binwidth = 5)
+
+```
+
+
+Bringing Different Data Sets Together
+========================================================
+The `join` function can also help us to bring two different data sets together for analysis using a shared key variable.
+
+Let's load a second data set called order_details.  This data set includes information about the ordering route and whether the order originiated from a preference list.  
+
+This data set is a Comma Separated Variable (CSV) file so we need to use the `read_csv` function instead of our usual `read_excel` function.
+
+```{r}
+orders_details <- read_csv("data/order_details.csv")
+
+head(orders_details)
+```
+
+
+Bringing Different Data Sets Together
+========================================================
+We can join the order details data to our completed orders data using the order_id as the shared key for linking the data sets.
+
+```{r, eval=FALSE}
+
+orders_details <- read_csv("data/order_details.csv")
+
+joined_data <- completed_orders %>%
+  left_join(orders_details, by = "order_id") %>%
+  count(pref_list_type)
+
+joined_data
+
+```
+
+Bringing Different Data Sets Together
+========================================================
+
+```{r, echo=FALSE}
+
+orders_details <- read_csv("data/order_details.csv")
+
+joined_data <- completed_orders %>%
+  left_join(orders_details, by = "order_id") %>%
+  count(pref_list_type)
+
+joined_data
+
+```
+
+Bringing Different Data Sets Together
+========================================================
+
+What if we just wanted to look at preference list types for CBC?  
+
+We need to use the `filter` function and the proc_code of "CBC".
+
+```{r, eval=FALSE}
+
+orders_details <- read_csv("data/order_details.csv")
+
+CBC <- completed_orders %>%
+  filter(proc_code == "CBC") %>%
+  left_join(orders_details, by = "order_id") %>%
+  count(pref_list_type)
+
+CBC
+
+```
+
+Bringing Different Data Sets Together
+========================================================
+
+```{r, echo=FALSE}
+
+orders_details <- read_csv("data/order_details.csv")
+
+CBC <- completed_orders %>%
+  filter(proc_code == "CBC") %>%
+  left_join(orders_details, by = "order_id") %>%
+  count(pref_list_type)
+
+CBC
+
+```
+
+Exercise 5
+========================================================
+
+What if we just wanted to look at Factor V Leiden.  Hint: proc_code = "F5DNA")
+
+
+Exercise 5 (Answer)
+========================================================
+```{r, eval=FALSE}
+
+orders_details <- read_csv("data/order_details.csv")
+
+F5DNA <- completed_orders %>%
+  filter(proc_code == "F5DNA") %>%
+  left_join(orders_details, by = "order_id") %>%
+  count(pref_list_type)
+
+F5DNA
+
+```
+
+Exercise 5 (Answer)
+========================================================
+```{r, echo=FALSE}
+
+orders_details <- read_csv("data/order_details.csv")
+
+F5DNA <- completed_orders %>%
+  filter(proc_code == "F5DNA") %>%
+  left_join(orders_details, by = "order_id") %>%
+  count(pref_list_type)
+
+F5DNA
+
+```
+
+The End or the Beginning?
+========================================================
+
+Congratulations!!  You have reached the end of the exploratory data analysis section.
+
+Go forth and prosper in your time calculations and data joins!
+

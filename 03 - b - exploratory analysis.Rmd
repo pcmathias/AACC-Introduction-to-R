@@ -242,7 +242,7 @@ ggplot(data = cbc_count) +
 
 **End exercise**
 
-## Date Differential by Patient/Test
+## Date Differential by Patient and Test
 
 Now that we have refreshed our tabulation skills, let's revist working with dates.  Sometimes it is useful to look at the interval between orders for a given test.  Let's look at the time interval between CBCs for individual patients in our data set.
 
@@ -252,6 +252,7 @@ Let's create the combination of patient CBCs, calculate the difference between C
 
 
 ```{r}
+
 cbc_orders <- filter(completed_orders, proc_code == "CBC")
 
 cbc1 = select(cbc_orders, patient_id, result_time)
@@ -269,7 +270,6 @@ cbc_join <- cbc_join %>%
 
 cbc_join
 
-
 ```
 
 This gives us the patient's record number, the result time of the CBC, and the amount of time that has elapsed since the patient's previous CBC.
@@ -277,8 +277,10 @@ This gives us the patient's record number, the result time of the CBC, and the a
 Now let's plot the intervals using our old friend 'ggplot'.
 
 ```{r}
+
 ggplot(data = cbc_join) + 
   geom_histogram(mapping = aes(x = minimum), binwidth = 5)
+
 ```
 
 We can see that intervals between CBCs range from 1 to nearly 100 days in this data set, but most repeat CBCs are performed before ~45 days have elapsed.
@@ -290,9 +292,11 @@ The `join` function can also help us to bring two different data sets together f
 Let's load a second data set called order_details.  This data set includes information about the ordering route and whether the order originiated from a preference list.  This data set is a Comma Separated Variable (CSV) file so we need to use the `read_csv` function instead of our usual `read_excel` function.
 
 ```{r}
+
 orders_details <- read_csv("data/order_details.csv")
 
 head(orders_details)
+
 ```
 
 We can join the order details data to our completed orders data using the order_id as the shared key for linking the data sets.
