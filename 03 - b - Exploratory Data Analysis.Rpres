@@ -1,0 +1,108 @@
+Exploratory Data Analysis:  Plotting Time Data and Joining Data Sets
+========================================================
+author: Joe Rudolf
+date: July 25, 2018
+autosize: true
+
+Working with Time Data
+========================================================
+
+- Time data is a very common and useful data type in the clinical laboratories.
+
+- Either individual time points (order times, receive times, result times)
+
+- Or time differences (turnaround times)
+
+Load the data
+========================================================
+
+- Open lesson "03 - B" and execute some code
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE, comment = NA)
+
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(lubridate)
+
+```
+
+```{r}
+
+orders <- read_excel("data/orders_data_set.xlsx") %>%
+clean_names()
+
+```
+
+Now glimpse the data
+========================================================
+
+```{r}
+glimpse(orders)
+```
+
+
+Selecting Time Components
+========================================================
+We can select just the date component of a date time:
+  
+```{r}
+
+#Date of Order
+
+date_of_order <- date(orders$order_time)
+
+head(date_of_order)
+
+```
+
+Here, the number "33" represents the 33rd week of the year.
+
+Selecting Time Components
+========================================================
+Or the week component:
+  
+```{r}
+
+#Week of Order
+
+week_of_order <- week(orders$order_time)
+
+head(week_of_order)
+
+```
+
+
+Working with Time Data
+========================================================
+
+Working with Time Data
+========================================================
+
+Working with Time Data
+========================================================
+
+Working with Time Data
+========================================================
+
+Working with Time Data
+========================================================
+
+
+
+
+
+Slide With Code
+========================================================
+
+```{r}
+summary(cars)
+```
+
+Slide With Plot
+========================================================
+
+```{r, echo=FALSE}
+plot(cars)
+```
