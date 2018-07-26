@@ -69,7 +69,16 @@ str(orders)
 
 4. Let's start by running a summary (`summary`) of one of those character fields that we think should be a factor. What information can we determine from that summary?
 
+```{r}
+
+```
+
 5. Let's convert one of those fields to a factor using the `as.factor()` command and then run a summary. What additional information do you see by converting to a factor?
+
+```{r}
+
+```
+
 
 **End Exercise**
 
