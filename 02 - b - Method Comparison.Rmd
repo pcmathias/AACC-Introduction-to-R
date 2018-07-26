@@ -1,10 +1,12 @@
 ---
 title: "Method Validation in R -- Method Comparison"
-authors: 
- - "Niklas Krumm"
- - "Daniel Herman"
 date: "06/07/2018"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
+authors:
+- Niklas Krumm
+- Daniel Herman
 ---
 
 ```{r setup, include=FALSE}
@@ -12,6 +14,8 @@ knitr::opts_chunk$set(echo = TRUE, comment=NA)
 library(tidyverse)
 library(readxl)
 ```
+
+# Method Validation in R: Method Comparison
 
 ## Overview
 
