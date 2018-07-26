@@ -140,9 +140,13 @@ Take a look at the Environment tab on the upper right. You can now see your obje
 x <- 
 ```
 
+```{r, echo=FALSE}
+x <- 2
+```
+
 Review your Environment tab. What happened to your object?
 
-2. Next let's assign a new object a our old object x.
+2. Next let's assign a new object a with the contents of our object x.
 
 ```{r, eval = FALSE}
 
