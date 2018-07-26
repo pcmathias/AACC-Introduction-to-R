@@ -73,12 +73,26 @@ head(week_of_order)
 
 ```
 
+Exercise 1
+========================================================
+- Can you isolate the day of the week from the order?  
 
-Working with Time Data
+- Hint: use the `wday` function.
+
+Exericse 1 (Answer)
 ========================================================
 
-Working with Time Data
-========================================================
+```{r}
+
+#Day of Week of Order
+
+day_of_week_of_order <- wday(orders$order_time)
+
+head(day_of_week_of_order)
+
+```
+
+Here, the number "1" represents a Sunday.
 
 Working with Time Data
 ========================================================
