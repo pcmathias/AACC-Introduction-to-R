@@ -24,7 +24,7 @@ In this section we will continue exploring how to use R in method validation by 
 ## Load data
 
 Let's load in hCG data, just as we did in the previous session.
-```{r load_data_1}
+```{r}
 hcg <- read_excel(path="data/Method_Validation.data.xlsx", 
                 sheet="MS HCG")
 glimpse(hcg)
