@@ -1,0 +1,264 @@
+01 - Welcome and Introduction to R
+========================================================
+author: Joe Rudolf
+date: July 26, 2018
+autosize: true
+
+Course Faculty Introductions
+========================================================
+
+- Joe Rudolf (University of Minnesota)
+
+- Daniel Herman (University of Pennsylvania)
+
+- Patrick Mathias (University of Washington)
+
+Outline for the Day
+========================================================
+
+- 45-60 min blocks followed by 10-15 minute breaks and an hour for lunch
+
+- Mix of lecture, live coding, and executing pre-written code
+
+- Topics
+  - Introduction to R
+  - Method Validation
+  - Exploratory Data Analysis
+
+Goals for the Day
+========================================================
+
+- Introduce the R programming language and the RStudio environement.
+
+- Provide exposure to common tools and approaches for working with laboratory data in R leveraging the tidyverse package.
+
+- Give you content and resources to help you continue your studies.
+
+What is R?
+========================================================
+
+- R is a statistical programming language.  
+
+- Using R you can load, analyze, and visualize data.
+
+- R also provides an environment in which we can conduct reproducible data analysis.
+  - Documented
+  - Able to be revisited and re-executed
+  - Shareable
+
+Ensuring Everyone is Set Up
+========================================================
+
+- Installing R:  [https://cloud.r-project.org](https://cloud.r-project.org]).
+
+- Installing RStudio:  [https://www.rstudio.com/products/rstudio/download/#download](https://www.rstudio.com/products/rstudio/download/#download).
+
+- Downloading the Repo:  
+
+- Setting the Working Directory:  Session -> Set Working Directory -> Choose Directory
+
+- Checking the Working Directory:
+
+```{r, eval=FALSE}
+getwd()
+```
+
+The RStudio Graphical User Environment
+========================================================
+![Screen shot of RStudio](assets/RStudio_screenshot.png)
+
+Installing Packages (the Tidyverse)
+========================================================
+
+- A package is a collection of functions.  Packages extend the capabilities of the base R programming language.
+
+- The tidyverse includes functions for reading data into the R environment, cleaning and manipulating data, and plotting our results.
+
+- Installing the Tidyverse:  Enter the following code into the RStudio console and press the return key.
+
+```{r, eval=FALSE}
+install.packages("tidyverse", dependencies = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+Exercise 1:
+========================================================
+- Let's open our first lesson file (Introduction to R.Rmd)
+
+- Complete Exercise 1
+  - Install the 'janitor' package
+  - Load the janitor package
+  - Explore the package help functionality with '??janitor'
+
+
+Coding Basics:  R as a Calculator
+========================================================
+
+Basic math:
+```{r}
+2 + 3 + 2
+```
+
+Basic functions:
+```{r}
+abs(-77)
+```
+
+Coding Basics:  Objects
+========================================================
+- We can create objects and use them in our calculations.
+
+- object_name <- contents of our object
+
+```{r}
+x <- 1
+```
+
+```{r}
+x
+```
+
+Exercise 2:
+========================================================
+- We can reassign the contents of an object.
+
+- Complete exercise 2
+  - Change the contents of x to 2
+  - Assign x to a new object called a
+  - Reassign the contents of x to 1
+  
+- What happened to the contents of a?
+
+
+Coding Basics:  Creating a Sequence Manually
+========================================================
+We can put more than one number into an object to create a vector.
+
+```{r}
+x <- c(1, 2, 3, 4, 5)
+```
+
+```{r}
+x
+```
+
+Coding Basics:  Creating a Sequence Automatically
+========================================================
+
+```{r}
+sequence_one_to_twenty <- seq(1, 20)
+```
+
+```{r}
+sequence_one_to_twenty
+```
+
+```{r}
+mean(sequence_one_to_twenty)
+```
+
+Coding Basics:  Creating Tables
+========================================================
+- So far we have created vectors (analogous to a single column in a spreadsheet)
+
+- Let's create a tibble (aka spreadsheet, table, dataframe) with multiple columns.
+
+```{r}
+y <- c("a", "b", "c", "d", "e")
+xy <- tibble(x, y)
+```
+
+```{r}
+head(xy, 2)
+```
+
+Creating Reproducible Data Analysis
+========================================================
+- Entering code in the console is a great way to develop and iterate your analysis.
+
+- It is easy to lose track of the pieces of code we have executed in the console. 
+
+- To make our code reproducible, we need to place it in a container that we can edit, save, and execute sequentially.  
+
+- R Markdown files (extension .RMD) provide an authoring environment for us to do just that!
+
+Creating our First Markdown File
+========================================================
+- Go to the menu bar at the top of the screen (File -> New File -> R Markdown).
+  - Header '---'
+  - R code '```'
+  - Commentary '#'
+  
+
+Creating our First Markdown File
+========================================================
+
+Copy the following from the Introduction to R.Rmd to our new Rmd.
+
+```{r, eval=FALSE}
+
+# First let's load the tidyverse
+
+library(tidyverse)
+
+# Load a data set of cars into a dataframe
+cars_data <- as_tibble(mtcars)
+
+# Display table
+cars_data
+
+# Fiter the list to cars with fuel economy >= 15 mpg and horsepower >=100
+mpg_hp <-filter(mtcars, mpg >= 15, hp >=100)
+
+# Create a scatter plot of mpg vs horsepower 
+ggplot(data = mpg_hp) + 
+  geom_point(mapping = aes(x = mpg, y = hp))
+
+```
+
+Saving our Rmd and Executing our Code
+========================================================
+
+- Let's save our R Markdown file to our working directory (File -> Save As) as "Our First R Markdown File.RMD"
+
+- Executing our code:
+  - By line: Ctrl+Enter on Windows or Command+Enter on Mac
+  - By chunk:  Shift+Ctrl+Enter for Windows and Shift+Command+Enter for Ma
+  - By document:  The Knit Button (on the Rmd pane menu bar)
+
+- Congratulations!  Our first reproducible data analysis in R!!
+
+Exercise 3
+========================================================
+
+- What if we wanted to look at mpg >= 10 and re-run the analysis?  
+
+- Review the code and figure out where the restriction on the mpg variable was made, and then modify the code to select fuel economy greater than or equal to 10, instead of 15. 
+
+- Knit the file again and observe the change in output.
+
+Learning to Learn to Code
+========================================================
+Learning a new language takes time and patience.  Luckily there are resources to help us on the journey.
+
+- The Help Command
+
+```{r, eval=FALSE}
+?abs()
+```
+
+  - The Internet (Stack Overflow: [https://stackoverflow.com/](https://stackoverflow.com/))
+  - Work Aids (RStudio Cheat Sheets: [https://www.rstudio.com/resources/cheatsheets/](https://www.rstudio.com/resources/cheatsheets/)
+  - A Good Book (R for Data Science: [http://r4ds.had.co.nz/](http://r4ds.had.co.nz/) Available in print and online).
+  - Taking a Break (Sometimes is just takes a fresh set of eyes!)
+  
+Speaking of taking a break... let's take one now!!
+========================================================
+You've earned it.  
+
+Thanks for your attention.
+
+We will meet back and get started working with real laboratory data!
