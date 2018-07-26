@@ -59,7 +59,7 @@ orders <- read_excel("data/orders_data_set.xlsx")
 str(orders)
 ```
 
-**Exercise 1**
+**Exercise 1:**
 
 1. Which fields of the data frame are characters?
  
@@ -69,16 +69,23 @@ str(orders)
 
 4. Let's start by running a summary (`summary`) of one of those character fields that we think should be a factor. What information can we determine from that summary?
 
-```{r}
+```{r, eval = FALSE}
 
+```
+
+```{r, echo = FALSE}
+summary(orders$ORDER_CLASS_C_DESCR)
 ```
 
 5. Let's convert one of those fields to a factor using the `as.factor()` command and then run a summary. What additional information do you see by converting to a factor?
 
-```{r}
+```{r, eval = FALSE}
 
 ```
 
+```{r, echo = FALSE}
+summary(as.factor(orders$ORDER_CLASS_C_DESCR))
+```
 
 **End Exercise**
 
@@ -106,11 +113,15 @@ summary(orders)
 
 The `summary` function is most useful when you want to quickly glance at distributions of numerical data and times. You can quickly see the minimum and maximum times and some data on the distribution. It is less helpful when you have characters. One way to deal with this issue to convert a character variable into a factor using the `as.factor()`function.
 
-**Exericse 2**
+**Exericse 2:**
 
 Pull a summary of the description variable (only), after converting to a factor using the `as.factor` function. Which test is most frequently ordered in this data set?
 
-```{r convert_factor}
+```{r convert_factor, eval = FALSE}
+
+```
+
+```{r convert_factor, echo = FALSE}
 summary(as.factor(orders$description))
 ```
 
@@ -139,6 +150,7 @@ Let's extract the rows associated with complete blood count orders. The procedur
 ```{r filter}
 cbc_orders <- orders %>%
   filter(proc_code == "CBC") # note the two equal signs for evaluating equality (because one equal is for assignment)
+glimpse(cbc_orders)
 ```
 
 With that step, we have now create a tibble that only has the rows with a CBC order.
@@ -152,17 +164,27 @@ We may want to sort first by patient ID, then by order time.
 ```{r arrange}
 orders_arranged <- orders %>%
   arrange(patient_id, order_time)
+glimpse(orders_arranged)
 ```
 
-**Exercise 3**
+**Exercise 3:**
 
 Let's take these functions out for a spin. Generate a tibble that includes only the BMP orders with the following variables: order ID and time stamp variables (order_time, result_time, review_time). Sort the data by order_time, starting with the latest time stamp in the data set and ending with the earliest.
 
 ```{r, eval = FALSE}
 bmp_orders <- orders %>%
+  %>%
+  %>%
+  
+glimpse(bmp_orders)
+```
+
+```{r, echo = FALSE}
+bmp_orders <- orders %>%
   filter(proc_code == "BMP") %>%
   select(order_id, order_time, result_time, review_time) %>%
   arrange(desc(order_time))
+glimpse(bmp_orders)
 ```
 
 **End Exercise**
@@ -179,11 +201,17 @@ orders <- orders %>%
 summary(orders$department_fctr)
 ```
 
-**Exercise 4**
+**Exercise 4:**
 
 Let's go ahead and convert the description variable to a factor using the `mutate` and `as.factor` functions. This time, rather than creating a new variable, overwrite the original variable by giving it its original name.
 
-```{r single_factor_exercise}
+```{r single_factor_exercise, eval = FALSE}
+orders <- orders %>%
+  mutate()
+summary()
+```
+
+```{r single_factor_exercise, echo = FALSE}
 orders <- orders %>%
   mutate(description = as.factor(description))
 summary(orders$description)
@@ -232,11 +260,17 @@ Now let's generate a more complex table to visualize the number of CBC orders by
 table(cbc_orders$department, cbc_orders$order_status_c_descr)
 ```
 
-**Exercise 5**
+**Exercise 5:**
 
 Let's practice making tables. This time, create a table showing the breakdown of CBC with differential (procedure code CBD) by department and order class. Which clinics draw a majority of their own samples? Which clinics use the most external orders (ie. use results from outside labs)?
 
-```{r cbd_analysis}
+```{r cbd_analysis, eval = FALSE}
+cbd_orders <- orders %>%
+  filter(proc_code == "CBD")
+table(cbd_orders$department, cbd_orders$order_class_c_descr)
+```
+
+```{r cbd_analysis, echo = FALSE}
 cbd_orders <- orders %>%
   filter(proc_code == "CBD")
 table(cbd_orders$department, cbd_orders$order_class_c_descr)
@@ -309,11 +343,16 @@ ggplot(data = orders) +
   coord_flip()
 ```
 
-**Exercise 6**
+**Exercise 6:**
 
 1. Plot a bar graph of the orders data set showing the breakdown of order status.
 
 ```{r, eval = FALSE}
+ggplot(data = ) + 
+  geom_bar(mapping = aes(x = )) 
+```
+
+```{r, echo = FALSE}
 ggplot(data = orders) + 
   geom_bar(mapping = aes(x = order_status_c_descr)) 
 ```
@@ -321,6 +360,10 @@ ggplot(data = orders) +
 2. Plot a bar graph showing the breakdown of order class.
 
 ```{r, eval = FALSE}
+
+```
+
+```{r, echo = FALSE}
 ggplot(data = orders) + 
   geom_bar(mapping = aes(x = order_class_c_descr)) 
 ```
@@ -343,7 +386,7 @@ ggplot(data = orders) +
 
 Note that R output a warning: "`stat_bin()` using `bins = 30`. Pick better value with `binwidth`." By default `geom_histogram()` splits the continous variable into 30 bins, which makes the bars look very uneven over time. That split is arbitrary and probably does not reflect the true distribution of data.
 
-How do we fix this? The `geom_histogram()` function uses seconds as its default unit of time (but will use days if the variable is a date rather than a time), so we can define a binwidth that is multiples of seconds to reflect days or weeks. For example, one day = 60*60*24 seconds.
+How do we fix this? The `geom_histogram()` function uses seconds as its default unit of time (but will use days if the variable is a date rather than a time), so we can define a binwidth that is multiples of seconds to reflect days or weeks. For example, one day = 60 \*60 \* 24 seconds.
 
 ```{r}
 ggplot(data = orders) + 
@@ -376,11 +419,19 @@ ggplot(data = orders) +
   xlab("Time")
 ```
 
-**Exercise 7**
+**Exercise 7:**
 
 Plot the weekly volume of a subset of common orders: basic metabolic panel, hemoglobin A1C, lipid panel, and TSH (proc_codes BMP, A1C, LIPID, TSH) and show the breakdown of tests by fill in the bar chart.
  
-```{r}
+```{r, eval = FALSE}
+orders_subset <- orders %>%
+  
+ggplot(data = orders_subset) +
+  geom_histogram(mapping = , binwidth = ) +
+  xlab()
+```
+
+```{r, echo = FALSE}
 orders_subset <- orders %>%
   filter(proc_code %in% c("BMP", "A1C", "LIPID", "TSH"))
 ggplot(data = orders_subset) +
@@ -390,5 +441,4 @@ ggplot(data = orders_subset) +
   ) +
   xlab("Time")
 ```
-
 **End Exercise**
