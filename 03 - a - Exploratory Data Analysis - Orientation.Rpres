@@ -4,6 +4,13 @@ author: Patrick Mathias
 date: July 18, 2018
 autosize: true
 
+```{r, echo = FALSE}
+library(tidyverse)
+library(readxl)
+library(janitor)
+```
+
+
 Why use R to explore your data?
 ========================================================
 
@@ -65,10 +72,46 @@ Multiple methods to quickly review data
   - Not helpful for character variables
   - Characters can be converted to factors using `as.factor()`
   
-Exercise time!
+Reviewing data structure for orders data set
 ========================================================
 
-Complete "Loading data and reviewing data types" exercises
+```{r load_data_clean_headers}
+orders <- read_excel("data/orders_data_set.xlsx") %>%
+  clean_names()
+str(orders)
+```
+ 
+Exercise 1
+========================================================
+
+1. Which fields of the data frame are characters?
+ 
+2. Which are numbers?
+
+3. Of those fields above, which would be best represented as factors?
+
+4. Let's start by running a summary (`summary`) of one of those character fields that we think should be a factor. What information can we determine from that summary?
+
+5. Let's convert one of those fields to a factor using the `as.factor()` command and then run a summary. What additional information do you see by converting to a factor?
+
+Taking a glimpse
+========================================================
+
+```{r glimpse}
+glimpse(orders)
+```
+
+Trying a summary
+========================================================
+
+```{r summary}
+summary(orders)
+```
+
+Exercise 2
+========================================================
+
+Pull a summary of the description variable (only), after converting to a factor using the `as.factor` function. Which test is most frequently ordered in this data set?
 
 Reshaping rectangular data
 ========================================================
@@ -159,7 +202,7 @@ Other functions in mutate family such as `mutate_at()` and `mutate_if()` perform
 Exercise time!
 ========================================================
 
-Complete "Reshaping rectangular data" exercises
+Complete Exercises 3 & 4
 
 Creating tables in R is easy
 ========================================================
@@ -184,7 +227,7 @@ table(cbc_orders$department, cbc_orders$order_status_c_descr)
 Exercise time!
 ========================================================
 
-Complete "Tabluating our data" exercises
+Complete Exercise 5
 
 Plotting with ggplot() is complicated but powerful
 ========================================================
@@ -234,4 +277,4 @@ Tips for ggplot geoms
 Exercise time!
 ========================================================
 
-Complete "Simple summary visualizations" exercises
+Complete Exercises 6 & 7
