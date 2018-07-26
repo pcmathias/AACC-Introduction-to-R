@@ -1,5 +1,5 @@
 ---
-title: "03 - b"
+title: "Exploratory Data Analysis:  Plotting Time Data and Joining Data Sets"
 author: "Joe Rudolf"
 date: "7/17/2018"
 output: html_document
@@ -87,7 +87,7 @@ For more interesting date time functions, check out the R Studio [Dates and Time
 
 ## Plotting Time Points for Data Exploration
 
-Let's use the `hour` function to isolate the hour component of our order and then use `ggplot` to visualize the data.  This will give us a window into the time of day that ordering providers are placing their orders.  We can use the 'hour' function to help us with this.
+Let's use the `hour` function to isolate the hour component of our order and then use `ggplot` to visualize the data.  This will give us a window into the time of day that ordering providers are placing their orders.
 
 ```{r}
 
@@ -158,7 +158,7 @@ ggplot(data = order_to_result_delta) +
 
 **Exercise 3**  
 
-What if we wanted to look at result time to review time instead?  Can you leverage the same approach as above to calculate and plot the difference between review time and the result time.  This will give us a look at the time between when results are available and when those results are reviewed by the ordering provider.
+What if we wanted to look at result time to review time instead?  Can you leverage the same approach as above to calculate and plot the difference between review time and the result time?  This will give us a look at the time between when results are available and when those results are reviewed by the ordering provider.
 
 ```{r}
 
