@@ -66,11 +66,16 @@ head(week_of_order)
 Here, the number "33" represents the 33rd week of the year.
 
 
-**Exercise 1** 
+**Exercise 1:** 
 
 Can you isolate the day of the week from the order?  Hint: use the `wday` function.
 
-```{r}
+```{r, eval=FALSE}
+
+```
+
+
+```{r, echo=FALSE}
 
 day_of_week_of_order <- wday(orders$order_time)
 
@@ -101,11 +106,16 @@ ggplot(data = orders) +
 Our data visualization shows that most orders are placed in the mid-morning and mid-afternoon with a break for lunch.  Also, as we might expect there aren't a lot of orders placed in the middle of the night.
 
 
-**Exercise 2**  
+**Exercise 2:**  
 
 Can you perform a similar analysis and visualization to look at the result_time data using the `hour` function and `ggplot`?
+ 
+```{r, eval=FALSE}
+
+```
+ 
   
-```{r}
+```{r, echo=FALSE}
 
 result_hour <- hour(orders$result_time)
 
@@ -156,11 +166,15 @@ ggplot(data = order_to_result_delta) +
 ```
 
 
-**Exercise 3**  
+**Exercise 3:**  
 
 What if we wanted to look at result time to review time instead?  Can you leverage the same approach as above to calculate and plot the difference between review time and the result time?  This will give us a look at the time between when results are available and when those results are reviewed by the ordering provider.
 
-```{r}
+```{r, eval=FALSE}
+
+```
+
+```{r, echo=FALSE}
 
 result_to_review_delta <- completed_orders %>%
   mutate(result_time_to_review_time = review_time - result_time) %>%
@@ -202,11 +216,15 @@ ggplot(data = orders_count) +
 
 The vast majority of patient's received 10 or less tests during the time window that this data set covers.  It looks like there are a few patients that received as many as 50 tests.
 
-**Exercise 4**  
+**Exercise 4:**  
 
 What if we wanted to know only number of CBCs per patient?  Can you use the `filter` function to limit the data CBC orders before counting?
 
-```{r}
+```{r, eval=FALSE}
+
+```
+
+```{r, echo=FALSE}
 
 cbc_orders <- filter(completed_orders, proc_code == "CBC")
 
@@ -308,11 +326,15 @@ CBC
 
 ```
 
-**Exercise 5**  
+**Exercise 5:**  
 
 What if we just wanted to look at Factor V Leiden.  Hint: proc_code = "F5DNA")
 
-```{r}
+```{r, eval=FALSE}
+
+```
+
+```{r, echo=FALSE}
 
 orders_details <- read_csv("data/order_details.csv")
 

@@ -55,9 +55,13 @@ Ensuring Everyone is Set Up
 
 - Downloading the Repo:  
 
-- Setting the Working Directory:  Session -> Set Working Directory -> Choose Directory
+- Setting the Working Directory:  
 
-- Checking the Working Directory:
+  - Session -> Set Working Directory -> Choose Directory
+
+  - Set the working directory to the github repo folder you downloaded
+
+  - Checking the path to the working directory:
 
 ```{r, eval=FALSE}
 getwd()
