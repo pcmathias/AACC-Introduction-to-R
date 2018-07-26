@@ -86,7 +86,7 @@ Let's load the tidyverse with the following code.
 library(tidyverse)
 ```
 
-**Exercise**
+**Exercise 1**
 
 There are a large number of packages that you can load to help accomplish a task or solve a problem. There is a repository called CRAN that hosts many useful packages: [CRAN](https://cran.r-project.org/web/packages/available_packages_by_name.html). Clicking on a package name will show you some basic information about the package, and many packages have supporting documentation and vignettes that walk you through how to use the package's functions.
 
@@ -132,7 +132,7 @@ x <- 1
 
 Take a look at the Environment tab on the upper right. You can now see your object in that window.
 
-**Exercise**
+**Exercise 2**
 
 1. Now let's assign that same object x another value (eg. 2).
 
@@ -233,7 +233,9 @@ cars_data
 mpg_hp <-filter(mtcars, mpg >= 15, hp >=100)
 
 # Create a scatter plot of mpg vs horsepower 
-ggplot(data = mpg_hp) + geom_point(mapping = aes(x = mpg, y = hp))
+ggplot(data = mpg_hp) + 
+  geom_point(mapping = aes(x = mpg, y = hp))
+
 ```
 
 Now let's save our R Markdown file to our working directory (File -> Save As) as "Our First R Markdown File.RMD"
@@ -248,7 +250,7 @@ There are multiple options for running our code.
 
 Since all of the code is complete, let's Knit to an html file.
 
-**Exercise**
+**Exercise 3**
 
 What if we wanted to look at mpg >= 10 and re-run the analysis?  Review the code and figure out where the restriction on the mpg variable was made, and then modify the code to select fuel economy greater than or equal to 10, instead of 15. Knit the file again and observe the change in output.
 

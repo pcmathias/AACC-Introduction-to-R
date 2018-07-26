@@ -1,5 +1,5 @@
 ---
-title: "03 - b"
+title: "Exploratory Data Analysis:  Plotting Time Data and Joining Data Sets"
 author: "Joe Rudolf"
 date: "7/17/2018"
 output: html_document
@@ -66,7 +66,7 @@ head(week_of_order)
 Here, the number "33" represents the 33rd week of the year.
 
 
-**Exercise** 
+**Exercise 1** 
 
 Can you isolate the day of the week from the order?  Hint: use the `wday` function.
 
@@ -87,21 +87,21 @@ For more interesting date time functions, check out the R Studio [Dates and Time
 
 ## Plotting Time Points for Data Exploration
 
-Let's use the `hour` function to isolate the hour component of our order and then use `ggplot` to visualize the data.  This will give us a window into the time of day that ordering providers are placing their orders.  We can use the 'hour' function to help us with this.
+Let's use the `hour` function to isolate the hour component of our order and then use `ggplot` to visualize the data.  This will give us a window into the time of day that ordering providers are placing their orders.
 
 ```{r}
 
 order_hour <- hour(orders$order_time)
 
-ggplot(orders, aes(x = order_hour)) + 
-geom_histogram(bins = 24)
+ggplot(data = orders) +
+  geom_histogram(mapping = aes(x = order_hour), bins = 24)
 
 ```
 
 Our data visualization shows that most orders are placed in the mid-morning and mid-afternoon with a break for lunch.  Also, as we might expect there aren't a lot of orders placed in the middle of the night.
 
 
-**Exercise**  
+**Exercise 2**  
 
 Can you perform a similar analysis and visualization to look at the result_time data using the `hour` function and `ggplot`?
   
@@ -109,8 +109,8 @@ Can you perform a similar analysis and visualization to look at the result_time 
 
 result_hour <- hour(orders$result_time)
 
-ggplot(orders, aes(x = result_hour)) + 
-  geom_histogram(bins = 24)
+ggplot(data = orders) + 
+  geom_histogram(mapping = aes(x = result_hour), bins = 24)
 
 ```
 
@@ -150,15 +150,15 @@ order_to_result_delta <- completed_orders %>%
   filter(order_time_to_result_time > 0 & order_time_to_result_time < 60*60*24)
 
 
-ggplot(order_to_result_delta, aes(x = order_time_to_result_time)) + 
-  geom_histogram(binwidth = 60*60)
+ggplot(data = order_to_result_delta) + 
+  geom_histogram(mapping = aes(x = order_time_to_result_time), binwidth = 60*60)
 
 ```
 
 
-**Exercise**  
+**Exercise 3**  
 
-What if we wanted to look at result time to review time instead?  Can you leverage the same approach as above to calculate and plot the difference between review time and the result time.  This will give us a look at the time between when results are available and when those results are reviewed by the ordering provider.
+What if we wanted to look at result time to review time instead?  Can you leverage the same approach as above to calculate and plot the difference between review time and the result time?  This will give us a look at the time between when results are available and when those results are reviewed by the ordering provider.
 
 ```{r}
 
@@ -166,8 +166,8 @@ result_to_review_delta <- completed_orders %>%
   mutate(result_time_to_review_time = review_time - result_time) %>%
   filter(result_time_to_review_time > 0 & result_time_to_review_time < 60*60*24 )
 
-ggplot(result_to_review_delta, aes(x = result_time_to_review_time)) + 
-  geom_histogram(binwidth = 60*60)
+ggplot(data = result_to_review_delta) + 
+  geom_histogram(mapping = aes(x = result_time_to_review_time), binwidth = 60*60)
 
 ```
 
@@ -181,8 +181,8 @@ order_to_result_delta <- completed_orders %>%
   mutate(order_time_to_result_time = difftime(result_time, order_time, units = "hour")) %>%
   filter(order_time_to_result_time > 0 & order_time_to_result_time < 24)
 
-ggplot(order_to_result_delta, aes(x = order_time_to_result_time)) + 
-  geom_histogram(binwidth = 1)
+ggplot(data = order_to_result_delta) + 
+  geom_histogram(mapping = aes(x = order_time_to_result_time), binwidth = 1)
 
 ```
 
@@ -195,14 +195,14 @@ We will return to date time calculations in a bit but first let's quickly revisi
 orders_count <- completed_orders %>%
   count(patient_id)
 
-ggplot(orders_count, aes(x = n)) +
-  geom_histogram(binwidth = 1)
+ggplot(data = orders_count) +
+  geom_histogram(mapping = aes(x = n), binwidth = 1)
 
 ```
 
 The vast majority of patient's received 10 or less tests during the time window that this data set covers.  It looks like there are a few patients that received as many as 50 tests.
 
-**Exercise**  
+**Exercise 4**  
 
 What if we wanted to know only number of CBCs per patient?  Can you use the `filter` function to limit the data CBC orders before counting?
 
@@ -217,8 +217,8 @@ count(patient_id)
 
 #Plot
 
-ggplot(cbc_count, aes(x = n)) + 
-geom_histogram(binwidth = 1)
+ggplot(data = cbc_count) + 
+  geom_histogram(mapping = aes(x = n), binwidth = 1)
 
 ```
 
@@ -259,8 +259,8 @@ This gives us the patient's record number, the result time of the CBC, and the a
 Now let's plot the intervals using our old friend 'ggplot'.
 
 ```{r}
-ggplot(cbc_join, aes(x = minimum)) + 
-geom_histogram(binwidth = 5)
+ggplot(data = cbc_join) + 
+  geom_histogram(mapping = aes(x = minimum), binwidth = 5)
 ```
 
 We can see that intervals between CBCs range from 1 to nearly 100 days in this data set, but most repeat CBCs are performed before ~45 days have elapsed.
@@ -308,7 +308,7 @@ CBC
 
 ```
 
-**Exercise**  
+**Exercise 5**  
 
 What if we just wanted to look at Factor V Leiden.  Hint: proc_code = "F5DNA")
 
