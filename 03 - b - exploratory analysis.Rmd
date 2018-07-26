@@ -16,7 +16,7 @@ library(lubridate)
 
 ```
 
-# Exploring Data:  Working with Time
+# Exploratory Data Analysis:  Plotting Time Data and Joining Data Sets
 
 In this section, we will build on the previous section of exploring a data set.  We will introduce the concept of working with time data including calculating time differences.  This is very useful when working with clinical laboratory data (think turnaround times).  At the end of the lesson we will also discuss the basics of joining separate data sets together using 'join' functions.
 
