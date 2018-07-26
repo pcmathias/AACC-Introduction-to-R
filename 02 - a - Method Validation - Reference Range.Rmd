@@ -55,7 +55,7 @@ uE3 <- read_excel(path="data/Method_Validation.data.xlsx",
 uE3  # Take a peak
 ```
 
-**Exercise 1**
+**Exercise 1:**
 Load in the alpha fetoprotein (AFP) method comparison data into a tibble named `afp`
 
 ```{r load_data_1, echo=FALSE}
