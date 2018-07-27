@@ -45,6 +45,7 @@ glimpse(orders)
 
 Selecting Time Components
 ========================================================
+
 We can select just the date component of a date time:
   
 ```{r}
@@ -57,7 +58,6 @@ head(date_of_order)
 
 ```
 
-Here, the number "33" represents the 33rd week of the year.
 
 Selecting Time Components
 ========================================================
@@ -72,6 +72,8 @@ week_of_order <- week(orders$order_time)
 head(week_of_order)
 
 ```
+
+Here, the number "33" represents the 33rd week of the year.
 
 Exercise 1
 ========================================================
@@ -301,6 +303,8 @@ What if we wanted to know only number of CBCs per patient?
 
 Can you use the `filter` function to limit the data CBC orders before counting?
 
+Hint: The procedure code for CBC is "CBC".
+
 Exercise 4 (Answer)
 ========================================================
 ```{r, eval=FALSE}
@@ -433,7 +437,7 @@ This data set is a Comma Separated Variable (CSV) file so we need to use the `re
 ```{r}
 orders_details <- read_csv("data/order_details.csv")
 
-head(orders_details)
+head(orders_details, 4)
 ```
 
 
@@ -507,7 +511,9 @@ CBC
 Exercise 5
 ========================================================
 
-What if we just wanted to look at Factor V Leiden.  Hint: proc_code = "F5DNA")
+What if we just wanted to look at Factor V Leiden.  
+
+Hint: proc_code == "F5DNA"
 
 
 Exercise 5 (Answer)
@@ -543,7 +549,9 @@ F5DNA
 The End or the Beginning?
 ========================================================
 
-Congratulations!!  You have reached the end of the exploratory data analysis section.
+Congratulations!!  
+
+You have reached the end of the exploratory data analysis section.
 
 Go forth and prosper in your time calculations and data joins!
 
