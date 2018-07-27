@@ -3,7 +3,6 @@ title: "Method Validation in R -- Precision, Linearity, and calibration verifica
 authors: 
  - "Daniel Herman"
  - "Niklas Krumm"
-date: "06/07/2018"
 output: html_document
 ---
 
@@ -28,11 +27,6 @@ precision <-
   
 ```
 
-```{r, echo=FALSE}
-precision <- read_xlsx(path = "data/Method_Validation.data.xlsx", sheet = "Precision")
-str(precision)
-head(precision)
-```
 **End exercise**
 
 ### Describe data and explore its distribution
@@ -72,11 +66,6 @@ How many different analytes (`Analyte`) are there?
 sprintf("There are %d different analytes", __________)
 ```
 
-```{r, echo=FALSE}
-precision$Analyte
-unique(precision$Analyte)
-sprintf("There are %d different analytes", length(unique(precision$Analyte)))
-```
 **End exercise**
 
 ### Assess precision
@@ -122,14 +111,6 @@ precision %>%
 
 ```
 
-```{r, echo=FALSE}
-precision %>%
-  filter(Analyte == "AFP") %>%
-  summarize(mean_P1 = mean(P1),
-            sd_P1 = sd(P1),
-            CV_P1 = sd(P1) / mean(P1) * 100)
-```
-
 **End exercise**
 
 ### Visualize 
@@ -144,15 +125,6 @@ g <- precision %>%
 g + geom_histogram(aes(x=________), binwidth=_________) +
   geom_vline(aes(xintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue") +
   geom_vline(aes(xintercept = _________), linetype=2, color="blue")
-```
-
-```{r, echo=FALSE}
-g <- precision %>%
-  filter(Analyte == "AFP") %>%
-  ggplot()
-g + geom_histogram(aes(x=P1), binwidth=0.5) +
-  geom_vline(aes(xintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue") +
-  geom_vline(aes(xintercept = mean(P1) - 2 * sd(P1)), linetype=2, color="blue")
 ```
 
 **End exercise**
@@ -183,19 +155,6 @@ g + geom_point(aes(x=Sample, y=P1)) +
   geom_hline(_______) +
   geom_hline(_______________) +
   ylim(_________)
-```
-
-```{r, echo=FALSE}
-g <- precision %>%
-  filter(Analyte == "AFP") %>%
-  ggplot()
-g + geom_point(aes(x=Sample, y=P1)) +
-  geom_hline(aes(yintercept = mean(P1)), linetype=1, color="blue") +
-  geom_hline(aes(yintercept = mean(P1) + 1 * sd(P1)), linetype=3, color="blue") +
-  geom_hline(aes(yintercept = mean(P1) + 2 * sd(P1)), linetype=2, color="blue") +
-  geom_hline(aes(yintercept = mean(P1) - 1 * sd(P1)), linetype=3, color="blue") +
-  geom_hline(aes(yintercept = mean(P1) - 2 * sd(P1)), linetype=2, color="blue") +
-  ylim(6, 10)
 ```
 
 Is this imprecision acceptable? ...depends on analytical and clinical goals.
@@ -254,12 +213,6 @@ Calculate LOB as 1.645 SDs above mean of the blank
 mean(________)
 sd(___________)
 _______________________  # LOB
-```
-
-```{r, echo=FALSE}
-mean(sim_precision$x)
-sd(sim_precision$x)
-mean(sim_precision$x) + 1.645*sd(sim_precision$x)
 ```
 
 Alternatives for similar calculations
@@ -339,13 +292,6 @@ afp %>%
   filter(!pass_calvar)
 ```
 
-```{r, echo=FALSE}
-afp %>%
-  filter(Test == "AFP") %>%
-  mutate(pass_calvar = (abs(value_percent_diff) < 30) | (abs(value_diff) < 1)) %>%
-  filter(!pass_calvar)
-```
-
 **End exercise**
 
 Let's plot these absolute differences
@@ -374,15 +320,6 @@ g <- ggplot(___________) +
 g
 ```
 
-```{r, echo=FALSE}
-g <- ggplot(data=tmp) +
-  geom_point(aes(x=Assigned_Value, y=value_percent_diff)) +
-  geom_hline(yintercept = 0, linetype=1, color="gray") +
-  ylim(-100, 100) +
-  ylab("% Observed - Assigned")
-g
-```
-
 **End exercise**
 
 ## Linearity (optional)
@@ -403,15 +340,6 @@ Calculate each samples results based on expected dilution factor and observed re
 Observed_S6 <- max(____________)
 afp <- afp %>%
   mutate(expected_result = _______________)
-
-afp %>%
-  select(Sample, Observed, expected_result)
-```
-
-```{r, echo=FALSE}
-Observed_S6 <- max(afp$Observed)
-afp <- afp %>%
-  mutate(expected_result = Observed_S6 * dilution)
 
 afp %>%
   select(Sample, Observed, expected_result)

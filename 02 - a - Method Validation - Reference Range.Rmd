@@ -3,7 +3,6 @@ title: "Method Validation in R"
 author:
 - Daniel Herman
 - Niklas Krumm
-date: "06/07/2018"
 output:
   pdf_document: default
   html_document: default
@@ -62,9 +61,8 @@ uE3  # Take a peak
 **Exercise 1:**
 Load in the alpha fetoprotein (AFP) method comparison data into a tibble named `afp`
 
-```{r load_data_1, echo=FALSE}
-afp <- read_excel(path="data/Method_Validation.data.xlsx", 
-                sheet="MS AFP")
+```{r, eval=FALSE}
+afp <- 
 afp
 ```
 
@@ -154,11 +152,6 @@ cv <- XXXXX
 print(cv)
 ```
 
-```{r, echo=FALSE}
-cv <- sd(afp$method_a) / mean(afp$method_a) * 100  # Coefficient of variation
-print(cv)
-```
-
 **End exercise**
 
 ## Is it normally distributed?
@@ -187,11 +180,6 @@ ggplot(data=XXXXXXX) +
   geom_histogram(bins=XXX, binwidth=XXX, aes(x=XXXXXXXX))
 ```
 
-``` {r, echo=FALSE}
-ggplot(data=afp) +
-  geom_histogram(binwidth = 10, aes(x=method_b))
-```
-
 Does it look normal? 
 
 2. Transform the x-axis to log-scale using `scale_x_log10` and visually inspect for normality
@@ -199,12 +187,6 @@ Does it look normal?
 ```{r, eval=FALSE}
 ggplot(data=afp) +
 
-```
-
-```{r, echo=FALSE}
-ggplot(data=afp) +
-  geom_histogram(bins=15, aes(x=method_a)) +
-  scale_x_log10()   # Change x-axis scaling
 ```
 
 **End exercise**
@@ -222,9 +204,9 @@ kurtosis(afp$method_a)
 **Exercise 5:**
 Let's assess the `skewness` of the log-transformed method_a data. Use the `log10` function to transform results.
 
-```{r, echo=FALSE}
-method_a_logged <- log10(afp$method_a)
-skewness(method_a_logged)
+```{r, eval=FALSE}
+method_a_logged <- 
+
 ```
 
 **End exercise**
@@ -287,19 +269,6 @@ sprintf("The reference range assuming log-normal distribution is (%3.1f, %3.1f)"
         lower_bound_untransformed, upper_bound_untransformed)
 ```
 
-```{r, echo=FALSE}
-mu <- mean(log(afp$method_a))
-sigma <- sd(log(afp$method_a))
-
-lower_bound_transformed <- mu - 1.96 * sigma
-upper_bound_transformed <- mu + 1.96 * sigma
-
-lower_bound_untransformed <- exp(lower_bound_transformed)
-upper_bound_untransformed <- exp(upper_bound_transformed)
-
-sprintf("The reference range assuming log-normal distribution is (%3.1f, %3.1f)", lower_bound_untransformed, upper_bound_untransformed)
-```
-
 **End exercise**
 
 To visually inspect, let's graphically show the bounds of the reference intervals on the histogram we made above. A simple way to do this is to use the `geom_vline` function of ggplot. 
@@ -331,16 +300,6 @@ g <- ggplot(data=afp) +
   geom_vline(_____________) +
   geom_vline(_____________) +
   geom_vline(_____________)
-g
-```
-
-```{r, echo=FALSE}
-g <- ggplot(data=afp) +
-  geom_histogram(bins=50, aes(x=method_a)) +
-  geom_vline(xintercept=lower_bound_untransformed, linetype=3, color="blue") +
-  geom_vline(xintercept=upper_bound_untransformed, linetype=3, color="blue") +
-  geom_vline(xintercept=lower_bound, linetype=3, color="red") +
-  geom_vline(xintercept=upper_bound, linetype=3, color="red")
 g
 ```
 
@@ -396,12 +355,6 @@ ggplot(data=afp) +
 
 ```
 
-```{r, echo=FALSE}
-ggplot(data=afp) +
-  geom_histogram(bins=50, aes(x=method_a)) +
-  geom_vline(xintercept = non_parametric_bounds["2.5%"], color="red", linetype=3) +
-  geom_vline(xintercept = non_parametric_bounds["97.5%"], color="red", linetype=3)
-```
 **End exercise**
 
 ## How to verify a proposed reference range?
@@ -433,22 +386,20 @@ binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
 **Exercise 9:**
 Evaluate our empirically derived parametric reference ranges
 
-```{r, echo=FALSE}
-n_samples <- nrow(afp)
-ref_range <- c(lower_bound, upper_bound)
-sprintf("The reference range assuming normal distribution is (%3.1f, %3.1f)",
-        ref_range[1], ref_range[2])
-n_inrange <- sum(afp$method_a >= ref_range[1] & 
-                   afp$method_a <= ref_range[2])
-binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
+```{r, eval=FALSE}
+n_samples <- nrow()
+ref_range <- c( , )
+sprintf("The reference range assuming normal distribution is (%3.1f, %3.1f)", , )
+n_inrange <- sum( & )
+binom.test( )
 
 ref_range <- c(lower_bound_untransformed, upper_bound_untransformed)
 sprintf("The reference range assuming log-normal distribution is (%3.1f, %3.1f)",
         ref_range[1], ref_range[2])
-n_inrange <- sum(afp$method_a >= ref_range[1] & 
-                   afp$method_a <= ref_range[2])
-binom.test(x=n_inrange, n=n_samples, p = 0.95, alternative = "two.sided")
+n_inrange <- sum( & )
+binom.test()
 ```
+
 **End exercise**
 
 # Advanced: Using a Q-Q plot to examine a distribution

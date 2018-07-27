@@ -148,10 +148,6 @@ Take a look at the Environment tab on the upper right. You can now see your obje
 x <- 
 ```
 
-```{r, echo=FALSE}
-x <- 2
-```
-
 Review your Environment tab. What happened to your object?
 
 2. Next let's assign a new object a with the contents of our object x.
@@ -160,30 +156,16 @@ Review your Environment tab. What happened to your object?
 
 ```
 
-```{r, echo=FALSE}
-a <- x
-```
-
 3. Re-assign x to its original value 1.
 
 ```{r, eval=FALSE}
 
 ```
 
-```{r, echo=FALSE}
-x <- 1
-```
-
 Review the Environment tab. What happened to a? Was that the behavior you expected?
 
 ```{r, eval=FALSE}
 
-```
-
-```{r, echo=FALSE}
-a
-
-x
 ```
 
 **End Exercise**
@@ -290,27 +272,6 @@ Since all of the code is complete, let's Knit to an html file.
 What if we wanted to look at mpg >= 10 and re-run the analysis?  Review the code and figure out where the restriction on the mpg variable was made, and then modify the code to select fuel economy greater than or equal to 10, instead of 15. Knit the file again and observe the change in output.
 
 ```{r, eval=FALSE}
-
-```
-
-```{r, echo=FALSE}
-
-# First let's load the tidyverse
-
-library(tidyverse)
-
-# Load a data set of cars into a dataframe
-cars_data <- as_tibble(mtcars)
-
-# Display table
-cars_data
-
-# Fiter the list to cars with fuel economy >= 10 mpg and horsepower >=100
-mpg_hp <-filter(mtcars, mpg >= 10, hp >=100)
-
-# Create a scatter plot of mpg vs horsepower 
-ggplot(data = mpg_hp) + 
-  geom_point(mapping = aes(x = mpg, y = hp))
 
 ```
 

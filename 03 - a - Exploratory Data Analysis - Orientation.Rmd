@@ -14,7 +14,7 @@ library(janitor)
 library(lubridate)
 ```
 
-# Exploratory data analysis: Orienting yourself with your data set
+# Exploratory Data Analysis: Orienting Yourself with Your Data Set
 
 In this section of the course we will walk through a common workflow: exploring a new data set. Before we dive into the data set, we will touch briefly on one way of writing code that can help make it easier to follow.
 
@@ -75,18 +75,10 @@ str(orders)
 
 ```
 
-```{r, echo = FALSE}
-summary(orders$ORDER_CLASS_C_DESCR)
-```
-
 5. Let's convert one of those fields to a factor using the `as.factor()` command and then run a summary. What additional information do you see by converting to a factor?
 
 ```{r, eval = FALSE}
 
-```
-
-```{r, echo = FALSE}
-summary(as.factor(orders$ORDER_CLASS_C_DESCR))
 ```
 
 **End Exercise**
@@ -121,10 +113,6 @@ Pull a summary of the description variable (only), after converting to a factor 
 
 ```{r, eval = FALSE}
 
-```
-
-```{r, echo = FALSE}
-summary(as.factor(orders$description)) %>% head()
 ```
 
 **End Exercise**
@@ -183,14 +171,6 @@ bmp_orders <- orders %>%
 glimpse(bmp_orders)
 ```
 
-```{r, echo = FALSE}
-bmp_orders <- orders %>%
-  filter(proc_code == "BMP") %>%
-  select(order_id, order_time, result_time, review_time) %>%
-  arrange(desc(order_time))
-glimpse(bmp_orders)
-```
-
 **End Exercise**
 
 ### Add extra columns with `mutate()`
@@ -213,12 +193,6 @@ Let's go ahead and convert the description variable to a factor using the `mutat
 orders <- orders %>%
   mutate()
 summary()
-```
-
-```{r, echo = FALSE}
-orders <- orders %>%
-  mutate(description = as.factor(description))
-summary(orders$description) %>% head()
 ```
 
 **End Exercise**
@@ -272,12 +246,6 @@ table(cbc_orders$department, cbc_orders$order_status_c_descr)
 Let's practice making tables. This time, create a table showing the breakdown of CBC with differential (procedure code CBD) by department and order class. Which clinics draw a majority of their own samples? Which clinics use the most external orders (ie. use results from outside labs)?
 
 ```{r, eval = FALSE}
-cbd_orders <- orders %>%
-  filter(proc_code == "CBD")
-table(cbd_orders$department, cbd_orders$order_class_c_descr)
-```
-
-```{r, echo = FALSE}
 cbd_orders <- orders %>%
   filter(proc_code == "CBD")
 table(cbd_orders$department, cbd_orders$order_class_c_descr)
@@ -359,20 +327,10 @@ ggplot(data = ) +
   geom_bar(mapping = aes(x = )) 
 ```
 
-```{r, echo = FALSE}
-ggplot(data = orders) + 
-  geom_bar(mapping = aes(x = order_status_c_descr)) 
-```
-
 2. Plot a bar graph showing the breakdown of order class.
 
 ```{r, eval = FALSE}
 
-```
-
-```{r, echo = FALSE}
-ggplot(data = orders) + 
-  geom_bar(mapping = aes(x = order_class_c_descr)) 
 ```
 
 **End Exercise**
@@ -438,14 +396,4 @@ ggplot(data = orders_subset) +
   xlab()
 ```
 
-```{r, echo = FALSE, fig.width=8}
-orders_subset <- orders %>%
-  filter(proc_code %in% c("BMP", "A1C", "LIPID", "TSH"))
-ggplot(data = orders_subset) +
-  geom_histogram(
-    mapping = aes(x = order_time, fill = proc_code),
-    binwidth = 60*60*24*7
-  ) +
-  xlab("Time")
-```
 **End Exercise**
