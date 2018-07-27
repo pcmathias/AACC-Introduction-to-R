@@ -124,7 +124,7 @@ Pull a summary of the description variable (only), after converting to a factor 
 ```
 
 ```{r, echo = FALSE}
-summary(as.factor(orders$description))
+summary(as.factor(orders$description)) %>% head()
 ```
 
 **End Exercise**
@@ -200,7 +200,7 @@ Here we take our orders data frame, pipe it into the `mutate()` function and cre
 ```{r single_factor}
 orders <- orders %>%
   mutate(department_fctr = as.factor(department))
-summary(orders$department_fctr)
+summary(orders$department_fctr) %>% head()
 ```
 
 **Exercise 4:**
@@ -216,7 +216,7 @@ summary()
 ```{r, echo = FALSE}
 orders <- orders %>%
   mutate(description = as.factor(description))
-summary(orders$description)
+summary(orders$description) %>% head()
 ```
 
 **End Exercise**
@@ -412,7 +412,7 @@ ggplot(data = orders) +
 
 Now let's add another mapping to our plot. We may want to analyze the number of orders that are cancelled and visualize that alongside the total number of orders. We simply add another variable to the aesthetic function, and instead of plotting against an axis, we are going to fill in the bars with colors based on order status.
 
-```{r}
+```{r, fig.width=8}
 ggplot(data = orders) +
   geom_histogram(
     mapping = aes(x = order_time, fill = order_status_c_descr),
@@ -425,7 +425,7 @@ ggplot(data = orders) +
 
 Plot the weekly volume of a subset of common orders: basic metabolic panel, hemoglobin A1C, lipid panel, and TSH (proc_codes BMP, A1C, LIPID, TSH) and show the breakdown of tests by fill in the bar chart.
  
-```{r, eval = FALSE}
+```{r, eval = FALSE, fig.width=8}
 orders_subset <- orders %>%
   
 ggplot(data = orders_subset) +
@@ -433,7 +433,7 @@ ggplot(data = orders_subset) +
   xlab()
 ```
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, fig.width=8}
 orders_subset <- orders %>%
   filter(proc_code %in% c("BMP", "A1C", "LIPID", "TSH"))
 ggplot(data = orders_subset) +
