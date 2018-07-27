@@ -18,9 +18,9 @@ Outline for the Day
 
 - 45-60 min blocks followed by 10-15 minute breaks and an hour for lunch
 
-- Mix of lecture, live coding, and executing pre-written code
+- Mix of lecture, live coding, executing pre-written code, and exercises
 
-- Topics
+- Topics:
   - Introduction to R
   - Method Validation
   - Exploratory Data Analysis
@@ -43,7 +43,7 @@ What is R?
 
 - R also provides an environment in which we can conduct reproducible data analysis.
   - Documented
-  - Able to be revisited and re-executed
+  - Revisable
   - Shareable
 
 Ensuring Everyone is Set Up
@@ -53,7 +53,7 @@ Ensuring Everyone is Set Up
 
 - Installing RStudio:  [https://www.rstudio.com/products/rstudio/download/#download](https://www.rstudio.com/products/rstudio/download/#download).
 
-- Downloading the Repo:  
+- Downloading the Repo: [https://github.com/pcmathias/AACC-Introduction-to-R](https://github.com/pcmathias/AACC-Introduction-to-R) 
 
 - Setting the Working Directory:  
 
@@ -129,12 +129,14 @@ Exercise 2:
 ========================================================
 - We can reassign the contents of an object.
 
-- Complete exercise 2
+- Complete Exercise 2:
+  - First select the environment tab in the upper right pane
   - Change the contents of x to 2
   - Assign x to a new object called a
   - Reassign the contents of x to 1
   
 - What happened to the contents of a?
+- Is this what you expected?
 
 
 Coding Basics:  Creating a Sequence Manually
@@ -164,6 +166,8 @@ sequence_one_to_twenty
 mean(sequence_one_to_twenty)
 ```
 
+- What other simple functions might you try on our sequence?
+
 Coding Basics:  Creating Tables
 ========================================================
 - So far we have created vectors (analogous to a single column in a spreadsheet)
@@ -188,6 +192,8 @@ Creating Reproducible Data Analysis
 - To make our code reproducible, we need to place it in a container that we can edit, save, and execute sequentially.  
 
 - R Markdown files (extension .RMD) provide an authoring environment for us to do just that!
+
+- Let's create an R Markdown file together now.
 
 Creating our First Markdown File
 ========================================================
@@ -228,6 +234,8 @@ Saving our Rmd and Executing our Code
 
 - Let's save our R Markdown file to our working directory (File -> Save As) as "Our First R Markdown File.RMD"
 
+- Now let's talk about what each of these lines of code does.
+
 - Executing our code:
   - By line: Ctrl+Enter on Windows or Command+Enter on Mac
   - By chunk:  Shift+Ctrl+Enter for Windows and Shift+Command+Enter for Ma
@@ -257,7 +265,7 @@ Learning a new language takes time and patience.  Luckily there are resources to
   - The Internet (Stack Overflow: [https://stackoverflow.com/](https://stackoverflow.com/))
   - Work Aids (RStudio Cheat Sheets: [https://www.rstudio.com/resources/cheatsheets/](https://www.rstudio.com/resources/cheatsheets/)
   - A Good Book (R for Data Science: [http://r4ds.had.co.nz/](http://r4ds.had.co.nz/) Available in print and online).
-  - Taking a Break (Sometimes is just takes a fresh set of eyes!)
+  - Taking a Break (Sometimes it just takes a fresh set of eyes!)
   
 Speaking of taking a break... let's take one now!!
 ========================================================
