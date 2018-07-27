@@ -1,7 +1,9 @@
 ---
-title: "Exploratory data analysis: Orienting yourself with your data set"
+title: 'Exploratory data analysis: Orienting yourself with your data set'
 author: "Patrick Mathias"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -117,11 +119,11 @@ The `summary` function is most useful when you want to quickly glance at distrib
 
 Pull a summary of the description variable (only), after converting to a factor using the `as.factor` function. Which test is most frequently ordered in this data set?
 
-```{r convert_factor, eval = FALSE}
+```{r, eval = FALSE}
 
 ```
 
-```{r convert_factor, echo = FALSE}
+```{r, echo = FALSE}
 summary(as.factor(orders$description))
 ```
 
@@ -205,13 +207,13 @@ summary(orders$department_fctr)
 
 Let's go ahead and convert the description variable to a factor using the `mutate` and `as.factor` functions. This time, rather than creating a new variable, overwrite the original variable by giving it its original name.
 
-```{r single_factor_exercise, eval = FALSE}
+```{r, eval = FALSE}
 orders <- orders %>%
   mutate()
 summary()
 ```
 
-```{r single_factor_exercise, echo = FALSE}
+```{r, echo = FALSE}
 orders <- orders %>%
   mutate(description = as.factor(description))
 summary(orders$description)
@@ -264,13 +266,13 @@ table(cbc_orders$department, cbc_orders$order_status_c_descr)
 
 Let's practice making tables. This time, create a table showing the breakdown of CBC with differential (procedure code CBD) by department and order class. Which clinics draw a majority of their own samples? Which clinics use the most external orders (ie. use results from outside labs)?
 
-```{r cbd_analysis, eval = FALSE}
+```{r, eval = FALSE}
 cbd_orders <- orders %>%
   filter(proc_code == "CBD")
 table(cbd_orders$department, cbd_orders$order_class_c_descr)
 ```
 
-```{r cbd_analysis, echo = FALSE}
+```{r, echo = FALSE}
 cbd_orders <- orders %>%
   filter(proc_code == "CBD")
 table(cbd_orders$department, cbd_orders$order_class_c_descr)
@@ -283,8 +285,8 @@ table(cbd_orders$department, cbd_orders$order_class_c_descr)
 
 The skimr package is worth knowing about. This does some work for you in breaking down distributions of different variables and showing the amount of missing data.
 
-```{r skim}
-install.packages("skimr")
+```{r skim, eval = FALSE}
+#install.packages("skimr")
 library(skimr)
 skim(orders)
 ```
