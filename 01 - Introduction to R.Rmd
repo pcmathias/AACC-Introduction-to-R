@@ -70,7 +70,7 @@ A working directory is where R will read our data from and save our work to.  Le
 
 We can check to see that we have set the correct working directory by running the following code in the console.
 
-```{r}
+```{r, eval = FALSE}
 getwd()
 ```
 

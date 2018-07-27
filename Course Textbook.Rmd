@@ -16,7 +16,7 @@ install.packages("janitor", "mcr", "moments", "skimr")
 ```
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, comment=NA)
+knitr::opts_chunk$set(echo = TRUE, comment=NA, fig.align = "center")
 suppressMessages(library(tidyverse))
 library(readxl)
 library(janitor)
@@ -83,7 +83,7 @@ A working directory is where R will read our data from and save our work to.  Le
 
 We can check to see that we have set the correct working directory by running the following code in the console.
 
-```{r}
+```{r, eval = FALSE}
 getwd()
 ```
 
