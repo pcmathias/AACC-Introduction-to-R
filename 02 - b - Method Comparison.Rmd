@@ -195,7 +195,8 @@ In fact, a least-squares regression, while a good approximation for this type of
 library(mcr)            # remember, you may need to install.packages("mcr") in the console first!
 deming_results <- mcreg(hcg$method_a, hcg$method_b, 
                         method.reg = "Deming")
-deming_results@para         # "para" short for "parameters"-- this is a library/method specific term here
+deming_results@para         # "para" short for "parameters"
+# this is a library/method specific term here
 ```
 
 To see what slots (attributes) `deming_results` has beyond `para`, look at `glimpse(deming_results)`
@@ -225,7 +226,8 @@ Now let's add the lines to our plot. We can use the `geom_abline()` ggplot funct
 ggplot(hcg) +
   geom_point(aes(x=method_a, y=method_b))  +
   geom_smooth(method = "lm", aes(x=method_a, y=method_b), se=FALSE) +
-  geom_abline(intercept = deming_results@para[1], slope = deming_results@para[2], color="red")
+  geom_abline(intercept = deming_results@para[1], slope = deming_results@para[2], 
+              color="red")
 ```
 
 What about the weighted deming fit line? What about the subrange between 0 and 40000? Let's also add a 1:1 line to help interpret fit.
@@ -234,8 +236,10 @@ What about the weighted deming fit line? What about the subrange between 0 and 4
 ggplot(hcg) +
   geom_point(aes(x=method_a, y=method_b))  +
   geom_smooth(method = "lm", aes(x=method_a, y=method_b), se=FALSE) +   #blue
-  geom_abline(intercept = deming_results@para[1], slope = deming_results@para[2], color="red") +
-  geom_abline(intercept = wdeming_results@para[1], slope = wdeming_results@para[2], color="yellow") +
+  geom_abline(intercept = deming_results@para[1], slope = deming_results@para[2], 
+              color="red") +
+  geom_abline(intercept = wdeming_results@para[1], slope = wdeming_results@para[2], 
+              color="yellow") +
   xlim(0, 40000) + ylim(0, 40000) +
   geom_abline(intercept=0, slope=1, linetype=2, color="gray")
   
@@ -266,7 +270,8 @@ ggplot(hcg) +
 ggplot(hcg) +
   geom_point(aes(x=method_a, y=method_b))  +
   geom_smooth(method = "lm", aes(x=method_a, y=method_b), se=FALSE) +  #blue
-  geom_abline(intercept = deming_results@para[1], slope = deming_results@para[2], color="red") +
+  geom_abline(intercept = deming_results@para[1], slope = deming_results@para[2], 
+              color="red") +
   xlim(0, 40000) + ylim(0, 40000) +
   geom_abline(intercept=0, slope=1, linetype=2, color="gray") +
   geom_abline(intercept = PB_results@para[1], slope = PB_results@para[2], color="yellow")
@@ -292,8 +297,10 @@ PB_results_outliers <- mcreg(hcg$method_a, hcg$method_b, method.reg = "PaBa")
 ggplot(hcg_with_outliers) +
   geom_point(aes(x=method_a, y=method_b))  +
   geom_smooth(method = "lm", aes(x=method_a, y=method_b), se=FALSE) +   #blue
-  geom_abline(intercept = deming_results_outliers@para[1], slope = deming_results_outliers@para[2], color="red") +
-  geom_abline(intercept = PB_results_outliers@para[1], slope = PB_results_outliers@para[2], color="green")
+  geom_abline(intercept = deming_results_outliers@para[1], 
+              slope = deming_results_outliers@para[2], color="red") +
+  geom_abline(intercept = PB_results_outliers@para[1], 
+              slope = PB_results_outliers@para[2], color="green")
 
 ```
 
@@ -330,7 +337,8 @@ hcg %>%
   mutate(method_a_pos = method_a > threshold,   # Create binary indicator for method_a
          method_b_pos = method_b > threshold) %>%
   count(method_a_pos, method_b_pos)  %>%
-  spread(method_b_pos, n, fill=0, sep=".")   # Spreads method_b_pos from a single variable to a variable for each value
+  spread(method_b_pos, n, fill=0, sep=".")   # Spreads method_b_pos from a single variable 
+  # to a variable for each value
 ```
 
 
@@ -343,10 +351,12 @@ _Hint #2_: Look at previous code for inspiration!
 
 ```{r, eval=FALSE}
 hcg %>%
-  mutate(method_a_bin = ________________________________,   # Create factor indicator for method_a
+  mutate(method_a_bin = ________________________________,   
+         # Create factor indicator for method_a
          method_b_bin = _________________________________) %>%
   count(method_a_bin, method_b_bin)  %>%
-  spread(method_b_bin, n, fill=0, sep=".")   # Spreads method_b_pos from a single variable to a variable for each value
+  spread(method_b_bin, n, fill=0, sep=".")   
+# Spreads method_b_pos from a single variable to a variable for each value
 ```
 
 ```{r, echo=FALSE}

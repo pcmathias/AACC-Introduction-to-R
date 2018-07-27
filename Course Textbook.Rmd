@@ -6,7 +6,8 @@ author:
 - Niklas Krumm
 - Patrick Mathias
 output:
-  pdf_document: default
+  pdf_document:
+    number_sections: yes
   html_document:
     number_sections: yes
 ---
@@ -15,7 +16,7 @@ output:
 install.packages("janitor", "mcr", "moments", "skimr")
 ```
 
-```{r setup, echo = FALSE, warning=FALSE}
+```{r setup, echo = FALSE, warning=FALSE, message=FALSE}
 knitr::opts_chunk$set(echo = TRUE, comment=NA, warning = FALSE, message = FALSE,
                       fig.align = "center", fig.width = 4, fig.height = 4)
 suppressMessages(library(tidyverse))

@@ -151,7 +151,9 @@ Let's extract the rows associated with complete blood count orders. The procedur
 
 ```{r filter}
 cbc_orders <- orders %>%
-  filter(proc_code == "CBC") # note the two equal signs for evaluating equality (because one equal is for assignment)
+  filter(proc_code == "CBC") 
+# note the two equal signs for evaluating equality 
+# (because one equal is for assignment)
 glimpse(cbc_orders)
 ```
 
@@ -240,7 +242,9 @@ An extension of the `mutate` function is `mutate_at`, which serves the same purp
 
 ```{r convert_all_factors}
 orders <- orders %>%
-  mutate_at(c("description", "proc_code", "order_class_c_descr", "lab_status_c_descr", "order_status_c_descr", "reason_for_canc_c_descr"), as.factor)
+  mutate_at(c("description", "proc_code", "order_class_c_descr", 
+              "lab_status_c_descr", "order_status_c_descr",
+              "reason_for_canc_c_descr"), as.factor)
 summary(orders)
 ```
 
@@ -253,7 +257,8 @@ Older functions to import files in R automatically convert character variables i
 A very common task when analyzing data is tabluating counts based on one or more variables. In Excel this is commonly handled with pivot tables. R has multiple functions that can help you quickly create tables. To demonstrate some tabulations, let's first focus on a single test and return to our CBC orders tibble we created in the previous section. We want to tabulate the counts of CBC orders based on a single variable, department, ie. we wnat ot determine the number of CBCs ordered by each department. To start out, we use the `table` function in base R (no additional package is required to call the function).
 
 ```{r cbc_simple_tabulation}
-table(cbc_orders$department) # recall the dollar sign syntax to indicate a variable from an object
+table(cbc_orders$department) 
+# recall the dollar sign syntax to indicate a variable from an object
 ```
 
 Now let's generate a more complex table to visualize the number of CBC orders by department AND split out by order status.
@@ -339,7 +344,7 @@ ggplot(data = orders) +
 
 The definitely shows the data, but the x-axis is not readable because there are so many categories. The easiest solution is to flip the axes using the `coord_flip()` function.
 
-```{r}
+```{r, fig.width = 8}
 ggplot(data = orders) + 
   geom_bar(mapping = aes(x = department)) +
   coord_flip()
