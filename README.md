@@ -33,3 +33,7 @@ The easiest way to get up and running with the content (to decrease set up time)
 1. Select "Set Working Directory" from the Session menu at the top of the screen in RStudio, then navigate to that location. 
 
 After you complete these steps, you will be able to open up the course files in RStudio, run completed lines or chunks of code, and fill in the blanks for exercises.
+
+## Acknowledgements
+
+The authors acknowledge Daniel Holmes, Steve Master, Stephan Kadauke, and Keith Baggerly, who have provided materials, ideas, and great tips and discussions about teaching R programming. These course materials have been inspired by or adapted from a variety of resources, including and especially the R For Data Science text: http://r4ds.had.co.nz.
