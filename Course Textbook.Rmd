@@ -2117,6 +2117,10 @@ This course is a collection of knowledge from the instructors that have largely 
 
 ## Courses and Other Active Learning Resources
 
+- Mass Spectrometry: Applications to the Clinical Lab (MSACL) Short Courses: https://www.msacl.org
+
+  Data Science Short Courses at US and Europe conferences - Basic and intermediate level courses with about 15 hours of content. (Advanced special topics course planned for 2019 US.)
+  
 - Swirl: https://swirlstats.com
 
   Interative R tutorials within the R console - nice refresher for this course content and there are more advanced lessons too!
