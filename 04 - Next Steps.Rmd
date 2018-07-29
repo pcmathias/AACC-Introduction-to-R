@@ -1,0 +1,45 @@
+---
+title: "Next Steps for Learning R"
+author: "Patrick Mathias"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Next Steps for Learning R
+
+This course is a collection of knowledge from the instructors that have largely been learned/inspired/borrowed from other resources. By applying our knowledge to common lab workflows, we have attempted to show you the value of using R (or any other programming language) to accomplish important and common data analysis tasks. The internet contains a vast number of resources, including free online texts. In addition there are online courses that may be helpful. Below are a handful of resources that can serve as references as you continue to develop your skills. As an obligatory disclaimer, this is not a comprehensive list and links may not work indefinitely.
+
+## Online Books and Quick Reference Resources
+
+- RStudio Cheat Sheets: https://www.rstudio.com/resources/cheatsheets/
+  
+  Super-helpful one pagers that illustrate useful functions and code covering a variety of R topics
+
+- R For Data Science: http://r4ds.had.co.nz
+  
+  This is a core resource for this course and many others and is frequently consulted, even by veterans
+
+- R Markdown: The Definitive Guide: https://bookdown.org/yihui/rmarkdown/
+  
+  Just published resource digging into the nitty gritty of R Markdown and creating great documents and presentations using R
+
+## Courses and Other Active Learning Resources
+
+- Mass Spectrometry: Applications to the Clinical Lab (MSACL) Short Courses: https://www.msacl.org
+
+  Data Science Short Courses at US and Europe conferences - Basic and intermediate level courses with about 15 hours of content. (Advanced special topics course planned for 2019 US.)
+  
+- Swirl: https://swirlstats.com
+
+  Interative R tutorials within the R console - nice refresher for this course content and there are more advanced lessons too!
+  
+- Coursera R courses: https://www.coursera.org/courses?query=r
+
+  The Johns Hopkins series have historically been popular for learning R but there are courses from a variety of institutions
+  
+- Software Carpentry: https://software-carpentry.org/lessons/
+
+  Research-focused computing lessons that cover variety of topics in addition to R (including Python and Linux)
