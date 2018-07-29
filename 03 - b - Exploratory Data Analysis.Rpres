@@ -45,6 +45,7 @@ glimpse(orders)
 
 Selecting Time Components
 ========================================================
+
 We can select just the date component of a date time:
   
 ```{r}
@@ -57,7 +58,6 @@ head(date_of_order)
 
 ```
 
-Here, the number "33" represents the 33rd week of the year.
 
 Selecting Time Components
 ========================================================
@@ -72,6 +72,8 @@ week_of_order <- week(orders$order_time)
 head(week_of_order)
 
 ```
+
+Here, the number "33" represents the 33rd week of the year.
 
 Exercise 1
 ========================================================
@@ -109,12 +111,14 @@ ggplot(data = orders) +
 
 Plotting Time Data
 ========================================================
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height = 10, fig.width = 20}
 
 order_hour <- hour(orders$order_time)
 
 ggplot(data = orders) +
-  geom_histogram(mapping = aes(x = order_hour), bins = 24)
+  geom_histogram(mapping = aes(x = order_hour), bins = 24) +
+  theme(axis.text=element_text(size=32),
+        axis.title=element_text(size=40,face="bold"))
 
 ```
 
@@ -136,12 +140,14 @@ ggplot(data = orders) +
 
 Exercise 2 (Answer)
 ========================================================
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height = 10, fig.width = 20}
 
 result_hour <- hour(orders$result_time)
 
 ggplot(data = orders) + 
-  geom_histogram(mapping = aes(x = result_hour), bins = 24)
+  geom_histogram(mapping = aes(x = result_hour), bins = 24) +
+  theme(axis.text=element_text(size=32),
+        axis.title=element_text(size=40,face="bold"))
 
 ```
 
@@ -183,7 +189,7 @@ ggplot(data = order_to_result_delta) +
 
 Calculating Order to Result Time
 ========================================================
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height = 10, fig.width = 20}
 
 order_to_result_delta <- completed_orders %>%
   mutate(order_time_to_result_time = result_time - order_time) %>%
@@ -191,7 +197,9 @@ order_to_result_delta <- completed_orders %>%
 
 
 ggplot(data = order_to_result_delta) + 
-  geom_histogram(mapping = aes(x = order_time_to_result_time), binwidth = 60*60)
+  geom_histogram(mapping = aes(x = order_time_to_result_time), binwidth = 60*60) +
+  theme(axis.text=element_text(size=32),
+        axis.title=element_text(size=40,face="bold"))
 
 ```
 
@@ -222,14 +230,16 @@ ggplot(data = result_to_review_delta) +
 Exercise 3 (Answer)
 ========================================================
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height = 10, fig.width = 20}
 
 result_to_review_delta <- completed_orders %>%
   mutate(result_time_to_review_time = review_time - result_time) %>%
   filter(result_time_to_review_time > 0 & result_time_to_review_time < 60*60*24 )
 
 ggplot(data = result_to_review_delta) + 
-  geom_histogram(mapping = aes(x = result_time_to_review_time), binwidth = 60*60)
+  geom_histogram(mapping = aes(x = result_time_to_review_time), binwidth = 60*60) +
+  theme(axis.text=element_text(size=32),
+        axis.title=element_text(size=40,face="bold"))
 
 ```
 
@@ -254,14 +264,16 @@ ggplot(data = order_to_result_delta) +
 
 Changing Time Units
 ========================================================
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height = 10, fig.width = 20}
 
 order_to_result_delta <- completed_orders %>%
   mutate(order_time_to_result_time = difftime(result_time, order_time, units = "hour")) %>%
   filter(order_time_to_result_time > 0 & order_time_to_result_time < 24)
 
 ggplot(data = order_to_result_delta) + 
-  geom_histogram(mapping = aes(x = order_time_to_result_time), binwidth = 1)
+  geom_histogram(mapping = aes(x = order_time_to_result_time), binwidth = 1) +
+  theme(axis.text=element_text(size=32),
+        axis.title=element_text(size=40,face="bold"))
 
 ```
 
@@ -285,13 +297,15 @@ ggplot(data = orders_count) +
 
 Counting Tests Per Patient
 ========================================================
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height = 10, fig.width = 20}
 
 orders_count <- completed_orders %>%
   count(patient_id)
 
 ggplot(data = orders_count) +
-  geom_histogram(mapping = aes(x = n), binwidth = 1)
+  geom_histogram(mapping = aes(x = n), binwidth = 1) +
+  theme(axis.text=element_text(size=32),
+        axis.title=element_text(size=40,face="bold"))
 
 ```
 
@@ -300,6 +314,8 @@ Exercise 4
 What if we wanted to know only number of CBCs per patient?  
 
 Can you use the `filter` function to limit the data CBC orders before counting?
+
+Hint: The procedure code for CBC is "CBC".
 
 Exercise 4 (Answer)
 ========================================================
@@ -322,7 +338,7 @@ ggplot(data = cbc_count) +
 Exercise 4 (Answer)
 ========================================================
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height = 10, fig.width = 20}
 
 cbc_orders <- filter(completed_orders, proc_code == "CBC")
 
@@ -334,7 +350,9 @@ count(patient_id)
 #Plot
 
 ggplot(data = cbc_count) + 
-  geom_histogram(mapping = aes(x = n), binwidth = 1)
+  geom_histogram(mapping = aes(x = n), binwidth = 1) +
+  theme(axis.text=element_text(size=32),
+        axis.title=element_text(size=40,face="bold"))
 
 ```
 
@@ -414,10 +432,12 @@ ggplot(data = cbc_join) +
 Plotting Date Differential by Patient and Test
 ========================================================
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height = 10, fig.width = 20}
 
 ggplot(data = cbc_join) + 
-  geom_histogram(mapping = aes(x = minimum), binwidth = 5)
+  geom_histogram(mapping = aes(x = minimum), binwidth = 5) +
+  theme(axis.text=element_text(size=32),
+        axis.title=element_text(size=40,face="bold"))
 
 ```
 
@@ -433,7 +453,7 @@ This data set is a Comma Separated Variable (CSV) file so we need to use the `re
 ```{r}
 orders_details <- read_csv("data/order_details.csv")
 
-head(orders_details)
+head(orders_details, 4)
 ```
 
 
@@ -507,7 +527,9 @@ CBC
 Exercise 5
 ========================================================
 
-What if we just wanted to look at Factor V Leiden.  Hint: proc_code = "F5DNA")
+What if we just wanted to look at Factor V Leiden.  
+
+Hint: proc_code == "F5DNA"
 
 
 Exercise 5 (Answer)
@@ -543,7 +565,9 @@ F5DNA
 The End or the Beginning?
 ========================================================
 
-Congratulations!!  You have reached the end of the exploratory data analysis section.
+Congratulations!!  
+
+You have reached the end of the exploratory data analysis section.
 
 Go forth and prosper in your time calculations and data joins!
 
