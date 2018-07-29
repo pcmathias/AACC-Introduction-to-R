@@ -8,6 +8,7 @@ author:
 output:
   pdf_document:
     number_sections: yes
+    toc: true
   html_document:
     number_sections: yes
 ---
@@ -723,7 +724,7 @@ binom.test()
 
 **End exercise**
 
-# Advanced: Using a Q-Q plot to examine a distribution
+## Advanced: Using a Q-Q plot to examine a distribution
 ```{r}
 ggplot(data=afp) + 
   geom_qq(aes(sample=method_a))
