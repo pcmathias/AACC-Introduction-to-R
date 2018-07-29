@@ -247,8 +247,8 @@ Let's practice making tables. This time, create a table showing the breakdown of
 
 ```{r, eval = FALSE}
 cbd_orders <- orders %>%
-  filter(proc_code == "CBD")
-table(cbd_orders$department, cbd_orders$order_class_c_descr)
+  
+table(cbd_orders$ , cbd_orders$ )
 ```
 
 **End Exercise**
